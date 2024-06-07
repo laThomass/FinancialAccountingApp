@@ -48,52 +48,51 @@ public class StockController {
 
     while (!quit) {
       stockView.displayMenu();
-      System.out.print("Please enter your choice as the associated number: ");
+      out.append("Please enter your choice as the associated number: ");
       int choice = scanner.nextInt();
       switch (choice) {
         case 1:
-          StockView.display("Please enter your desired stock in ticker form.");
+          out.append("Please enter your desired stock in ticker form.").append(System.lineSeparator());
           stockChoice = scanner.next();
           String startDate = promptForValidDate("Start date?");
           String endDate = promptForValidDate("End date?");
-          StockView.display("" + Stock.viewGainLoss(stockChoice, startDate, endDate, api, library));
-
-          System.out.println();
+          out.append("" + Stock.viewGainLoss(stockChoice, startDate, endDate, api, library)).append(System.lineSeparator());
+          out.append(System.lineSeparator());
           break;
         case 2:
-          StockView.display("Please enter your desired stock in ticker form.");
+          out.append("Please enter your desired stock in ticker form.").append(System.lineSeparator());
           stockChoice = scanner.next();
           startDate = promptForValidDate("Start date?");
-          StockView.display("How many days?");
+          out.append("How many days?").append(System.lineSeparator());
           days = scanner.nextInt();
-          StockView.display("Your average is: " + Stock.viewXDayMovingAverage(stockChoice, startDate, days, api, library));
+          out.append("Your average is: " + Stock.viewXDayMovingAverage(stockChoice, startDate, days, api, library)).append(System.lineSeparator());
           break;
         case 3:
-          StockView.display("Please enter your desired stock in ticker form.");
+          out.append("Please enter your desired stock in ticker form.").append(System.lineSeparator());
           stockChoice = scanner.next();
           startDate = promptForValidDate("Start date?");
-          StockView.display("How many days?");
+          out.append("How many days?").append(System.lineSeparator());
           days = scanner.nextInt();
-          System.out.println("The stock's crossovers in the last " + days + " were:");
+          out.append("The stock's crossovers in the last " + days + " were:").append(System.lineSeparator());
           for (String date : Stock.viewXDayCrossOver(stockChoice, startDate, days, api, library)) {
-            System.out.println(date);
+            out.append(date).append(System.lineSeparator());
           }
           break;
         case 4:
-          StockView.display("Please enter the name of your new portfolio.");
+          out.append("Please enter the name of your new portfolio.").append(System.lineSeparator());
           portfolioName = scanner.next();
-          StockView.display("Would you like to add stocks to your portfolio immediately?");
+          out.append("Would you like to add stocks to your portfolio immediately?").append(System.lineSeparator());
           String answer = scanner.next().toLowerCase();
           if (answer.equals("yes")) {
             Map<String, Integer> stocks = new HashMap<>();
             boolean done = false;
             while (!done) {
-              System.out.println("Please enter your desired stock in ticker form. To abort at any time, enter 'stop'.");
+              out.append("Please enter your desired stock in ticker form. To abort at any time, enter 'stop'.").append(System.lineSeparator());
               stockChoice = scanner.next().toLowerCase();
               if (stockChoice.equals("stop")) {
                 done = true;
               } else {
-                StockView.display("Please enter your desired quantity.");
+                out.append("Please enter your desired quantity.").append(System.lineSeparator());
                 quantity = scanner.nextInt();
                 stocks.put(stockChoice, quantity);
               }
@@ -103,37 +102,37 @@ public class StockController {
                 api.fetchData(symbol, library);
               } catch (Exception e) {
                 stocks.remove(symbol);
-                StockView.display("We did not add stock " + symbol + " because the ticker was invalid");
+                out.append("We did not add stock " + symbol + " because the ticker was invalid").append(System.lineSeparator());
               }
             }
             loPortfolio.add(Portfolio.createPortfolio(portfolioName, stocks));
-            StockView.display("Portfolio created with name " + portfolioName + " and " + stocks.size() + " stocks.");
+            out.append("Portfolio created with name " + portfolioName + " and " + stocks.size() + " stocks.").append(System.lineSeparator());
           } else {
             loPortfolio.add(Portfolio.createPortfolio(portfolioName));
-            StockView.display("Portfolio created with name " + portfolioName);
+            out.append("Portfolio created with name " + portfolioName).append(System.lineSeparator());
           }
           break;
         case 5:
-          StockView.display("Which portfolio would you like to add to?");
+          out.append("Which portfolio would you like to add to?").append(System.lineSeparator());
           portfolioChoice = scanner.next();
           boolean done = false;
           for (Portfolio portfolio : loPortfolio) {
             if (portfolio.getName().equals(portfolioChoice)) {
               done = true;
-              StockView.display("Please enter your stock and then the amount");
+              out.append("Please enter your stock and then the amount").append(System.lineSeparator());
               String symbol = scanner.next();
               quantity = scanner.nextInt();
               portfolio.addStock(symbol, quantity);
             }
           }
           if (!done) {
-            StockView.display("We could not find a portfolio with that name.");
+            out.append("We could not find a portfolio with that name.").append(System.lineSeparator());
           } else {
-            StockView.display("The stocks were added successfully.");
+            out.append("The stocks were added successfully.").append(System.lineSeparator());
           }
           break;
         case 6:
-          StockView.display("Which portfolio would you like to check the value of?");
+          out.append("Which portfolio would you like to check the value of?").append(System.lineSeparator());
           portfolioChoice = scanner.next();
           String date = promptForValidDate("Date?");
           double result = 0.0;
@@ -146,32 +145,32 @@ public class StockController {
             }
           }
           if (!finished) {
-            StockView.display("We could not find a portfolio with that name.");
+            out.append("We could not find a portfolio with that name.").append(System.lineSeparator());
           } else {
-            StockView.display("Your portfolio's value on date " + date + " is " + result + ".");
+            out.append("Your portfolio's value on date " + date + " is " + result + ".").append(System.lineSeparator());
           }
           break;
         case 7:
           quit = true;
           break;
         default:
-          StockView.display("Invalid choice");
+          out.append("Invalid choice").append(System.lineSeparator());
       }
     }
   }
 
-  private String promptForValidDate(String prompt) {
+  private String promptForValidDate(String prompt) throws IOException {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     sdf.setLenient(false);
     String dateStr;
     while (true) {
-      StockView.display(prompt);
+      out.append(prompt).append(System.lineSeparator());
       dateStr = scanner.next();
       try {
         sdf.parse(dateStr);
         break;
       } catch (ParseException e) {
-        StockView.display("Invalid date format. Please enter the date in yyyy-MM-dd format.");
+        out.append("Invalid date format. Please enter the date in yyyy-MM-dd format.").append(System.lineSeparator());
       }
     }
     return dateStr;
@@ -234,6 +233,4 @@ public class StockController {
 
     library.put(name, stocks);
   }
-
-
 }

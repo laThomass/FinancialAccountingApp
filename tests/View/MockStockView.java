@@ -25,7 +25,19 @@ public class MockStockView implements IView {
   }
 
   public String next() {
-    return inputs.get(inputIndex++);
+    if (inputIndex < inputs.size()) {
+      return inputs.get(inputIndex++);
+    } else {
+      throw new java.util.NoSuchElementException("No more input available");
+    }
+  }
+
+  public int nextInt() {
+    if (inputIndex < inputs.size()) {
+      return Integer.parseInt(inputs.get(inputIndex++));
+    } else {
+      throw new java.util.NoSuchElementException("No more input available");
+    }
   }
 
   public List<String> getOutput() {
