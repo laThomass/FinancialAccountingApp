@@ -3,7 +3,7 @@ package Main;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import Controller.StockController;
+import controller.StockController;
 import Model.AlphaAPI;
 import View.StockView;
 

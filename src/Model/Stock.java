@@ -169,6 +169,11 @@ public class Stock implements IStock {
    */
 
   public static double viewXDayMovingAverage(String symbol, String dateStr, int days, IAlphaAPIInterface api, Map<String, List<Stock>> library) throws IOException {
+
+    if (days <= 0) {
+      throw new RuntimeException("Number of days cannot be negative or 0.");
+    }
+
     double change = 0;
     int index = 0;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -191,7 +196,8 @@ public class Stock implements IStock {
     } catch (ParseException e) {
       throw new RuntimeException("Date parsing error: " + e.getMessage());
     } catch (IndexOutOfBoundsException e) {
-      throw new RuntimeException("Number of days goes too far back, or we could not find an average for the date provided.");
+      throw new RuntimeException("Number of days goes too far back, or we could not " +
+              "find an average for the date provided.");
     }
 
     return change / days;
@@ -251,13 +257,20 @@ public class Stock implements IStock {
    * @param days   int days.
    * @return double average.
    */
-  private static double calculateMovingAverage(List<Stock> stocks, int index, int days) {
+  private static double calculateMovingAverage(List<Stock> stocks, int index, int days) throws
+          RuntimeException{
+
+    if (days <= 0) {
+      throw new RuntimeException("Number of days cannot be negative or 0.");
+    }
+
     double sum = 0;
     for (int i = index - days + 1; i <= index; i++) {
       sum += stocks.get(i).getClosingPrice();
     }
     return sum / days;
   }
+
 
   /**
    * Returns the stocks data as a String.

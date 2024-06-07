@@ -4,6 +4,8 @@ import java.util.Map;
 import java.util.List;
 import java.util.HashMap;
 
+import Model.Stock;
+
 /**
  * Represents a Portfolio.
  * A portfolio represents a users collection of stocks and their associated quantities.
@@ -36,7 +38,12 @@ public class Portfolio implements IPortfolio {
    */
 
 @Override
-  public void addStock(String stockSymbol, int quantity) {
+  public void addStock(String stockSymbol, int quantity) throws IllegalArgumentException {
+  if(quantity <= 0) {
+    throw new IllegalArgumentException("Negative or 0 quantity not allowed");
+  }
+
+
     stocks.put(stockSymbol, stocks.getOrDefault(stockSymbol, 0) + quantity);
   }
 

@@ -1,7 +1,6 @@
-package Controller;
+package controller;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,9 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import Model.IAlphaAPIInterface;
+import Model.IStock;
 import Model.Portfolio;
 import View.IView;
-import View.StockView;
 import Model.Stock;
 import Model.AlphaAPI;
 
@@ -117,7 +116,7 @@ public class StockController {
             days = scanner.nextInt();
             try {
               out.append("The stock's crossovers in the last " + days + " were:").append(System.lineSeparator());
-              for (String date : Stock.viewXDayCrossOver(stockChoice, startDate, days, api, library)) {
+              for (String date : IStock.viewXDayCrossOver(stockChoice, startDate, days, api, library)) {
                 out.append(date).append(System.lineSeparator());
               }
               break;

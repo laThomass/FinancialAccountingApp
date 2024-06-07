@@ -2,6 +2,7 @@ package Model;
 
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -118,5 +119,69 @@ public class PortfolioTest {
     Map<String, Integer> stocks = portfolio.getStocks();
     assertEquals(10, (int) stocks.get("AAPL"));
     assertEquals(5, (int) stocks.get("GOOG"));
+  }
+
+  // Edge Cases
+
+  @Test
+  public void testAddNegativeStockQuantity() {
+    Portfolio portfolio = new Portfolio("Test Portfolio");
+    try {
+      portfolio.addStock("AAPL", -5);
+      fail("Expected IllegalArgumentException not thrown");
+    } catch (IllegalArgumentException e) {
+      assertTrue(e.getMessage().contains("Negative or 0 quantity not allowed"));
+    }
+  }
+
+  @Test
+  public void testAddNonExistentStock() {
+    Portfolio portfolio = new Portfolio("Test Portfolio");
+    portfolio.addStock("FAdasKE", 10);
+    assertTrue(portfolio.getStocks().containsKey("FAdasKE"));
+  }
+  @Test
+  public void testCalculatePortfolioValueWithEmptyLibrary() {
+    Portfolio portfolio = new Portfolio("Test Portfolio");
+    portfolio.addStock("GOOG", 10);
+    portfolio.addStock("AAPL", 20);
+
+    Map<String, List<Stock>> emptyLibrary = new HashMap<>();
+
+    try {
+      portfolio.calculatePortfolioValue("2020-03-09", api, emptyLibrary);
+      fail("Expected RuntimeException not thrown");
+    } catch (RuntimeException e) {
+      assertTrue(e.getMessage().contains("No data available for the symbol"));
+    }
+  }
+
+  @Test
+  public void testCalculatePortfolioValueWithNullLibrary() {
+    Portfolio portfolio = new Portfolio("Test Portfolio");
+    portfolio.addStock("GOOG", 10);
+    portfolio.addStock("AAPL", 20);
+
+    try {
+      portfolio.calculatePortfolioValue("2020-03-09", api, null);
+      fail("RuntimeException  not thrown");
+    } catch (RuntimeException e) {
+      // Expected exception
+    }
+  }
+
+  @Test
+  public void testCalculatePortfolioValueOnNonTradingDay() {
+    Portfolio portfolio = new Portfolio("Test Portfolio");
+
+    portfolio.addStock("GOOG", 10);
+    portfolio.addStock("AAPL", 20);
+
+    try {
+      portfolio.calculatePortfolioValue("2020-03-08", api, library); // Assuming 2020-03-08 is a non-trading day (Sunday)
+      fail("Expected RuntimeException not thrown");
+    } catch (RuntimeException e) {
+      assertTrue(e.getMessage().contains("No data available for the symbol"));
+    }
   }
 }

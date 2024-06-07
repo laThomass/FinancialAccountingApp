@@ -51,7 +51,7 @@ public class StockTest {
       Stock.viewGainLoss("GOOG", "2020-03-04", "2020-03-10", api, library);
       fail("Expected RuntimeException not thrown");
     } catch (RuntimeException e) {
-      assertEquals("Date parsing error: Could not find price for the end date.", e.getMessage());
+      assertEquals("Could not find price for the end date.", e.getMessage());
     } catch (IOException e) {
       fail("Unexpected IOException thrown: " + e.getMessage());
     }
@@ -118,4 +118,100 @@ public class StockTest {
     assertEquals(1050, stock.getClosingPrice(), 0.01);
     assertEquals(10000, stock.getVolume());
   }
+
+
+  @Test
+  public void testViewGainLossWithInvalidSymbol() {
+    try {
+      Stock.viewGainLoss("INVALID", "2020-03-04", "2020-03-09", api, library);
+      fail("Expected RuntimeException not thrown");
+    } catch (RuntimeException e) {
+      assertEquals("No data available for the symbol: INVALID", e.getMessage());
+    } catch (IOException e) {
+      fail("Unexpected IOException thrown: " + e.getMessage());
+    }
+  }
+
+  @Test
+  public void testViewGainLossWithInvalidDates() {
+    try {
+      Stock.viewGainLoss("GOOG", "invalid-date", "2020-03-09", api, library);
+      fail("Expected RuntimeException not thrown");
+    } catch (RuntimeException e) {
+      assertTrue(e.getMessage().contains("Date parsing error"));
+    } catch (IOException e) {
+      fail("Unexpected IOException thrown: " + e.getMessage());
+    }
+
+    try {
+      Stock.viewGainLoss("GOOG", "2020-03-04", "invalid-date", api, library);
+      fail("Expected RuntimeException not thrown");
+    } catch (RuntimeException e) {
+      assertTrue(e.getMessage().contains("Date parsing error"));
+    } catch (IOException e) {
+      fail("Unexpected IOException thrown: " + e.getMessage());
+    }
+  }
+
+  @Test
+  public void testViewXDayMovingAverageWithInvalidSymbol() {
+    try {
+      Stock.viewXDayMovingAverage("INVALID", "2020-03-04", 2, api, library);
+      fail("Expected RuntimeException not thrown");
+    } catch (RuntimeException e) {
+      assertEquals("No data available for the symbol: INVALID", e.getMessage());
+    } catch (IOException e) {
+      fail("Unexpected IOException thrown: " + e.getMessage());
+    }
+  }
+
+  @Test
+  public void testViewXDayMovingAverageWithInvalidDate() {
+    try {
+      Stock.viewXDayMovingAverage("GOOG", "invalid-date", 2, api, library);
+      fail("Expected RuntimeException not thrown");
+    } catch (RuntimeException e) {
+      assertTrue(e.getMessage().contains("Date parsing error"));
+    } catch (IOException e) {
+      fail("Unexpected IOException thrown: " + e.getMessage());
+    }
+  }
+
+  @Test
+  public void testViewXDayCrossOverWithInvalidSymbol() {
+    try {
+      Stock.viewXDayCrossOver("INVALID", "2020-03-04", 2, api, library);
+      fail("Expected RuntimeException not thrown");
+    } catch (RuntimeException e) {
+      assertEquals("Insufficient data points to calculate the 2-day moving average", e.getMessage());
+    } catch (IOException e) {
+      fail("Unexpected IOException thrown: " + e.getMessage());
+    }
+  }
+
+  @Test
+  public void testViewXDayCrossOverWithInvalidDate() {
+    try {
+      Stock.viewXDayCrossOver("GOOG", "invalid-date", 2, api, library);
+      fail("Expected RuntimeException not thrown");
+    } catch (RuntimeException e) {
+      assertTrue(e.getMessage().contains("Date parsing error"));
+    } catch (IOException e) {
+      fail("Unexpected IOException thrown: " + e.getMessage());
+    }
+  }
+
+  @Test
+  public void testViewXDayCrossOverWithNegativeDays() {
+    try {
+      Stock.viewXDayCrossOver("GOOG", "2020-03-04", -1, api, library);
+      fail("Expected RuntimeException not thrown");
+    } catch (RuntimeException e) {
+      assertTrue(e.getMessage().contains("Insufficient data points"));
+    } catch (IOException e) {
+      fail("Unexpected IOException thrown: " + e.getMessage());
+    }
+  }
+
+
 }
