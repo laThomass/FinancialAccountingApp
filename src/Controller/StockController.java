@@ -3,6 +3,8 @@ package Controller;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -176,6 +178,7 @@ public class StockController {
     return dateStr;
   }
 
+
   public void addOriginalStocksToLibrary(String name) throws IOException {
     List<Stock> stocks = new ArrayList<>();
     Set<String> uniqueDates = new HashSet<>();
@@ -187,7 +190,13 @@ public class StockController {
     };
     SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    BufferedReader reader = new BufferedReader(new FileReader("resources/" + name + ".csv"));
+    // Use getResourceAsStream to read the file from the JAR
+    InputStream inputStream = getClass().getClassLoader().getResourceAsStream(name + ".csv");
+    if (inputStream == null) {
+      throw new IOException("Resource not found: " + name + ".csv");
+    }
+
+    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
     String line;
     String date;
     double open;
@@ -233,4 +242,5 @@ public class StockController {
 
     library.put(name, stocks);
   }
+
 }

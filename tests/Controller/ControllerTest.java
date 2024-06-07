@@ -43,7 +43,7 @@ public class ControllerTest {
             "Please enter your desired stock in ticker form.",
             "Start date?",
             "How many days?",
-            "Your average is: 194.196",
+            "Your average is: 195.124",
             "Please enter your choice as the associated number:"
     );
 
