@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-public class Stock {
+public class Stock implements IStock{
   private final String date;
   private final double openingPrice;
   private final double closingPrice;
@@ -15,7 +15,9 @@ public class Stock {
   private final double lowPrice;
   private final int volume;
 
-  public Stock(String date, double openingPrice, double highPrice, double lowPrice, double closingPrice, int volume) {
+  public Stock(String date, double openingPrice,
+               double highPrice, double lowPrice,
+               double closingPrice, int volume) {
     this.date = date;
     this.openingPrice = openingPrice;
     this.closingPrice = closingPrice;
@@ -23,6 +25,8 @@ public class Stock {
     this.lowPrice = lowPrice;
     this.volume = volume;
   }
+
+
 
   public String getDate() {
     return date;
@@ -48,9 +52,10 @@ public class Stock {
     return volume;
   }
 
-  public static double viewGainLoss(String symbol, String startDateStr, String endDateStr, AlphaAPI api, Map<String, List<Stock>> library) throws IOException {
+  public static double viewGainLoss(String symbol, String startDateStr, String endDateStr, IAlphaAPIInterface api, Map<String, List<Stock>> library) throws IOException {
     List<Stock> stocks = api.fetchData(symbol, library);
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
 
     if (stocks.isEmpty()) {
       throw new RuntimeException("No data available for the symbol: " + symbol);
@@ -64,21 +69,16 @@ public class Stock {
     try {
       Date startDate = sdf.parse(startDateStr);
       Date endDate = sdf.parse(endDateStr);
-      System.out.println("Parsed Start Date: " + startDate); // Debug statement
-      System.out.println("Parsed End Date: " + endDate); // Debug statement
 
       for (Stock stock : stocks) {
         Date stockDate = sdf.parse(stock.getDate());
-//        System.out.println("Checking Stock Date: " + stock.getDate() + " | Parsed Stock Date: " + stockDate); // Debug statement
         if (stockDate.equals(startDate)) {
           startPrice = stock.getClosingPrice();
           startPriceFound = true;
-          System.out.println("Found Start Date: " + stock.getDate() + " with price: " + startPrice); // Debug statement
         }
         if (stockDate.equals(endDate)) {
           endPrice = stock.getClosingPrice();
           endPriceFound = true;
-          System.out.println("Found End Date: " + stock.getDate() + " with price: " + endPrice); // Debug statement
         }
       }
 
@@ -97,7 +97,7 @@ public class Stock {
   }
 
 
-  public static double viewXDayMovingAverage(String symbol, String dateStr, int days, AlphaAPI api, Map<String, List<Stock>> library) throws Exception {
+  public static double viewXDayMovingAverage(String symbol, String dateStr, int days, IAlphaAPIInterface api, Map<String, List<Stock>> library) throws Exception {
     double change = 0;
     int index = 0;
     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -123,7 +123,7 @@ public class Stock {
     return change / days;
   }
 
-  public static List<String> viewXDayCrossOver(String symbol, String dateStr, int days, AlphaAPI api, Map<String, List<Stock>> library) throws Exception {
+  public static List<String> viewXDayCrossOver(String symbol, String dateStr, int days, IAlphaAPIInterface api, Map<String, List<Stock>> library) throws Exception {
     List<String> xcDays = new ArrayList<>();
     List<Stock> stocks = api.fetchData(symbol, library);
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

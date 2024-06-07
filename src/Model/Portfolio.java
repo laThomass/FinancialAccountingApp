@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.List;
 import java.util.HashMap;
 
-public class Portfolio {
+public class Portfolio implements IPortfolio {
   private final String name;
   private final Map<String, Integer> stocks;
 
@@ -17,12 +17,12 @@ public class Portfolio {
     this.name = name;
     this.stocks = new HashMap<>(stocks);
   }
-
+@Override
   public void addStock(String stockSymbol, int quantity) {
     stocks.put(stockSymbol, stocks.getOrDefault(stockSymbol, 0) + quantity);
   }
-
-  public double calculatePortfolioValue(String date, AlphaAPI api, Map<String, List<Stock>> library) {
+@Override
+  public double calculatePortfolioValue(String date, IAlphaAPIInterface api, Map<String, List<Stock>> library) {
     double totalValue = 0.0;
     try {
       for (Map.Entry<String, Integer> entry : stocks.entrySet()) {
@@ -66,4 +66,9 @@ public class Portfolio {
   public static Portfolio createPortfolio(String name, Map<String, Integer> stocks) {
     return new Portfolio(name, stocks);
   }
+
+  public Map<String, Integer> getStocks() {
+    return this.stocks;
+  }
+
 }

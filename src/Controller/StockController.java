@@ -7,7 +7,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import Model.IAlphaAPIInterface;
 import Model.Portfolio;
+import View.IView;
 import View.StockView;
 import Model.Stock;
 import Model.AlphaAPI;
@@ -15,10 +17,10 @@ import Model.AlphaAPI;
 import java.time.format.DateTimeFormatter;
 
 public class StockController {
-  private final StockView stockView;
-  private final AlphaAPI api;
+  private final IView stockView;
+  private final IAlphaAPIInterface api;
   private final List<Portfolio> loPortfolio;
-  private final Map<String, List<Stock>> library;
+  final Map<String, List<Stock>> library;
   private final Scanner scanner;
 
   private final Readable in;
@@ -26,7 +28,7 @@ public class StockController {
 
   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-  public StockController(StockView stockView, Readable in, Appendable out, AlphaAPI api) {
+  public StockController(IView stockView, Readable in, Appendable out, IAlphaAPIInterface api) {
     this.stockView = stockView;
     this.api = new AlphaAPI();
     this.loPortfolio = new ArrayList<>();

@@ -3,14 +3,14 @@ package View;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-public class StockView {
+public class StockView implements IView{
   private Scanner scanner;
   public StockView() {
     scanner = new Scanner(System.in);
   }
 
 
-
+@Override
   public void displayMenu() {
     System.out.println("1. View Gain/Loss");
     System.out.println("2. View Moving Average");
@@ -20,7 +20,6 @@ public class StockView {
     System.out.println("6. View Model.Portfolio Value");
     System.out.println("7. Exit");
   }
-
   public static void display(String s){
     System.out.println(s);
   }

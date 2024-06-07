@@ -13,12 +13,12 @@ import java.util.Map;
 
 import Controller.StockController;
 
-public class AlphaAPI {
+public class AlphaAPI implements IAlphaAPIInterface {
   public final static String key = "W0M1JOKC82EZEQA8";
   public final static String baseURL = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&outputsize=full&symbol=";
 
 
-
+@Override
   public List<Stock> fetchData(String symbol, Map<String, List<Stock>> library) throws IOException {
 
     if (library != null && library.containsKey(symbol)) {
@@ -73,4 +73,6 @@ public class AlphaAPI {
       return stocks;
     }
   }
+
+
 }
