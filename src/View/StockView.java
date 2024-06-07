@@ -4,7 +4,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 public class StockView implements IView{
-  private Scanner scanner;
+  private final Scanner scanner;
   public StockView() {
     scanner = new Scanner(System.in);
   }

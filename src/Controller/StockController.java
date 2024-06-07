@@ -28,6 +28,8 @@ public class StockController {
   private final Readable in;
   private final Appendable out;
 
+  String startDate;
+
   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
   public StockController(IView stockView, Readable in, Appendable out, IAlphaAPIInterface api) {
@@ -51,33 +53,77 @@ public class StockController {
     while (!quit) {
       stockView.displayMenu();
       out.append("Please enter your choice as the associated number: ");
-      int choice = scanner.nextInt();
+      int choice;
+
+      while (!scanner.hasNextInt()) {
+        out.append("Invalid input. Please enter a valid number.").append(System.lineSeparator());
+        scanner.next(); // Consume the invalid input
+        out.append("Please enter your choice as the associated number: ");
+      }
+
+      choice = scanner.nextInt();
+
       switch (choice) {
         case 1:
-          out.append("Please enter your desired stock in ticker form.").append(System.lineSeparator());
-          stockChoice = scanner.next();
-          String startDate = promptForValidDate("Start date?");
-          String endDate = promptForValidDate("End date?");
-          out.append("" + Stock.viewGainLoss(stockChoice, startDate, endDate, api, library)).append(System.lineSeparator());
+          while (true) {
+            out.append("Please enter your desired stock in ticker form.").append(System.lineSeparator());
+            stockChoice = scanner.next();
+            if (!isValidTicker(stockChoice)) {
+              out.append("Invalid stock ticker. Please enter a valid ticker.").append(System.lineSeparator());
+              continue;
+            }
+            String startDate = promptForValidDate("Start date?");
+            String endDate = promptForValidDate("End date?");
+            try {
+              out.append("" + Stock.viewGainLoss(stockChoice, startDate, endDate, api, library)).append(System.lineSeparator());
+              break;
+            } catch (RuntimeException e) {
+              out.append("Error: " + e.getMessage()).append(System.lineSeparator());
+            }
+          }
           out.append(System.lineSeparator());
           break;
+
         case 2:
-          out.append("Please enter your desired stock in ticker form.").append(System.lineSeparator());
-          stockChoice = scanner.next();
-          startDate = promptForValidDate("Start date?");
-          out.append("How many days?").append(System.lineSeparator());
-          days = scanner.nextInt();
-          out.append("Your average is: " + Stock.viewXDayMovingAverage(stockChoice, startDate, days, api, library)).append(System.lineSeparator());
+          while (true) {
+            out.append("Please enter your desired stock in ticker form.").append(System.lineSeparator());
+            stockChoice = scanner.next();
+            if (!isValidTicker(stockChoice)) {
+              out.append("Invalid stock ticker. Please enter a valid ticker.").append(System.lineSeparator());
+              continue;
+            }
+            startDate = promptForValidDate("Start date?");
+            out.append("How many days?").append(System.lineSeparator());
+            days = scanner.nextInt();
+            try {
+              out.append("Your average is: " + Stock.viewXDayMovingAverage(stockChoice, startDate, days, api, library)).append(System.lineSeparator());
+              break;
+            } catch (RuntimeException e) {
+              out.append("Error: " + e.getMessage()).append(System.lineSeparator());
+            }
+          }
           break;
+
         case 3:
-          out.append("Please enter your desired stock in ticker form.").append(System.lineSeparator());
-          stockChoice = scanner.next();
-          startDate = promptForValidDate("Start date?");
-          out.append("How many days?").append(System.lineSeparator());
-          days = scanner.nextInt();
-          out.append("The stock's crossovers in the last " + days + " were:").append(System.lineSeparator());
-          for (String date : Stock.viewXDayCrossOver(stockChoice, startDate, days, api, library)) {
-            out.append(date).append(System.lineSeparator());
+          while (true) {
+            out.append("Please enter your desired stock in ticker form.").append(System.lineSeparator());
+            stockChoice = scanner.next();
+            if (!isValidTicker(stockChoice)) {
+              out.append("Invalid stock ticker. Please enter a valid ticker.").append(System.lineSeparator());
+              continue;
+            }
+            startDate = promptForValidDate("Start date?");
+            out.append("How many days?").append(System.lineSeparator());
+            days = scanner.nextInt();
+            try {
+              out.append("The stock's crossovers in the last " + days + " were:").append(System.lineSeparator());
+              for (String date : Stock.viewXDayCrossOver(stockChoice, startDate, days, api, library)) {
+                out.append(date).append(System.lineSeparator());
+              }
+              break;
+            } catch (RuntimeException e) {
+              out.append("Error: " + e.getMessage()).append(System.lineSeparator());
+            }
           }
           break;
         case 4:
@@ -178,6 +224,30 @@ public class StockController {
     return dateStr;
   }
 
+  private boolean isValidTicker(String ticker) {
+    // Check if the ticker is null or empty
+    if (ticker == null || ticker.isEmpty()) {
+      return false;
+    }
+
+    // Check the length of the ticker
+    int length = ticker.length();
+    if (length < 1 || length > 5) {
+      return false;
+    }
+
+    // Convert the ticker to uppercase
+    ticker = ticker.toUpperCase();
+
+    // Check if the ticker contains only alphanumeric characters
+    for (char c : ticker.toCharArray()) {
+      if (!Character.isLetterOrDigit(c)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   public void addOriginalStocksToLibrary(String name) throws IOException {
     List<Stock> stocks = new ArrayList<>();
