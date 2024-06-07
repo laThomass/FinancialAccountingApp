@@ -29,12 +29,9 @@ public class ControllerTest {
     StockController controller = new StockController(view, new InputStreamReader(inputStream), printStream, api);
     controller.start();
 
-    // Capture the actual output
     String actualOutput = outputStream.toString().trim();
-    // Split the output based on new lines and trim each line
     List<String> actualOutputLines = Arrays.asList(actualOutput.split("\\r?\\n"));
 
-    // Expected output
     List<String> expectedOutput = Arrays.asList(
             "Please enter your choice as the associated number: " +
                     "Please enter your desired stock in ticker form.",
@@ -50,7 +47,6 @@ public class ControllerTest {
             "Please enter your choice as the associated number:"
     );
 
-    // Verify the output
     assertEquals(expectedOutput, actualOutputLines);
   }
 }
