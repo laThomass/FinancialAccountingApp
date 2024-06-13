@@ -165,7 +165,7 @@
       <updated>1718120552383</updated>
       <workItem from="1718120553653" duration="4384000" />
       <workItem from="1718216492126" duration="6429000" />
-      <workItem from="1718225416420" duration="16645000" />
+      <workItem from="1718225416420" duration="17196000" />
     </task>
     <task id="LOCAL-00001" summary="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance, and added PortfolioDateList Class">
       <option name="closed" value="true" />
@@ -175,7 +175,15 @@
       <option name="project" value="LOCAL" />
       <updated>1718239354788</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance, and added PortfolioDateList Class">
+      <option name="closed" value="true" />
+      <created>1718308163650</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1718308163650</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
