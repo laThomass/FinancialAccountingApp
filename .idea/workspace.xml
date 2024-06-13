@@ -164,7 +164,7 @@
       <workItem from="1718120553653" duration="4384000" />
       <workItem from="1718216492126" duration="6429000" />
       <workItem from="1718225416420" duration="17196000" />
-      <workItem from="1718308703657" duration="302000" />
+      <workItem from="1718308703657" duration="792000" />
     </task>
     <task id="LOCAL-00001" summary="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance, and added PortfolioDateList Class">
       <option name="closed" value="true" />
@@ -190,11 +190,30 @@
       <option name="project" value="LOCAL" />
       <updated>1718308761706</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance and savePortfolio, LoadPortfolio,  and added PortfolioDateList Class and updated StockController to support savePortfolio">
+      <option name="closed" value="true" />
+      <created>1718309067313</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1718309067313</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance, and added PortfolioDateList Class" />
