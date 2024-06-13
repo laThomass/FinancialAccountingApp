@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dfc67e2f-4c5e-4173-afdf-97bc99cb714d" name="Changes" comment="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance, and added PortfolioDateList Class">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="dfc67e2f-4c5e-4173-afdf-97bc99cb714d" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -166,6 +164,7 @@
       <workItem from="1718120553653" duration="4384000" />
       <workItem from="1718216492126" duration="6429000" />
       <workItem from="1718225416420" duration="17196000" />
+      <workItem from="1718308703657" duration="302000" />
     </task>
     <task id="LOCAL-00001" summary="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance, and added PortfolioDateList Class">
       <option name="closed" value="true" />
@@ -183,7 +182,15 @@
       <option name="project" value="LOCAL" />
       <updated>1718308163650</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance and savePortfolio, LoadPortfolio,  and added PortfolioDateList Class and updated StockController to support savePortfolio">
+      <option name="closed" value="true" />
+      <created>1718308761706</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1718308761706</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -191,6 +198,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance, and added PortfolioDateList Class" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance, and added PortfolioDateList Class" />
+    <MESSAGE value="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance and savePortfolio, LoadPortfolio,  and added PortfolioDateList Class and updated StockController to support savePortfolio" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance and savePortfolio, LoadPortfolio,  and added PortfolioDateList Class and updated StockController to support savePortfolio" />
   </component>
 </project>
