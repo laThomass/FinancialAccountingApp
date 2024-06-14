@@ -59,6 +59,7 @@ public class StockController implements Controller {
 
   /**
    * Starts the controller and handles user interactions.
+   *
    * @throws Exception if an error occurs during the execution of the method
    */
   public void start() throws Exception {
@@ -382,6 +383,29 @@ public class StockController implements Controller {
           }
           break;
         case 13:
+          out.append("Which portfolio would you like to view performance for?").append(System.lineSeparator());
+          portfolioChoice = scanner.next();
+          portfolioFound = false;
+          for (Portfolio portfolio : loPortfolio) {
+            if (portfolio.getName().equals(portfolioChoice)) {
+              portfolioFound = true;
+              String startDate = promptForValidDate("Start date?", scanner);
+              String endDate = promptForValidDate("End date?", scanner);
+              try {
+                portfolio.printPortfolioPerformanceChart(startDate, endDate, api, library);
+              } catch (Exception e) {
+                out.append("Error during performance view: ").append(e.getMessage()).append(System.lineSeparator());
+              }
+              break;
+            }
+          }
+          if (!portfolioFound) {
+            out.append("We could not find a portfolio with that name.").append(System.lineSeparator());
+          }
+          break;
+
+
+        case 14:
           quit = true;
           break;
         default:

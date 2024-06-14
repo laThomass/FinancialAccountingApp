@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 /**
@@ -300,4 +301,23 @@ public class Stock implements IStock {
             ", volume=" + volume +
             '}';
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Stock stock = (Stock) o;
+    return Double.compare(stock.openingPrice, openingPrice) == 0 &&
+            Double.compare(stock.closingPrice, closingPrice) == 0 &&
+            Double.compare(stock.highPrice, highPrice) == 0 &&
+            Double.compare(stock.lowPrice, lowPrice) == 0 &&
+            Double.compare(stock.volume, volume) == 0 &&
+            date.equals(stock.date);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(date, openingPrice, closingPrice, highPrice, lowPrice, volume);
+  }
+
 }

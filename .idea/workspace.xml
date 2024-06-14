@@ -7,7 +7,10 @@
     <list default="true" id="dfc67e2f-4c5e-4173-afdf-97bc99cb714d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/New5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/New5.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/StockController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/Portfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Portfolio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/StockView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/StockView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/model/MockAlphaAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/model/MockAlphaAPI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/model/PortfolioTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/model/PortfolioTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,6 +47,8 @@
     "JUnit.ControllerTest.executor": "Run",
     "JUnit.ControllerTest.testControllerViewGainAverage.executor": "Run",
     "JUnit.PortfolioTest.executor": "Run",
+    "JUnit.PortfolioTest.testCalculatePortfolioValueOnNonTradingDay.executor": "Run",
+    "JUnit.PortfolioTest.testPrintPortfolioPerformanceChart.executor": "Run",
     "JUnit.PortfolioTest.testRebalancePortfolio.executor": "Run",
     "JUnit.PortfolioTest.testRebalancePortfolioInvalidWeights.executor": "Run",
     "JUnit.StockTest.executor": "Run",
@@ -70,7 +75,7 @@
       <recent name="C:\CS3500\Assignment5Stocks\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.AlphaVantageDemo">
+  <component name="RunManager" selected="JUnit.PortfolioTest">
     <configuration name="AlphaVantageDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="main.AlphaVantageDemo" />
       <module name="Assignment5Stocks" />
@@ -84,20 +89,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HelloSerializationFile" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="model.HelloSerializationFile" />
-      <module name="Assignment5Stocks" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="model.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PortfolioTest.testRebalancePortfolio" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PortfolioTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Assignment5Stocks" />
       <extension name="coverage">
         <pattern>
@@ -107,39 +99,55 @@
       </extension>
       <option name="PACKAGE_NAME" value="model" />
       <option name="MAIN_CLASS_NAME" value="model.PortfolioTest" />
-      <option name="METHOD_NAME" value="testRebalancePortfolio" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PortfolioTest.testRebalancePortfolioInvalidWeights" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Assignment5Stocks" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="model.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="model" />
-      <option name="MAIN_CLASS_NAME" value="model.PortfolioTest" />
-      <option name="METHOD_NAME" value="testRebalancePortfolioInvalidWeights" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="StockViewTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Assignment5Stocks" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="view.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="view" />
-      <option name="MAIN_CLASS_NAME" value="view.StockViewTest" />
       <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PortfolioTest.testCalculatePortfolioValueOnNonTradingDay" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Assignment5Stocks" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="model" />
+      <option name="MAIN_CLASS_NAME" value="model.PortfolioTest" />
+      <option name="METHOD_NAME" value="testCalculatePortfolioValueOnNonTradingDay" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PortfolioTest.testPrintPortfolioPerformanceChart" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Assignment5Stocks" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="model" />
+      <option name="MAIN_CLASS_NAME" value="model.PortfolioTest" />
+      <option name="METHOD_NAME" value="testPrintPortfolioPerformanceChart" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PortfolioTest.testRemoveStock" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Assignment5Stocks" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="model" />
+      <option name="MAIN_CLASS_NAME" value="model.PortfolioTest" />
+      <option name="METHOD_NAME" value="testRemoveStock" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -159,11 +167,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.PortfolioTest" />
+        <item itemvalue="JUnit.PortfolioTest.testRemoveStock" />
+        <item itemvalue="JUnit.PortfolioTest.testCalculatePortfolioValueOnNonTradingDay" />
+        <item itemvalue="JUnit.PortfolioTest.testPrintPortfolioPerformanceChart" />
         <item itemvalue="Application.AlphaVantageDemo" />
-        <item itemvalue="JUnit.PortfolioTest.testRebalancePortfolioInvalidWeights" />
-        <item itemvalue="JUnit.PortfolioTest.testRebalancePortfolio" />
-        <item itemvalue="Application.HelloSerializationFile" />
-        <item itemvalue="JUnit.StockViewTest" />
       </list>
     </recent_temporary>
   </component>

@@ -8,9 +8,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -170,14 +175,13 @@ public class Portfolio implements IPortfolio {
    * @param library Library to get data from.
    * @return double Value of the portfolio.
    */
-  @Override
   public double calculatePortfolioValue(String date, IAlphaAPIInterface api, Map<String, List<Stock>> library) {
     double totalValue = 0.0;
     try {
       for (Map.Entry<String, List<Stock>> entry : stocks.entrySet()) {
         String symbol = entry.getKey();
         List<Stock> stockList = entry.getValue();
-        double totalQuantity = 0;
+        int totalQuantity = 0;
 
         for (Stock stock : stockList) {
           if (stock.getDate().compareTo(date) <= 0) {
@@ -187,7 +191,9 @@ public class Portfolio implements IPortfolio {
 
         List<Stock> stockData = library.get(symbol);
         if (stockData == null) {
-          throw new RuntimeException("No data available for the symbol: " + symbol);
+          // Skip the stock if no data is available
+          System.err.println("No data available for the symbol: " + symbol);
+          continue;
         }
 
         double closingPrice = 0.0;
@@ -199,7 +205,9 @@ public class Portfolio implements IPortfolio {
         }
 
         if (closingPrice == 0.0) {
-          throw new RuntimeException("No data available for the symbol: " + symbol + " on date: " + date);
+          // Skip the stock if no data is available for the specific date
+          System.err.println("No data available for the symbol: " + symbol + " on date: " + date);
+          continue;
         }
 
         totalValue += closingPrice * totalQuantity;
@@ -211,6 +219,7 @@ public class Portfolio implements IPortfolio {
 
     return totalValue;
   }
+
 
   /**
    * Determines the composition of the portfolio at a specific date.
@@ -359,6 +368,100 @@ public class Portfolio implements IPortfolio {
   public Map<String, List<Stock>> getStocks() {
     return new HashMap<>(this.stocks);
   }
+
+
+  public Map<String, Double> getPortfolioValuesOverTime(String startDate, String endDate, IAlphaAPIInterface api, Map<String, List<Stock>> library) {
+    Map<String, Double> valuesOverTime = new LinkedHashMap<>();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+    try {
+      Date start = sdf.parse(startDate);
+      Date end = sdf.parse(endDate);
+      Calendar calendar = Calendar.getInstance();
+      calendar.setTime(start);
+
+      while (!calendar.getTime().after(end)) {
+        String dateStr = sdf.format(calendar.getTime());
+        double value = calculatePortfolioValue(dateStr, api, library);
+        valuesOverTime.put(dateStr, value);
+        calendar.add(Calendar.MONTH, 1); // Change this to Calendar.DAY_OF_MONTH or Calendar.YEAR as needed
+      }
+    } catch (ParseException e) {
+      throw new RuntimeException("Invalid date format", e);
+    }
+
+    return valuesOverTime;
+  }
+
+
+  public void printPortfolioPerformanceChart(String startDate, String endDate, IAlphaAPIInterface api, Map<String, List<Stock>> library) {
+    LocalDate start = LocalDate.parse(startDate);
+    LocalDate end = LocalDate.parse(endDate);
+
+    long totalDays = ChronoUnit.DAYS.between(start, end);
+    int interval = (int) Math.ceil(totalDays / 30.0);
+
+    System.out.println("Performance of portfolio " + name + " from " + startDate + " to " + endDate + "\n");
+
+    // Calculate maximum portfolio value to determine the scale
+    double maxValue = 0.0;
+    for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(interval)) {
+      double value = calculatePortfolioValue(date.toString(), api, library);
+      if (value > maxValue) {
+        maxValue = value;
+      }
+    }
+
+    // Determine the scale so that the maximum number of asterisks is no more than 50
+    double scale = maxValue / 50.0;
+    if (scale == 0.0) {
+      scale = 1.0; // Prevent division by zero
+    }
+
+    // Print the portfolio performance chart with the determined scale
+    int lineCount = 0;
+    for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(interval)) {
+      double value = calculatePortfolioValue(date.toString(), api, library);
+      int stars = (int) (value / scale);
+      System.out.printf("%s: %s\n", date, "*".repeat(stars));
+      lineCount++;
+      if (lineCount >= 30) break;
+    }
+
+    System.out.println("\nScale: * = $" + scale);
+  }
+
+
+  private double getInterpolatedPrice(String date, List<Stock> data) {
+    LocalDate targetDate = LocalDate.parse(date);
+    Stock previous = null, next = null;
+
+    for (Stock stock : data) {
+      LocalDate stockDate = LocalDate.parse(stock.getDate());
+      if (!stockDate.isAfter(targetDate)) {
+        previous = stock;
+      }
+      if (stockDate.isAfter(targetDate)) {
+        next = stock;
+        break;
+      }
+    }
+
+    if (previous != null && next != null && !previous.getDate().equals(next.getDate())) {
+      LocalDate prevDate = LocalDate.parse(previous.getDate());
+      LocalDate nextDate = LocalDate.parse(next.getDate());
+      double prevPrice = previous.getClosingPrice();
+      double nextPrice = next.getClosingPrice();
+
+      double interpolatedPrice = prevPrice + (nextPrice - prevPrice) * (double) ChronoUnit.DAYS.between(prevDate, targetDate) / ChronoUnit.DAYS.between(prevDate, nextDate);
+      return interpolatedPrice;
+    } else if (previous != null) {
+      return previous.getClosingPrice();
+    } else {
+      return 0.0;
+    }
+  }
+
 
   // Other methods like performanceOverTime, viewComposition, rebalancePortfolio...
 }
