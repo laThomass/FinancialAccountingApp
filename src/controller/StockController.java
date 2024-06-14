@@ -298,7 +298,16 @@ public class StockController implements Controller {
 
     if (portfolio != null) {
       String date = promptForValidDate("Date?", scanner);
-      Map<String, Double> weights = getWeightsFromUser(scanner);
+
+      // Retrieve and display the list of stocks
+      Map<String, Double> composition = portfolio.getComposition(date);
+      out.append("Stocks to rebalance:").append(System.lineSeparator());
+      for (String stock : composition.keySet()) {
+        out.append(stock).append(System.lineSeparator());
+      }
+
+      // Prompt the user to enter the weights for each stock
+      Map<String, Double> weights = getWeightsFromUser(scanner, composition);
 
       try {
         portfolio.rebalancePortfolio(date, api, library, weights);
@@ -436,19 +445,24 @@ public class StockController implements Controller {
     return null;
   }
 
-  private Map<String, Double> getWeightsFromUser(Scanner scanner) throws IOException {
+  private Map<String, Double> getWeightsFromUser(Scanner scanner, Map<String, Double> composition) throws IOException {
     Map<String, Double> weights = new HashMap<>();
     boolean done = false;
     while (!done) {
-      out.append("Please enter stock symbol and its weight (e.g., AAPL 0.25). Enter 'stop' to finish.")
+      out.append("Please enter stock symbol and its weight (e.g., AAPL 0.25). Enter 'stop' to finish. Must add up to 1.")
               .append(System.lineSeparator());
       String input = scanner.next();
       if (input.equalsIgnoreCase("stop")) {
         done = true;
       } else {
         String symbol = input.toUpperCase();
-        double weight = scanner.nextDouble();
-        weights.put(symbol, weight);
+        if (composition.containsKey(symbol)) {
+          double weight = scanner.nextDouble();
+          weights.put(symbol, weight);
+        } else {
+          out.append("Stock ").append(symbol).append(" is not in the portfolio. Please enter a valid stock.")
+                  .append(System.lineSeparator());
+        }
       }
     }
     return weights;

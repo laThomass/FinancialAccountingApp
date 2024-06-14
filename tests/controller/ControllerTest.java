@@ -250,7 +250,7 @@ public class ControllerTest {
     PrintStream printStream = new PrintStream(outputStream);
 
     MockStockView view = new MockStockView(Arrays.asList(simulatedUserInput.split("\n")));
-    MockAlphaAPI api = new MockAlphaAPI();
+    IAlphaAPIInterface api = new AlphaAPI();
 
     StockController controller =
             new StockController(view, new InputStreamReader(inputStream), printStream, api);
@@ -260,10 +260,11 @@ public class ControllerTest {
     List<String> actualOutputLines = Arrays.asList(actualOutput.split("\\r?\\n"));
 
     List<String> expectedOutput = Arrays.asList(
-            "Please enter your choice as the associated number:"
-                    + " Which portfolio would you like to "
-                    + "load?",
+            "Please enter your choice as the associated number: Which portfolio would you like to load?",
             "Loaded New5",
+            "Please enter your choice as the associated number: Which portfolio would you like to view the distribution of value of?",
+            "Date?",
+            "Error: No data available for the symbol: NVDA",
             "Please enter your choice as the associated number:"
     );
 
@@ -314,7 +315,7 @@ public class ControllerTest {
   @Test
   public void testRebalancePortfolio() throws Exception {
     String simulatedUserInput = "4\nNewP\nYes\nGOOG\n20\n2020-10-20\nstop\n5\nNewP" +
-            "\nNVDA\n10\n2022-10-30\n12\nNewP\n2020-10-30\nGOOG 0.30\nNVDA 0.70\nstop\n14\n";
+            "\nNVDA\n10\n2022-10-30\n12\nNewP\n2020-11-21\nGOOG 0.30\nNVDA 0.70\nstop\n14\n";
     ByteArrayInputStream inputStream = new ByteArrayInputStream(simulatedUserInput.getBytes());
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     PrintStream printStream = new PrintStream(outputStream);
@@ -330,27 +331,29 @@ public class ControllerTest {
     List<String> actualOutputLines = Arrays.asList(actualOutput.split("\\r?\\n"));
 
     List<String> expectedOutput = Arrays.asList(
-            "Please enter your choice as the associated number: " +
-            "Please enter the name of your new portfolio.",
+            "Please enter your choice as the associated number: Please enter the name of your new portfolio.",
             "Would you like to add stocks to your portfolio immediately?",
             "Please enter your desired stock in ticker form. To abort at any time, enter 'stop'.",
             "Please enter your desired quantity.",
             "Date?",
             "Please enter your desired stock in ticker form. To abort at any time, enter 'stop'.",
             "Portfolio created with name NewP and 1 stocks.",
-            "Please enter your choice as the associated number: " +
-            "Which portfolio would you like to add to?",
+            "Please enter your choice as the associated number: Which portfolio would you like to add to?",
             "Please enter your desired stock in ticker form.",
             "Please enter your desired quantity.",
             "Date?",
             "The stocks were added successfully.",
-            "Please enter your choice as the associated number: " +
-            "Which portfolio would you like to rebalance?",
+            "Please enter your choice as the associated number: Which portfolio would you like to rebalance?",
             "Date?",
-            "Please enter stock symbol and its weight (e.g., AAPL 0.25). Enter 'stop' to finish.",
-            "Please enter stock symbol and its weight (e.g., AAPL 0.25). Enter 'stop' to finish.",
-            "Please enter stock symbol and its weight (e.g., AAPL 0.25). Enter 'stop' to finish.",
-            "Error during rebalancing: No data available for the symbol: NVDA",
+            "Stocks to rebalance:",
+            "GOOG",
+            "Please enter stock symbol and its weight (e.g., AAPL 0.25). Enter 'stop' to finish. Must add up to 1.",
+            "Please enter stock symbol and its weight (e.g., AAPL 0.25). Enter 'stop' to finish. Must add up to 1.",
+            "Stock NVDA is not in the portfolio. Please enter a valid stock.",
+            "Please enter stock symbol and its weight (e.g., AAPL 0.25). Enter 'stop' to finish. Must add up to 1.",
+            "Stock 0.70 is not in the portfolio. Please enter a valid stock.",
+            "Please enter stock symbol and its weight (e.g., AAPL 0.25). Enter 'stop' to finish. Must add up to 1.",
+            "Error during rebalancing: Weights must add up to 1.0 (100%)",
             "Please enter your choice as the associated number:"
     );
 

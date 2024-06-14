@@ -6,7 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="dfc67e2f-4c5e-4173-afdf-97bc99cb714d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/New9.txt" beforeDir="false" afterPath="$PROJECT_DIR$/New9.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/StockController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/Portfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Portfolio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/controller/ControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/controller/ControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/model/PortfolioTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/model/PortfolioTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,11 +51,13 @@
     "JUnit.ControllerTest.testLoadPortfolio.executor": "Run",
     "JUnit.ControllerTest.testRebalancePortfolio.executor": "Run",
     "JUnit.ControllerTest.testSellStockFromPortfolio.executor": "Run",
+    "JUnit.ControllerTest.testViewCompostion.executor": "Run",
     "JUnit.ControllerTest.testViewDistribution.executor": "Run",
     "JUnit.ControllerTest.testViewMovingAverage.executor": "Run",
     "JUnit.ControllerTest.testViewPerformace.executor": "Run",
     "JUnit.ControllerTest.testViewPerformance.executor": "Run",
     "JUnit.PortfolioTest.executor": "Run",
+    "JUnit.PortfolioTest.testCalculatePortfolioValueMultipleStocks.executor": "Run",
     "JUnit.PortfolioTest.testCalculatePortfolioValueOnNonTradingDay.executor": "Run",
     "JUnit.PortfolioTest.testPrintPortfolioPerformanceChart.executor": "Run",
     "JUnit.PortfolioTest.testRebalancePortfolio.executor": "Run",
@@ -83,7 +89,7 @@
       <recent name="C:\CS3500\Assignment5Stocks\src" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.PortfolioTest">
+  <component name="RunManager" selected="Application.AlphaVantageDemo">
     <configuration name="AlphaVantageDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="main.AlphaVantageDemo" />
       <module name="Assignment5Stocks" />
@@ -97,7 +103,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ControllerTest.testViewDistribution" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Assignment5Stocks" />
       <extension name="coverage">
         <pattern>
@@ -107,13 +113,12 @@
       </extension>
       <option name="PACKAGE_NAME" value="controller" />
       <option name="MAIN_CLASS_NAME" value="controller.ControllerTest" />
-      <option name="METHOD_NAME" value="testViewDistribution" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ControllerTest.testViewPerformace" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ControllerTest.testViewCompostion" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Assignment5Stocks" />
       <extension name="coverage">
         <pattern>
@@ -123,7 +128,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="controller" />
       <option name="MAIN_CLASS_NAME" value="controller.ControllerTest" />
-      <option name="METHOD_NAME" value="testViewPerformace" />
+      <option name="METHOD_NAME" value="testViewCompostion" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -144,7 +149,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PortfolioTest.testCalculatePortfolioValueMultipleStocks" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PortfolioTest.testPrintPortfolioPerformanceChart" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Assignment5Stocks" />
       <extension name="coverage">
         <pattern>
@@ -154,7 +159,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="model" />
       <option name="MAIN_CLASS_NAME" value="model.PortfolioTest" />
-      <option name="METHOD_NAME" value="testCalculatePortfolioValueMultipleStocks" />
+      <option name="METHOD_NAME" value="testPrintPortfolioPerformanceChart" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -175,11 +180,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.PortfolioTest" />
         <item itemvalue="Application.AlphaVantageDemo" />
-        <item itemvalue="JUnit.PortfolioTest.testCalculatePortfolioValueMultipleStocks" />
-        <item itemvalue="JUnit.ControllerTest.testViewPerformace" />
-        <item itemvalue="JUnit.ControllerTest.testViewDistribution" />
+        <item itemvalue="JUnit.PortfolioTest" />
+        <item itemvalue="JUnit.PortfolioTest.testPrintPortfolioPerformanceChart" />
+        <item itemvalue="JUnit.ControllerTest.testViewCompostion" />
+        <item itemvalue="JUnit.ControllerTest" />
       </list>
     </recent_temporary>
   </component>
@@ -295,7 +300,7 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/tests/model/PortfolioTest.java</url>
-          <line>30</line>
+          <line>28</line>
           <properties class="model.PortfolioTest" method="testCreatePortfolio">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -313,12 +318,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/tests/controller/ControllerTest.java</url>
-          <line>315</line>
+          <line>316</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/tests/controller/ControllerTest.java</url>
-          <line>359</line>
+          <line>362</line>
           <option name="timeStamp" value="33" />
         </line-breakpoint>
       </breakpoints>

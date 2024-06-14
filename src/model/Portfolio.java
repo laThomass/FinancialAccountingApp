@@ -1,28 +1,12 @@
 package model;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-/**
- * Represents a Portfolio.
- * A portfolio represents a user's collection of stocks and their associated quantities.
- */
 public class Portfolio implements IPortfolio {
   private final String name;
   private final PortfolioDateList dateList;
@@ -34,41 +18,20 @@ public class Portfolio implements IPortfolio {
     this.dateList = new PortfolioDateList();
   }
 
-  /**
-   * Constructor for portfolio with a list of stocks.
-   *
-   * @param name   of portfolio.
-   * @param stocks Map of stock symbol and its associated quantity.
-   */
   public Portfolio(String name, Map<String, List<Stock>> stocks) {
     this.name = name;
     this.stocks = new HashMap<>(stocks);
     this.dateList = new PortfolioDateList();
   }
 
-  /**
-   * Return stocks in portfolio.
-   *
-   * @return new Portfolio
-   */
   public static Portfolio createPortfolio(String name) {
     return new Portfolio(name);
   }
 
-  /**
-   * Create a new portfolio with stocks.
-   *
-   * @param name   for portfolio.
-   * @param stocks Map of stock symbol and its associated list of Stock objects.
-   * @return new portfolio.
-   */
   public static Portfolio createPortfolio(String name, Map<String, List<Stock>> stocks) {
     return new Portfolio(name, stocks);
   }
 
-  /**
-   * Save a Portfolio to a file with all information able to be retrieved.
-   */
   public static void savePortfolio(Portfolio p, File file) throws IOException {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
       writer.write(p.getName());
@@ -109,13 +72,6 @@ public class Portfolio implements IPortfolio {
     }
   }
 
-  /**
-   * Adds a stock to an existing portfolio with the given quantity and date.
-   *
-   * @param stockSymbol Stock ticker.
-   * @param quantity    Quantity of shares.
-   * @param date        Date of the transaction.
-   */
   @Override
   public void addStock(String stockSymbol, double quantity, String date) throws IllegalArgumentException, ParseException {
     if (quantity <= 0) {
@@ -127,13 +83,6 @@ public class Portfolio implements IPortfolio {
     this.dateList.addPortfolio(this, new SimpleDateFormat("yyyy-MM-dd").parse(date));
   }
 
-  /**
-   * Removes a stock from an existing portfolio with the given quantity and date.
-   *
-   * @param stockSymbol Stock ticker.
-   * @param quantity    Quantity of shares.
-   * @param date        Date of the transaction.
-   */
   public void removeStock(String stockSymbol, double quantity, String date) throws IllegalArgumentException, ParseException {
     if (quantity <= 0) {
       throw new IllegalArgumentException("Negative or 0 quantity not allowed");
@@ -166,15 +115,6 @@ public class Portfolio implements IPortfolio {
     this.dateList.addPortfolio(this, new SimpleDateFormat("yyyy-MM-dd").parse(date));
   }
 
-  /**
-   * Calculates the value of the portfolio on a certain date based on the value
-   * of each stock ticker on that date.
-   *
-   * @param date    Date to get value.
-   * @param api     API to get data with.
-   * @param library Library to get data from.
-   * @return double Value of the portfolio.
-   */
   public double calculatePortfolioValue(String date, IAlphaAPIInterface api, Map<String, List<Stock>> library) {
     double totalValue = 0.0;
     try {
@@ -183,7 +123,6 @@ public class Portfolio implements IPortfolio {
         List<Stock> stockList = entry.getValue();
         int totalQuantity = 0;
 
-        // Calculate total quantity of stocks held up to the given date
         for (Stock stock : stockList) {
           if (stock.getDate().compareTo(date) <= 0) {
             totalQuantity += stock.getVolume();
@@ -193,19 +132,22 @@ public class Portfolio implements IPortfolio {
         List<Stock> stockData = library.get(symbol);
         if (stockData == null || stockData.isEmpty()) {
           // Skip the stock if no data is available
+//          System.err.println("No data available for the symbol: " + symbol);
           continue;
         }
 
-        // Find the latest available closing price up to the given date
         double closingPrice = 0.0;
+        boolean priceFound = false;
         for (Stock stock : stockData) {
           if (stock.getDate().compareTo(date) <= 0) {
             closingPrice = stock.getClosingPrice();
+            priceFound = true;
           }
         }
 
-        if (closingPrice == 0.0) {
+        if (!priceFound) {
           // Skip the stock if no data is available for the specific date
+//          System.err.println("No data available for the symbol: " + symbol + " on date: " + date);
           continue;
         }
 
@@ -219,13 +161,6 @@ public class Portfolio implements IPortfolio {
     return totalValue;
   }
 
-
-  /**
-   * Determines the composition of the portfolio at a specific date.
-   *
-   * @param date Date to determine the composition.
-   * @return Map of stock symbols and their quantities.
-   */
   public Map<String, Double> getComposition(String date) {
     Map<String, Double> composition = new HashMap<>();
     for (Map.Entry<String, List<Stock>> entry : stocks.entrySet()) {
@@ -246,14 +181,6 @@ public class Portfolio implements IPortfolio {
     return composition;
   }
 
-  /**
-   * Calculates the distribution of value of the portfolio on a specific date.
-   *
-   * @param date    Date to get the distribution.
-   * @param api     API to get data with.
-   * @param library Library to get data from.
-   * @return Map of stock symbols and their values.
-   */
   public Map<String, Double> getDistributionOfValue(String date, IAlphaAPIInterface api, Map<String, List<Stock>> library) {
     Map<String, Double> distribution = new HashMap<>();
     double totalValue = calculatePortfolioValue(date, api, library);
@@ -294,7 +221,6 @@ public class Portfolio implements IPortfolio {
   }
 
   public void rebalancePortfolio(String date, IAlphaAPIInterface api, Map<String, List<Stock>> library, Map<String, Double> weights) throws IOException {
-    // Check if weights add up to 1.0 (100%)
     double totalWeight = 0.0;
     for (double weight : weights.values()) {
       totalWeight += weight;
@@ -340,7 +266,6 @@ public class Portfolio implements IPortfolio {
         throw new RuntimeException("Rebalancing would result in a negative quantity for symbol: " + symbol);
       }
 
-      // Update the newStocks map with the new quantity
       List<Stock> stockList = new ArrayList<>();
       stockList.add(new Stock(date, 0, 0, 0, closingPrice, newQuantity));
       newStocks.put(symbol, stockList);
@@ -349,25 +274,13 @@ public class Portfolio implements IPortfolio {
     this.stocks = newStocks;
   }
 
-
-  /**
-   * Return name of the portfolio.
-   *
-   * @return String name of portfolio.
-   */
   public String getName() {
     return this.name;
   }
 
-  /**
-   * Return stocks in portfolio.
-   *
-   * @return Map of stock symbols and their quantities.
-   */
   public Map<String, List<Stock>> getStocks() {
     return new HashMap<>(this.stocks);
   }
-
 
   public Map<String, Double> getPortfolioValuesOverTime(String startDate, String endDate, IAlphaAPIInterface api, Map<String, List<Stock>> library) {
     Map<String, Double> valuesOverTime = new LinkedHashMap<>();
@@ -392,40 +305,44 @@ public class Portfolio implements IPortfolio {
     return valuesOverTime;
   }
 
-
   public void printPortfolioPerformanceChart(String startDate, String endDate, IAlphaAPIInterface api, Map<String, List<Stock>> library) {
     LocalDate start = LocalDate.parse(startDate);
     LocalDate end = LocalDate.parse(endDate);
 
     long totalDays = ChronoUnit.DAYS.between(start, end);
     int interval = (int) Math.ceil(totalDays / 30.0);
+    if (totalDays < 5) {
+      interval = 1; // Minimum interval of one day if the range is less than 5 days
+    } else if (totalDays <= 30) {
+      interval = 1; // Daily interval if the range is up to 30 days
+    } else {
+      interval = (int) Math.ceil(totalDays / 30.0); // Otherwise, calculate an interval to fit within 30 lines
+    }
 
-    System.out.println("Performance of portfolio " + name + " from " + startDate + " to " + endDate + "\n");
+    System.out.println("Performance of portfolio " + name + " from " + startDate + " to " +
+            endDate + "\n");
 
+    // Calculate maximum portfolio value to determine the scale
     double maxValue = 0.0;
     for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(interval)) {
-      try {
-        double value = calculatePortfolioValue(date.toString(), api, library);
-        if (value > maxValue) {
-          maxValue = value;
-        }
-      } catch (RuntimeException e) {
+      double value = calculatePortfolioValue(date.toString(), api, library);
+      if (value > maxValue) {
+        maxValue = value;
       }
     }
 
+    // Determine the scale so that the maximum number of asterisks is no more than 50
     double scale = maxValue / 50.0;
     if (scale == 0.0) {
       scale = 1.0; // Prevent division by zero
     }
 
+    // Print the portfolio performance chart with the determined scale
     int lineCount = 0;
     for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(interval)) {
-      try {
-        double value = calculatePortfolioValue(date.toString(), api, library);
-        int stars = (int) (value / scale);
-        System.out.printf("%s: %s\n", date, "*".repeat(stars));
-      } catch (RuntimeException e) {
-      }
+      double value = calculatePortfolioValue(date.toString(), api, library);
+      int stars = (int) (value / scale);
+      System.out.printf("%s: %s\n", date, "*".repeat(stars));
       lineCount++;
       if (lineCount >= 30) break;
     }
@@ -434,4 +351,33 @@ public class Portfolio implements IPortfolio {
   }
 
 
+  private double getInterpolatedPrice(String date, List<Stock> data) {
+    LocalDate targetDate = LocalDate.parse(date);
+    Stock previous = null, next = null;
+
+    for (Stock stock : data) {
+      LocalDate stockDate = LocalDate.parse(stock.getDate());
+      if (!stockDate.isAfter(targetDate)) {
+        previous = stock;
+      }
+      if (stockDate.isAfter(targetDate)) {
+        next = stock;
+        break;
+      }
+    }
+
+    if (previous != null && next != null && !previous.getDate().equals(next.getDate())) {
+      LocalDate prevDate = LocalDate.parse(previous.getDate());
+      LocalDate nextDate = LocalDate.parse(next.getDate());
+      double prevPrice = previous.getClosingPrice();
+      double nextPrice = next.getClosingPrice();
+
+      double interpolatedPrice = prevPrice + (nextPrice - prevPrice) * (double) ChronoUnit.DAYS.between(prevDate, targetDate) / ChronoUnit.DAYS.between(prevDate, nextDate);
+      return interpolatedPrice;
+    } else if (previous != null) {
+      return previous.getClosingPrice();
+    } else {
+      return 0.0;
+    }
+  }
 }
