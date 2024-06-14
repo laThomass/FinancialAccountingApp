@@ -276,11 +276,15 @@ public class StockController implements Controller {
     Portfolio portfolio = getPortfolioByName(portfolioChoice);
 
     if (portfolio != null) {
-      Map<String, Double> distribution = portfolio.getDistributionOfValue(date, api, library);
-      out.append("Distribution of value on ").append(date).append(": ").append(System.lineSeparator());
-      for (Map.Entry<String, Double> entry : distribution.entrySet()) {
-        out.append(String.format("%s: $%.2f", entry.getKey(), entry.getValue()))
-                .append(System.lineSeparator());
+      try {
+        Map<String, Double> distribution = portfolio.getDistributionOfValue(date, api, library);
+        out.append("Distribution of value on ").append(date).append(": ").append(System.lineSeparator());
+        for (Map.Entry<String, Double> entry : distribution.entrySet()) {
+          out.append(String.format("%s: $%.2f", entry.getKey(), entry.getValue()))
+                  .append(System.lineSeparator());
+        }
+      } catch (RuntimeException e) {
+        out.append("Error: ").append(e.getMessage()).append(System.lineSeparator());
       }
     } else {
       out.append("We could not find a portfolio with that name.").append(System.lineSeparator());
