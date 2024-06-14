@@ -22,8 +22,7 @@ public class ControllerTest {
   @Test
   public void testControllerViewGainAverage() throws Exception {
     // Simulated user input
-    String simulatedUserInput = "1\nGOOG\n2020-10-20\n2020-10-30\n2\nAAPL\n2023-01-01"
-            + "\n5\n7\n";
+    String simulatedUserInput = "1\nGOOG\n2020-10-20\n2020-10-30\n14\n";
     ByteArrayInputStream inputStream = new ByteArrayInputStream(simulatedUserInput.getBytes());
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     PrintStream printStream = new PrintStream(outputStream);
