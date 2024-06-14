@@ -7,13 +7,7 @@
     <list default="true" id="dfc67e2f-4c5e-4173-afdf-97bc99cb714d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/New5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/New5.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/StockController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/IPortfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/IPortfolio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/IStock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/IStock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/Portfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Portfolio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Stock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Stock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/StockView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/StockView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/model/MockPortfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/model/MockPortfolio.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/model/PortfolioTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/model/PortfolioTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -51,6 +45,7 @@
     "JUnit.ControllerTest.testControllerViewGainAverage.executor": "Run",
     "JUnit.PortfolioTest.executor": "Run",
     "JUnit.PortfolioTest.testRebalancePortfolio.executor": "Run",
+    "JUnit.PortfolioTest.testRebalancePortfolioInvalidWeights.executor": "Run",
     "JUnit.StockTest.executor": "Run",
     "JUnit.StockViewTest.executor": "Run",
     "Repository.Attach.Annotations": "false",
@@ -118,7 +113,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="StockTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PortfolioTest.testRebalancePortfolioInvalidWeights" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Assignment5Stocks" />
       <extension name="coverage">
         <pattern>
@@ -127,8 +122,9 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="model" />
-      <option name="MAIN_CLASS_NAME" value="model.StockTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="MAIN_CLASS_NAME" value="model.PortfolioTest" />
+      <option name="METHOD_NAME" value="testRebalancePortfolioInvalidWeights" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -164,10 +160,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.AlphaVantageDemo" />
+        <item itemvalue="JUnit.PortfolioTest.testRebalancePortfolioInvalidWeights" />
         <item itemvalue="JUnit.PortfolioTest.testRebalancePortfolio" />
         <item itemvalue="Application.HelloSerializationFile" />
         <item itemvalue="JUnit.StockViewTest" />
-        <item itemvalue="JUnit.StockTest" />
       </list>
     </recent_temporary>
   </component>

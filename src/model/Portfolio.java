@@ -286,6 +286,15 @@ public class Portfolio implements IPortfolio {
   }
 
   public void rebalancePortfolio(String date, IAlphaAPIInterface api, Map<String, List<Stock>> library, Map<String, Double> weights) throws IOException {
+    // Check if weights add up to 1.0 (100%)
+    double totalWeight = 0.0;
+    for (double weight : weights.values()) {
+      totalWeight += weight;
+    }
+    if (Math.abs(totalWeight - 1.0) > 0.0001) { // Allowing a small delta for floating-point precision
+      throw new IllegalArgumentException("Weights must add up to 1.0 (100%)");
+    }
+
     double totalValue = calculatePortfolioValue(date, api, library);
 
     Map<String, List<Stock>> newStocks = new HashMap<>();
@@ -316,7 +325,7 @@ public class Portfolio implements IPortfolio {
         throw new RuntimeException("No data available for the symbol: " + symbol + " on date: " + date);
       }
 
-      double intendedValue = totalValue * weights.get(symbol);
+      double intendedValue = totalValue * weights.getOrDefault(symbol, 0.0);
       double newQuantity = intendedValue / closingPrice;
 
       if (newQuantity < 0) {
@@ -331,6 +340,7 @@ public class Portfolio implements IPortfolio {
 
     this.stocks = newStocks;
   }
+
 
   /**
    * Return name of the portfolio.

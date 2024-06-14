@@ -205,68 +205,85 @@ public class PortfolioTest {
 
   @Test
   public void testRebalancePortfolio() throws Exception {
-    IAlphaAPIInterface api = new AlphaAPI();
+    // Set up initial stock data
     Map<String, List<Stock>> library = new HashMap<>();
+    library.put("NFLX", List.of(new Stock("2022-01-01", 0, 0, 0, 10, 0)));
+    library.put("GOOG", List.of(new Stock("2022-01-01", 0, 0, 0, 25, 0)));
+    library.put("MSFT", List.of(new Stock("2022-01-01", 0, 0, 0, 10, 0)));
+    library.put("AAPL", List.of(new Stock("2022-01-01", 0, 0, 0, 50, 0)));
 
-    // Add stock data to the library
-    library.put("NFLX", createStockData("2022-01-01", 10, 10, 10, 10, 25)); // Netflix
-    library.put("GOOGL", createStockData("2022-01-01", 25, 25, 25, 25, 10)); // Google
-    library.put("MSFT", createStockData("2022-01-01", 10, 10, 10, 10, 25)); // Microsoft
-    library.put("AAPL", createStockData("2022-01-01", 50, 50, 50, 50, 5));  // Apple
-
-    // Create initial portfolio
     Map<String, List<Stock>> stocks = new HashMap<>();
-    stocks.put("NFLX", createStockData("2022-01-01", 10, 10, 10, 10, 25)); // 25 shares of Netflix
-    stocks.put("GOOGL", createStockData("2022-01-01", 25, 25, 25, 25, 10)); // 10 shares of Google
-    stocks.put("MSFT", createStockData("2022-01-01", 10, 10, 10, 10, 25)); // 25 shares of Microsoft
-    stocks.put("AAPL", createStockData("2022-01-01", 50, 50, 50, 50, 5));  // 5 shares of Apple
+    stocks.put("NFLX", List.of(new Stock("2022-01-01", 0, 0, 0, 10, 25)));
+    stocks.put("GOOG", List.of(new Stock("2022-01-01", 0, 0, 0, 25, 10)));
+    stocks.put("MSFT", List.of(new Stock("2022-01-01", 0, 0, 0, 10, 25)));
+    stocks.put("AAPL", List.of(new Stock("2022-01-01", 0, 0, 0, 50, 5)));
 
-    Portfolio portfolio = new Portfolio("MyPortfolio", stocks);
+    Portfolio portfolio = Portfolio.createPortfolio("TestPortfolio", stocks);
 
-    // Update stock prices for the rebalancing date
-    library.put("NFLX", createStockData("2022-02-01", 15, 15, 15, 15, 25)); // Netflix
-    library.put("GOOGL", createStockData("2022-02-01", 30, 30, 30, 30, 10)); // Google
-    library.put("MSFT", createStockData("2022-02-01", 10, 10, 10, 10, 25)); // Microsoft
-    library.put("AAPL", createStockData("2022-02-01", 30, 30, 30, 30, 5));  // Apple
+    // Change stock prices
+    library.put("NFLX", List.of(new Stock("2022-02-01", 0, 0, 0, 15, 0)));
+    library.put("GOOG", List.of(new Stock("2022-02-01", 0, 0, 0, 30, 0)));
+    library.put("MSFT", List.of(new Stock("2022-02-01", 0, 0, 0, 10, 0)));
+    library.put("AAPL", List.of(new Stock("2022-02-01", 0, 0, 0, 30, 0)));
 
-    // Define the target weights
+    // Rebalance portfolio
     Map<String, Double> weights = new HashMap<>();
     weights.put("NFLX", 0.25);
-    weights.put("GOOGL", 0.25);
+    weights.put("GOOG", 0.25);
     weights.put("MSFT", 0.25);
     weights.put("AAPL", 0.25);
 
-    // Rebalance portfolio
-    portfolio.rebalancePortfolio("2022-02-01", api, library, weights);
+    portfolio.rebalancePortfolio("2022-02-01", new AlphaAPI(), library, weights);
 
-    // Calculate expected shares after rebalancing
-    double totalValue = portfolio.calculatePortfolioValue("2022-02-01", api, library);
+    // Verify new stock quantities
+    Map<String, List<Stock>> rebalancedStocks = portfolio.getStocks();
+    double delta = 0.0001; // Acceptable delta for floating-point comparisons
 
-    int expectedNetflixShares = (int) (0.25 * totalValue / 15);
-    int expectedGoogleShares = (int) (0.25 * totalValue / 30);
-    int expectedMicrosoftShares = (int) (0.25 * totalValue / 10);
-    int expectedAppleShares = (int) (0.25 * totalValue / 30);
-
-    System.out.println("Total Value: " + totalValue);
-    System.out.println("Expected Netflix Shares: " + expectedNetflixShares);
-    System.out.println("Expected Google Shares: " + expectedGoogleShares);
-    System.out.println("Expected Microsoft Shares: " + expectedMicrosoftShares);
-    System.out.println("Expected Apple Shares: " + expectedAppleShares);
-
-    System.out.println("Actual Netflix Shares: " + portfolio.getStocks().get("NFLX").get(0).getVolume());
-    System.out.println("Actual Google Shares: " + portfolio.getStocks().get("GOOGL").get(0).getVolume());
-    System.out.println("Actual Microsoft Shares: " + portfolio.getStocks().get("MSFT").get(0).getVolume());
-    System.out.println("Actual Apple Shares: " + portfolio.getStocks().get("AAPL").get(0).getVolume());
-
-    assertEquals(expectedNetflixShares, portfolio.getStocks().get("NFLX").get(0).getVolume());
-    assertEquals(expectedGoogleShares, portfolio.getStocks().get("GOOGL").get(0).getVolume());
-    assertEquals(expectedMicrosoftShares, portfolio.getStocks().get("MSFT").get(0).getVolume());
-    assertEquals(expectedAppleShares, portfolio.getStocks().get("AAPL").get(0).getVolume());
+    assertEquals(17.916666666666668, rebalancedStocks.get("NFLX").get(0).getVolume(), delta);
+    assertEquals(8.958333333333334, rebalancedStocks.get("GOOG").get(0).getVolume(), delta);
+    assertEquals(26.875, rebalancedStocks.get("MSFT").get(0).getVolume(), delta);
+    assertEquals(8.958333333333334, rebalancedStocks.get("AAPL").get(0).getVolume(), delta);
   }
 
-  private List<Stock> createStockData(String date, double open, double high, double low, double close, int volume) {
-    List<Stock> stockData = new ArrayList<>();
-    stockData.add(new Stock(date, open, high, low, close, volume));
-    return stockData;
+  @Test
+  public void testRebalancePortfolioInvalidWeights() throws Exception {
+    // Set up initial stock data
+    Map<String, List<Stock>> library = new HashMap<>();
+    library.put("NFLX", List.of(new Stock("2022-01-01", 0, 0, 0, 10, 0)));
+    library.put("GOOG", List.of(new Stock("2022-01-01", 0, 0, 0, 25, 0)));
+    library.put("MSFT", List.of(new Stock("2022-01-01", 0, 0, 0, 10, 0)));
+    library.put("AAPL", List.of(new Stock("2022-01-01", 0, 0, 0, 50, 0)));
+
+    // Create and add stocks to the portfolio
+    Map<String, List<Stock>> stocks = new HashMap<>();
+    stocks.put("NFLX", List.of(new Stock("2022-01-01", 0, 0, 0, 10, 25))); // 25 shares at $10
+    stocks.put("GOOG", List.of(new Stock("2022-01-01", 0, 0, 0, 25, 10))); // 10 shares at $25
+    stocks.put("MSFT", List.of(new Stock("2022-01-01", 0, 0, 0, 10, 25))); // 25 shares at $10
+    stocks.put("AAPL", List.of(new Stock("2022-01-01", 0, 0, 0, 50, 5)));  // 5 shares at $50
+
+    Portfolio portfolio = Portfolio.createPortfolio("TestPortfolio", stocks);
+
+    // Change stock prices for the rebalance date
+    library.put("NFLX", List.of(new Stock("2022-02-01", 0, 0, 0, 15, 0))); // New price $15
+    library.put("GOOG", List.of(new Stock("2022-02-01", 0, 0, 0, 30, 0))); // New price $30
+    library.put("MSFT", List.of(new Stock("2022-02-01", 0, 0, 0, 10, 0))); // New price $10
+    library.put("AAPL", List.of(new Stock("2022-02-01", 0, 0, 0, 30, 0))); // New price $30
+
+    // Specify weights for rebalancing (weights do not add up to 100%)
+    Map<String, Double> invalidWeights = new HashMap<>();
+    invalidWeights.put("NFLX", 0.30);
+    invalidWeights.put("GOOG", 0.30);
+    invalidWeights.put("MSFT", 0.20);
+    invalidWeights.put("AAPL", 0.10);
+
+    // Expect an exception to be thrown
+    try {
+      portfolio.rebalancePortfolio("2022-02-01", new AlphaAPI(), library, invalidWeights);
+      fail("Expected IllegalArgumentException due to invalid weights");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Weights must add up to 1.0 (100%)", e.getMessage());
+    }
   }
+
+
 }
