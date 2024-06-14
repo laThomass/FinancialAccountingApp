@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -322,6 +323,245 @@ public class PortfolioTest {
     assertEquals(expectedOutput, outputStream.toString());
   }
 
+  @Test
+  public void testCreatePortfolioEdgeCases() {
+    // Edge case: Create portfolio with an empty name
+    Portfolio portfolio = Portfolio.createPortfolio("");
+    assertEquals("", portfolio.getName());
+    assertTrue(portfolio.getStocks().isEmpty());
+
+    // Edge case: Create portfolio with a very long name
+    String longName = "TestPortfolio".repeat(1000);
+    Portfolio longNamePortfolio = Portfolio.createPortfolio(longName);
+    assertEquals(longName, longNamePortfolio.getName());
+    assertTrue(longNamePortfolio.getStocks().isEmpty());
+  }
+
+  @Test
+  public void testSaveAndLoadPortfolioEdgeCases() {
+    try {
+      // Edge case: Save and load a portfolio with no stocks
+      Portfolio emptyPortfolio = Portfolio.createPortfolio("EmptyPortfolio");
+      File emptyFile = File.createTempFile("emptyPortfolio", ".txt");
+      Portfolio.savePortfolio(emptyPortfolio, emptyFile);
+      Portfolio loadedEmptyPortfolio = Portfolio.loadPortfolio(emptyFile);
+      assertEquals(emptyPortfolio.getName(), loadedEmptyPortfolio.getName());
+      assertEquals(emptyPortfolio.getStocks(), loadedEmptyPortfolio.getStocks());
+      assertTrue(emptyFile.delete());
+
+      // Edge case: Save and load a portfolio with multiple stocks
+      Portfolio portfolio = Portfolio.createPortfolio("MultiStockPortfolio");
+      portfolio.addStock("AAPL", 10, "2020-01-01");
+      portfolio.addStock("GOOG", 20, "2020-01-01");
+      File multiStockFile = File.createTempFile("multiStockPortfolio", ".txt");
+      Portfolio.savePortfolio(portfolio, multiStockFile);
+      Portfolio loadedMultiStockPortfolio = Portfolio.loadPortfolio(multiStockFile);
+      assertEquals(portfolio.getName(), loadedMultiStockPortfolio.getName());
+      assertEquals(portfolio.getStocks(), loadedMultiStockPortfolio.getStocks());
+      assertTrue(multiStockFile.delete());
+    } catch (Exception e) {
+      fail("Test failed: " + e.getMessage());
+    }
+  }
+
+  @Test
+  public void testAddStockEdgeCases() {
+    try {
+      Portfolio portfolio = Portfolio.createPortfolio("TestPortfolio");
+
+      // Edge case: Add stock with zero quantity
+      try {
+        portfolio.addStock("AAPL", 0, "2020-01-01");
+        fail("Expected IllegalArgumentException for zero quantity");
+      } catch (IllegalArgumentException e) {
+        assertEquals("Negative or 0 quantity not allowed", e.getMessage());
+      }
+
+      // Edge case: Add stock with negative quantity
+      try {
+        portfolio.addStock("AAPL", -5, "2020-01-01");
+        fail("Expected IllegalArgumentException for negative quantity");
+      } catch (IllegalArgumentException e) {
+        assertEquals("Negative or 0 quantity not allowed", e.getMessage());
+      }
+
+      // Edge case: Add stock with a very large quantity
+      portfolio.addStock("AAPL", 1e10, "2020-01-01");
+      Map<String, List<Stock>> stocks = portfolio.getStocks();
+      assertEquals(1, stocks.size());
+      assertTrue(stocks.containsKey("AAPL"));
+      assertEquals(1e10, stocks.get("AAPL").get(0).getVolume(), 0.001);
+    } catch (Exception e) {
+      fail("Test failed: " + e.getMessage());
+    }
+  }
+
+  @Test
+  public void testRemoveStockZeroQuantity() {
+    Portfolio portfolio = Portfolio.createPortfolio("TestPortfolio");
+    try {
+      portfolio.addStock("AAPL", 10, "2020-01-01");
+
+      // Edge case: Remove stock with zero quantity
+      try {
+        portfolio.removeStock("AAPL", 0, "2020-01-01");
+        fail("Expected IllegalArgumentException for zero quantity");
+      } catch (IllegalArgumentException e) {
+        assertEquals("Negative or 0 quantity not allowed", e.getMessage());
+      } catch (ParseException e) {
+        fail("Test setup failed: " + e.getMessage());
+      }
+
+    } catch (IllegalArgumentException | ParseException e) {
+      fail("Test setup failed: " + e.getMessage());
+    }
+  }
+
+  @Test
+  public void testRemoveStockNegativeQuantity() {
+    Portfolio portfolio = Portfolio.createPortfolio("TestPortfolio");
+    try {
+      portfolio.addStock("AAPL", 10, "2020-01-01");
+
+      // Edge case: Remove stock with negative quantity
+      try {
+        portfolio.removeStock("AAPL", -5, "2020-01-01");
+        fail("Expected IllegalArgumentException for negative quantity");
+      } catch (IllegalArgumentException e) {
+        assertEquals("Negative or 0 quantity not allowed", e.getMessage());
+      } catch (ParseException e) {
+        fail("Test setup failed: " + e.getMessage());
+      }
+
+    } catch (IllegalArgumentException | ParseException e) {
+      fail("Test setup failed: " + e.getMessage());
+    }
+  }
+
+  @Test
+  public void testRemoveStockMoreThanAvailable() {
+    Portfolio portfolio = Portfolio.createPortfolio("TestPortfolio");
+    try {
+      portfolio.addStock("AAPL", 10, "2020-01-01");
+
+      // Edge case: Remove stock with more quantity than available
+      try {
+        portfolio.removeStock("AAPL", 15, "2020-01-01");
+        fail("Expected IllegalArgumentException for removing more shares than available");
+      } catch (IllegalArgumentException e) {
+        assertEquals("Not enough shares to sell", e.getMessage());
+      } catch (ParseException e) {
+        fail("Test setup failed: " + e.getMessage());
+      }
+
+    } catch (IllegalArgumentException | ParseException e) {
+      fail("Test setup failed: " + e.getMessage());
+    }
+  }
+
+  @Test
+  public void testRemoveStockExactQuantity() {
+    Portfolio portfolio = Portfolio.createPortfolio("TestPortfolio");
+    try {
+      portfolio.addStock("AAPL", 10, "2020-01-01");
+
+      // Edge case: Remove stock with exact quantity
+      portfolio.removeStock("AAPL", 10, "2020-01-01");
+      assertTrue(portfolio.getStocks().get("AAPL").isEmpty());
+    } catch (IllegalArgumentException | ParseException e) {
+      fail("Test setup failed: " + e.getMessage());
+    }
+  }
+
+
+
+  @Test
+  public void testCalculatePortfolioValueEdgeCases() {
+    try {
+      Portfolio portfolio = Portfolio.createPortfolio("TestPortfolio");
+      portfolio.addStock("AAPL", 10, "2020-01-01");
+
+      MockAlphaAPI mockAPI = new MockAlphaAPI();
+      Map<String, List<Stock>> library = new HashMap<>();
+      mockAPI.fetchData("AAPL", library);
+
+      // Edge case: Calculate value on a date with no stock data
+      double value = portfolio.calculatePortfolioValue("2019-01-01", mockAPI, library);
+      assertEquals(0.0, value, 0.001);
+
+      // Edge case: Calculate value with no stocks in portfolio
+      Portfolio emptyPortfolio = Portfolio.createPortfolio("EmptyPortfolio");
+      double emptyValue = emptyPortfolio.calculatePortfolioValue("2020-01-01", mockAPI, library);
+      assertEquals(0.0, emptyValue, 0.001);
+    } catch (Exception e) {
+      fail("Test failed: " + e.getMessage());
+    }
+  }
+
+  @Test
+  public void testGetCompositionEdgeCases() {
+    try {
+      Portfolio portfolio = Portfolio.createPortfolio("TestPortfolio");
+      portfolio.addStock("AAPL", 10, "2020-01-01");
+
+      // Edge case: Get composition on a date with no stock data
+      Map<String, Double> emptyComposition = portfolio.getComposition("2019-01-01");
+      assertTrue(emptyComposition.isEmpty());
+
+      // Edge case: Get composition with no stocks in portfolio
+      Portfolio emptyPortfolio = Portfolio.createPortfolio("EmptyPortfolio");
+      Map<String, Double> emptyPortfolioComposition = emptyPortfolio.getComposition("2020-01-01");
+      assertTrue(emptyPortfolioComposition.isEmpty());
+    } catch (Exception e) {
+      fail("Test failed: " + e.getMessage());
+    }
+  }
+
+  @Test
+  public void testGetDistributionOfValueEdgeCases() {
+    try {
+      Portfolio portfolio = Portfolio.createPortfolio("TestPortfolio");
+      portfolio.addStock("AAPL", 10, "2020-01-01");
+
+      MockAlphaAPI mockAPI = new MockAlphaAPI();
+      Map<String, List<Stock>> library = new HashMap<>();
+      mockAPI.fetchData("AAPL", library);
+
+      // Edge case: Get distribution of value on a date with no stock data
+      Map<String, Double> emptyDistribution = portfolio.getDistributionOfValue("2019-01-01", mockAPI, library);
+      assertTrue(emptyDistribution.isEmpty());
+
+      // Edge case: Get distribution of value with no stocks in portfolio
+      Portfolio emptyPortfolio = Portfolio.createPortfolio("EmptyPortfolio");
+      Map<String, Double> emptyPortfolioDistribution = emptyPortfolio.getDistributionOfValue("2020-01-01", mockAPI, library);
+      assertTrue(emptyPortfolioDistribution.isEmpty());
+    } catch (Exception e) {
+      fail("Test failed: " + e.getMessage());
+    }
+  }
+
+  @Test
+  public void testGetPortfolioValuesOverTimeEdgeCases() {
+    try {
+      Portfolio portfolio = Portfolio.createPortfolio("TestPortfolio");
+      portfolio.addStock("AAPL", 10, "2020-01-01");
+
+      MockAlphaAPI mockAPI = new MockAlphaAPI();
+      Map<String, List<Stock>> library = new HashMap<>();
+      mockAPI.fetchData("AAPL", library);
+
+      // Edge case: Get values over time for a date range with no stock data
+      Map<String, Double> emptyValuesOverTime = portfolio.getPortfolioValuesOverTime("2019-01-01", "2019-03-01", mockAPI, library);
+      assertTrue(emptyValuesOverTime.isEmpty());
+
+      // Edge case: Get values over time with no stocks in portfolio
+      Portfolio emptyPortfolio = Portfolio.createPortfolio("EmptyPortfolio");
+      Map<String, Double> emptyPortfolioValuesOverTime = emptyPortfolio.getPortfolioValuesOverTime("2020-01-01", "2020-03-01", mockAPI, library);
+      assertTrue(emptyPortfolioValuesOverTime.isEmpty());
+    } catch (Exception e) {
+      fail("Test failed: " + e.getMessage());
+    }
+  }
 
 
 }

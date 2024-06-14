@@ -6,11 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="dfc67e2f-4c5e-4173-afdf-97bc99cb714d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/New5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/New5.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/StockController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Portfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Portfolio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/StockView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/StockView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/model/MockAlphaAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/model/MockAlphaAPI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/model/PortfolioTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/model/PortfolioTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -51,6 +46,9 @@
     "JUnit.PortfolioTest.testPrintPortfolioPerformanceChart.executor": "Run",
     "JUnit.PortfolioTest.testRebalancePortfolio.executor": "Run",
     "JUnit.PortfolioTest.testRebalancePortfolioInvalidWeights.executor": "Run",
+    "JUnit.PortfolioTest.testRemoveStock.executor": "Run",
+    "JUnit.PortfolioTest.testRemoveStockEdgeCases.executor": "Run",
+    "JUnit.PortfolioTest.testRemoveStockZeroQuantity.executor": "Run",
     "JUnit.StockTest.executor": "Run",
     "JUnit.StockViewTest.executor": "Run",
     "Repository.Attach.Annotations": "false",
@@ -75,7 +73,7 @@
       <recent name="C:\CS3500\Assignment5Stocks\src" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.PortfolioTest">
+  <component name="RunManager" selected="Application.AlphaVantageDemo">
     <configuration name="AlphaVantageDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="main.AlphaVantageDemo" />
       <module name="Assignment5Stocks" />
@@ -104,38 +102,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PortfolioTest.testCalculatePortfolioValueOnNonTradingDay" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Assignment5Stocks" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="model.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="model" />
-      <option name="MAIN_CLASS_NAME" value="model.PortfolioTest" />
-      <option name="METHOD_NAME" value="testCalculatePortfolioValueOnNonTradingDay" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PortfolioTest.testPrintPortfolioPerformanceChart" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Assignment5Stocks" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="model.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="model" />
-      <option name="MAIN_CLASS_NAME" value="model.PortfolioTest" />
-      <option name="METHOD_NAME" value="testPrintPortfolioPerformanceChart" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="PortfolioTest.testRemoveStock" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Assignment5Stocks" />
       <extension name="coverage">
@@ -147,6 +113,38 @@
       <option name="PACKAGE_NAME" value="model" />
       <option name="MAIN_CLASS_NAME" value="model.PortfolioTest" />
       <option name="METHOD_NAME" value="testRemoveStock" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PortfolioTest.testRemoveStockEdgeCases" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Assignment5Stocks" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="model" />
+      <option name="MAIN_CLASS_NAME" value="model.PortfolioTest" />
+      <option name="METHOD_NAME" value="testRemoveStockEdgeCases" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PortfolioTest.testRemoveStockZeroQuantity" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Assignment5Stocks" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="model" />
+      <option name="MAIN_CLASS_NAME" value="model.PortfolioTest" />
+      <option name="METHOD_NAME" value="testRemoveStockZeroQuantity" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -167,11 +165,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.PortfolioTest" />
-        <item itemvalue="JUnit.PortfolioTest.testRemoveStock" />
-        <item itemvalue="JUnit.PortfolioTest.testCalculatePortfolioValueOnNonTradingDay" />
-        <item itemvalue="JUnit.PortfolioTest.testPrintPortfolioPerformanceChart" />
         <item itemvalue="Application.AlphaVantageDemo" />
+        <item itemvalue="JUnit.PortfolioTest" />
+        <item itemvalue="JUnit.PortfolioTest.testRemoveStockZeroQuantity" />
+        <item itemvalue="JUnit.PortfolioTest.testRemoveStockEdgeCases" />
+        <item itemvalue="JUnit.PortfolioTest.testRemoveStock" />
       </list>
     </recent_temporary>
   </component>
@@ -285,6 +283,15 @@
           <properties class="java.lang.RuntimeException" package="java.lang" />
           <option name="timeStamp" value="1" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/tests/model/PortfolioTest.java</url>
+          <line>30</line>
+          <properties class="model.PortfolioTest" method="testCreatePortfolio">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
