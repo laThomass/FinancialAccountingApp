@@ -4,16 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dfc67e2f-4c5e-4173-afdf-97bc99cb714d" name="Changes" comment="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance and savePortfolio, LoadPortfolio,  and added PortfolioDateList Class and updated StockController to support savePortfolio">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="dfc67e2f-4c5e-4173-afdf-97bc99cb714d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/StockController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Portfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Portfolio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/StockView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/StockView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/controller/ControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/controller/ControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/model/MockPortfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/model/MockPortfolio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/model/StockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/model/StockTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,7 +169,7 @@
       <workItem from="1718308703657" duration="861000" />
       <workItem from="1718309583247" duration="213000" />
       <workItem from="1718309809849" duration="663000" />
-      <workItem from="1718310512588" duration="13576000" />
+      <workItem from="1718310512588" duration="14110000" />
     </task>
     <task id="LOCAL-00001" summary="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance, and added PortfolioDateList Class">
       <option name="closed" value="true" />
@@ -227,7 +219,15 @@
       <option name="project" value="LOCAL" />
       <updated>1718309938488</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Added addStock, removeStock, rebalancePortfolio, viewComposition and viewPerformance (all incomplete) || savePortfolio, LoadPortfolio,  and added PortfolioDateList Class and updated StockController to support savePortfolio">
+      <option name="closed" value="true" />
+      <created>1718327545126</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1718327545126</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -247,7 +247,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance, and added PortfolioDateList Class" />
     <MESSAGE value="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance and savePortfolio, LoadPortfolio,  and added PortfolioDateList Class and updated StockController to support savePortfolio" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance and savePortfolio, LoadPortfolio,  and added PortfolioDateList Class and updated StockController to support savePortfolio" />
+    <MESSAGE value="Added addStock, removeStock, rebalancePortfolio, viewComposition and viewPerformance (all incomplete) || savePortfolio, LoadPortfolio,  and added PortfolioDateList Class and updated StockController to support savePortfolio" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added addStock, removeStock, rebalancePortfolio, viewComposition and viewPerformance (all incomplete) || savePortfolio, LoadPortfolio,  and added PortfolioDateList Class and updated StockController to support savePortfolio" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
