@@ -27,15 +27,14 @@ public class MockPortfolio implements IPortfolio {
     return name;
   }
 
-
   @Override
-  public void addStock(String stockSymbol, int quantity) throws IOException {
-
+  public void addStock(String symbol, int quantity) {
+    stocks.put(symbol, quantity);
   }
 
   @Override
   public void addStock(String stockSymbol, int quantity, String date) throws IOException {
-    stocks.put(stockSymbol, quantity);
+
   }
 
   @Override
@@ -53,7 +52,7 @@ public class MockPortfolio implements IPortfolio {
   }
 
   @Override
-  public void rebalancePortfolio(String date, IAlphaAPIInterface api, Map<String, List<Stock>> library, Map<String,Double> weights) throws IOException {
+  public void rebalancePortfolio(String date, IAlphaAPIInterface api, Map<String, List<Stock>> library, Map<String, Double> weights) throws IOException {
 
   }
 

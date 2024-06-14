@@ -1,17 +1,19 @@
 package model;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.io.Serializable;
+import java.util.Scanner;
 
 /**
  * Represents a Portfolio.
@@ -20,8 +22,8 @@ import java.io.Serializable;
 
 public class Portfolio implements IPortfolio {
   private final String name;
-  private Map<String, Integer> stocks;
   private final PortfolioDateList dateList;
+  private Map<String, Integer> stocks;
 
   public Portfolio(String name) {
     this.name = name;
@@ -59,6 +61,47 @@ public class Portfolio implements IPortfolio {
    */
   public static Portfolio createPortfolio(String name, Map<String, Integer> stocks) {
     return new Portfolio(name, stocks);
+  }
+
+  /**
+   * Save a Portfolio to a file with all information able to be retrieved.
+   */
+  // Serialization
+  // Save object into a file.
+  public static void savePortfolio(Portfolio p, File file) throws Exception {
+    try {
+      FileWriter writer = new FileWriter(file);
+      writer.write(p.getName());
+      writer.write(",");
+      writer.write(p.getStocks().toString());
+      writer.close();
+    } catch (Exception e) {
+      throw new Exception("Error saving portfolio: " + e.getMessage());
+    }
+  }
+
+  public static Portfolio loadPortfolio(File file) throws Exception {
+    Portfolio result = null;
+    try {
+      BufferedReader reader = new BufferedReader(new FileReader(file));
+      String name;
+      Map<String, Integer> stocks = new HashMap<>();
+      String line = reader.readLine();
+      String[] parts = line.split(",", 2);
+      name = parts[0];
+      String[] parts2 = parts[1].replace("{", "")
+              .replace("}", "").split(", ");
+
+      for(String part : parts2) {
+        String[] parts3 = part.split("=");
+        stocks.put(parts3[0], Integer.parseInt(parts3[1]));
+      }
+      result = new Portfolio(name, stocks);
+
+    } catch (Exception e) {
+      throw new Exception("Exception thrown");
+    }
+    return result;
   }
 
   /**
@@ -194,33 +237,11 @@ public class Portfolio implements IPortfolio {
     return this.name;
   }
 
+  // Deserialization
+  // Get object from a file.
+
   public Map<String, Integer> getStocks() {
     return new HashMap<>(this.stocks);
   }
 
-  /**
-   * Save a Portfolio to a file with all information able to be read and retrieved later.
-   */
-  public static void savePortfolio(Portfolio portfolio) throws IOException {
-    try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(portfolio.getName()))) {
-      oos.writeObject(portfolio);
-    } catch (Exception e) {
-      throw new IOException("Error saving portfolio: " + portfolio.getName());
-    }
-  }
-
-  /**
-   * Load a portfolio with all its information.
-   * @param portfolio
-   * @return
-   * @throws Exception
-   */
-  public static Portfolio loadPortfolio(Portfolio portfolio) throws Exception {
-    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(portfolio.getName()))) {
-      portfolio = (Portfolio) ois.readObject();
-    } catch (Exception e) {
-      throw new Exception("Portfolio not loaded correctly");
-    }
-    return portfolio;
-  }
 }

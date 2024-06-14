@@ -39,11 +39,18 @@ public class ControllerTest {
     List<String> actualOutputLines = Arrays.asList(actualOutput.split("\\r?\\n"));
 
     List<String> expectedOutput = Arrays.asList(
-            "[Please enter your choice as the associated number: Please enter your desired stock in" +
-                    " ticker form., Start date?, End date?, 4.182707448278516, , Please enter your" +
-                    " choice as the associated number: Please enter your desired stock in ticker" +
-                    " form., Start date?, How many days?, Your average is: 197.502, Please enter" +
-                    " your choice as the associated number:]"
+            "Please enter your choice as the associated number: "
+                    + "Please enter your desired stock in ticker form.",
+            "Start date?",
+            "End date?",
+            "4.182707448278516",
+            "",
+            "Please enter your choice as the associated number: " +
+                    "Please enter your desired stock in ticker form.",
+            "Start date?",
+            "How many days?",
+            "Your average is: 195.124",
+            "Please enter your choice as the associated number:"
     );
 
     assertEquals(expectedOutput, actualOutputLines);

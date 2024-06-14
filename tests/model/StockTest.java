@@ -208,7 +208,7 @@ public class StockTest {
       Stock.viewXDayCrossOver("INVALID", "2020-03-04", 2, api, library);
       fail("Expected RuntimeException not thrown");
     } catch (RuntimeException e) {
-      assertEquals("Insufficient data points to calculate the 2-day moving average.",
+      assertEquals("Insufficient data points to calculate the 2-day moving average",
               e.getMessage());
     } catch (IOException e) {
       fail("Unexpected IOException thrown: " + e.getMessage());

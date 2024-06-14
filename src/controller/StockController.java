@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -251,16 +252,37 @@ public class StockController implements Controller {
 
           for (Portfolio portfolio : loPortfolio) {
             if (portfolio.getName().equals(portfolioChoice)) {
-              Portfolio.savePortfolio(portfolio);
+              finished = true;
+              File file = new File(portfolio.getName());
+              Portfolio.savePortfolio(portfolio, file);
             }
           }
           if (!finished) {
             out.append("We could not find a portfolio with that name.")
                     .append(System.lineSeparator());
           } else {
-            out.append("Saved ").append(portfolioChoice);
+            out.append("Saved ").append(portfolioChoice).append(System.lineSeparator());
           }
+          break;
         case 8:
+          out.append("Which portfolio would you like to load?")
+                  .append(System.lineSeparator()).append(System.lineSeparator());
+          portfolioChoice = scanner.next();
+          finished = true;
+              try {
+                File file = new File(portfolioChoice);
+                Portfolio.loadPortfolio(file);
+              } catch (Exception e) {
+                finished = false;
+              }
+          if (!finished) {
+            out.append("We could not find a portfolio with that name.")
+                    .append(System.lineSeparator());
+          } else {
+            out.append("Loaded ").append(portfolioChoice).append(System.lineSeparator());
+          }
+          break;
+        case 9:
           quit = true;
           break;
         default:

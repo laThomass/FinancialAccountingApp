@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dfc67e2f-4c5e-4173-afdf-97bc99cb714d" name="Changes" comment="" />
+    <list default="true" id="dfc67e2f-4c5e-4173-afdf-97bc99cb714d" name="Changes" comment="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance and savePortfolio, LoadPortfolio,  and added PortfolioDateList Class and updated StockController to support savePortfolio">
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/StockController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Portfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Portfolio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/StockView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/StockView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/controller/ControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/controller/ControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/model/MockPortfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/model/MockPortfolio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/model/StockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/model/StockTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,32 +40,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.AlphaVantageDemo.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;JUnit.ControllerTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ControllerTest.testControllerViewGainAverage.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PortfolioTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StockTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StockViewTest.executor&quot;: &quot;Run&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/CS3500/Assignment5Stocks/src&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;C:/CS3500/Assignment5Stocks/src/Main.java&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.AlphaVantageDemo.executor": "Run",
+    "Application.HelloSerializationFile.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Downloaded.Files.Path.Enabled": "false",
+    "JUnit.ControllerTest.executor": "Run",
+    "JUnit.ControllerTest.testControllerViewGainAverage.executor": "Run",
+    "JUnit.PortfolioTest.executor": "Run",
+    "JUnit.StockTest.executor": "Run",
+    "JUnit.StockViewTest.executor": "Run",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/CS3500/Assignment5Stocks/src",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/CS3500/Assignment5Stocks/src/Main.java",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\CS3500\Assignment5Stocks\src" />
@@ -75,17 +87,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="HelloSerializationFile" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="model.HelloSerializationFile" />
       <module name="Assignment5Stocks" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="controller.*" />
+          <option name="PATTERN" value="model.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="controller" />
-      <option name="MAIN_CLASS_NAME" value="controller.ControllerTest" />
-      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -138,10 +148,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.AlphaVantageDemo" />
+        <item itemvalue="Application.HelloSerializationFile" />
         <item itemvalue="JUnit.StockViewTest" />
         <item itemvalue="JUnit.StockTest" />
         <item itemvalue="JUnit.PortfolioTest" />
-        <item itemvalue="JUnit.ControllerTest" />
       </list>
     </recent_temporary>
   </component>
@@ -166,6 +176,8 @@
       <workItem from="1718225416420" duration="17196000" />
       <workItem from="1718308703657" duration="861000" />
       <workItem from="1718309583247" duration="213000" />
+      <workItem from="1718309809849" duration="663000" />
+      <workItem from="1718310512588" duration="13576000" />
     </task>
     <task id="LOCAL-00001" summary="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance, and added PortfolioDateList Class">
       <option name="closed" value="true" />
@@ -207,7 +219,15 @@
       <option name="project" value="LOCAL" />
       <updated>1718309591058</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance and savePortfolio, LoadPortfolio,  and added PortfolioDateList Class and updated StockController to support savePortfolio">
+      <option name="closed" value="true" />
+      <created>1718309938488</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1718309938488</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -228,5 +248,15 @@
     <MESSAGE value="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance, and added PortfolioDateList Class" />
     <MESSAGE value="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance and savePortfolio, LoadPortfolio,  and added PortfolioDateList Class and updated StockController to support savePortfolio" />
     <option name="LAST_COMMIT_MESSAGE" value="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance and savePortfolio, LoadPortfolio,  and added PortfolioDateList Class and updated StockController to support savePortfolio" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.RuntimeException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
