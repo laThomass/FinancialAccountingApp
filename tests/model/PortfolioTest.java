@@ -1,6 +1,5 @@
 package model;
 
-import org.junit.Before;
 import org.junit.Test;
 
 
@@ -8,7 +7,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -563,6 +561,52 @@ public class PortfolioTest {
     }
   }
 
+  @Test
+  public void testCalculatePortfolioValueMultipleStocks() throws ParseException {
+    // Create a portfolio
+    Portfolio portfolio = new Portfolio("TestPortfolio");
+
+    // Initialize the API and library
+    IAlphaAPIInterface api = new AlphaAPI();
+    Map<String, List<Stock>> library = new HashMap<>();
+
+    // Add stocks to the library
+    List<Stock> googData = Arrays.asList(
+            new Stock("2020-01-01", 1400, 1500, 1300, 1450, 1000),
+            new Stock("2021-01-01", 1500, 1600, 1400, 1550, 2000),
+            new Stock("2022-01-01", 1600, 1700, 1500, 1650, 3000)
+    );
+    library.put("GOOG", googData);
+
+    List<Stock> aaplData = Arrays.asList(
+            new Stock("2020-01-01", 300, 320, 290, 310, 1000),
+            new Stock("2021-01-01", 320, 340, 300, 330, 2000),
+            new Stock("2022-01-01", 340, 360, 320, 350, 3000)
+    );
+    library.put("AAPL", aaplData);
+
+    List<Stock> nvdaData = Arrays.asList(
+            new Stock("2020-01-01", 200, 220, 190, 210, 1000),
+            new Stock("2021-01-01", 220, 240, 200, 230, 2000),
+            new Stock("2022-01-01", 240, 260, 220, 250, 3000)
+    );
+    library.put("NVDA", nvdaData);
+
+    // Add stocks to the portfolio
+    portfolio.addStock("GOOG", 10, "2020-01-01");
+    portfolio.addStock("AAPL", 20, "2020-01-01");
+    portfolio.addStock("NVDA", 30, "2020-01-01");
+
+    // Calculate the portfolio value for a specific date
+    double valueOn2022 = portfolio.calculatePortfolioValue("2022-01-01", api, library);
+    double valueOn2021 = portfolio.calculatePortfolioValue("2021-01-01", api, library);
+    double valueOn2020 = portfolio.calculatePortfolioValue("2020-01-01", api, library);
+
+    // Assert the calculated values
+    assertEquals(10 * 1650 + 20 * 350 + 30 * 250, valueOn2022, 0.01);
+    assertEquals(10 * 1550 + 20 * 330 + 30 * 230, valueOn2021, 0.01);
+    assertEquals(10 * 1450 + 20 * 310 + 30 * 210, valueOn2020, 0.01);
+  }
 
 }
 

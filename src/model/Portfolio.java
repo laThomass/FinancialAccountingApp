@@ -183,6 +183,7 @@ public class Portfolio implements IPortfolio {
         List<Stock> stockList = entry.getValue();
         int totalQuantity = 0;
 
+        // Calculate total quantity of stocks held up to the given date
         for (Stock stock : stockList) {
           if (stock.getDate().compareTo(date) <= 0) {
             totalQuantity += stock.getVolume();
@@ -190,23 +191,21 @@ public class Portfolio implements IPortfolio {
         }
 
         List<Stock> stockData = library.get(symbol);
-        if (stockData == null) {
+        if (stockData == null || stockData.isEmpty()) {
           // Skip the stock if no data is available
-          System.err.println("No data available for the symbol: " + symbol);
           continue;
         }
 
+        // Find the latest available closing price up to the given date
         double closingPrice = 0.0;
         for (Stock stock : stockData) {
-          if (stock.getDate().equals(date)) {
+          if (stock.getDate().compareTo(date) <= 0) {
             closingPrice = stock.getClosingPrice();
-            break;
           }
         }
 
         if (closingPrice == 0.0) {
           // Skip the stock if no data is available for the specific date
-          System.err.println("No data available for the symbol: " + symbol + " on date: " + date);
           continue;
         }
 
@@ -300,7 +299,7 @@ public class Portfolio implements IPortfolio {
     for (double weight : weights.values()) {
       totalWeight += weight;
     }
-    if (Math.abs(totalWeight - 1.0) > 0.0001) { // Allowing a small delta for floating-point precision
+    if (Math.abs(totalWeight - 1.0) > 0.0001) {
       throw new IllegalArgumentException("Weights must add up to 1.0 (100%)");
     }
 
@@ -403,27 +402,30 @@ public class Portfolio implements IPortfolio {
 
     System.out.println("Performance of portfolio " + name + " from " + startDate + " to " + endDate + "\n");
 
-    // Calculate maximum portfolio value to determine the scale
     double maxValue = 0.0;
     for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(interval)) {
-      double value = calculatePortfolioValue(date.toString(), api, library);
-      if (value > maxValue) {
-        maxValue = value;
+      try {
+        double value = calculatePortfolioValue(date.toString(), api, library);
+        if (value > maxValue) {
+          maxValue = value;
+        }
+      } catch (RuntimeException e) {
       }
     }
 
-    // Determine the scale so that the maximum number of asterisks is no more than 50
     double scale = maxValue / 50.0;
     if (scale == 0.0) {
       scale = 1.0; // Prevent division by zero
     }
 
-    // Print the portfolio performance chart with the determined scale
     int lineCount = 0;
     for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(interval)) {
-      double value = calculatePortfolioValue(date.toString(), api, library);
-      int stars = (int) (value / scale);
-      System.out.printf("%s: %s\n", date, "*".repeat(stars));
+      try {
+        double value = calculatePortfolioValue(date.toString(), api, library);
+        int stars = (int) (value / scale);
+        System.out.printf("%s: %s\n", date, "*".repeat(stars));
+      } catch (RuntimeException e) {
+      }
       lineCount++;
       if (lineCount >= 30) break;
     }
@@ -432,36 +434,4 @@ public class Portfolio implements IPortfolio {
   }
 
 
-  private double getInterpolatedPrice(String date, List<Stock> data) {
-    LocalDate targetDate = LocalDate.parse(date);
-    Stock previous = null, next = null;
-
-    for (Stock stock : data) {
-      LocalDate stockDate = LocalDate.parse(stock.getDate());
-      if (!stockDate.isAfter(targetDate)) {
-        previous = stock;
-      }
-      if (stockDate.isAfter(targetDate)) {
-        next = stock;
-        break;
-      }
-    }
-
-    if (previous != null && next != null && !previous.getDate().equals(next.getDate())) {
-      LocalDate prevDate = LocalDate.parse(previous.getDate());
-      LocalDate nextDate = LocalDate.parse(next.getDate());
-      double prevPrice = previous.getClosingPrice();
-      double nextPrice = next.getClosingPrice();
-
-      double interpolatedPrice = prevPrice + (nextPrice - prevPrice) * (double) ChronoUnit.DAYS.between(prevDate, targetDate) / ChronoUnit.DAYS.between(prevDate, nextDate);
-      return interpolatedPrice;
-    } else if (previous != null) {
-      return previous.getClosingPrice();
-    } else {
-      return 0.0;
-    }
-  }
-
-
-  // Other methods like performanceOverTime, viewComposition, rebalancePortfolio...
 }
