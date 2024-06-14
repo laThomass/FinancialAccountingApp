@@ -31,7 +31,12 @@ public class StockView implements IView {
     System.out.println("6. View Model.Portfolio Value");
     System.out.println("7. Save a portfolio");
     System.out.println("8. Load a portfolio");
-    System.out.println("9. Exit");
+    System.out.println("9. Sell Stock ");
+    System.out.println("10. View Composition");
+    System.out.println("11. View Distribution");
+    System.out.println("12. Remove stock");
+    System.out.println("13. Exit");
+
 
   }
 

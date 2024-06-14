@@ -1,6 +1,7 @@
 package model;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Map;
 import java.util.List;
 import java.io.Serializable;
@@ -18,9 +19,8 @@ public interface IPortfolio {
    * @param stockSymbol the symbol of the stock to be added
    * @param quantity    the quantity of the stock to be added
    */
-  public void addStock(String stockSymbol, int quantity) throws IOException;
-
-  public void addStock(String stockSymbol, int quantity, String date) throws IOException;
+//  public void addStock(String stockSymbol, int quantity,) throws IOException;
+  public void addStock(String stockSymbol, int quantity, String date) throws IOException, ParseException;
 
   /**
    * Calculates the total value of the portfolio on a given date.
@@ -34,13 +34,11 @@ public interface IPortfolio {
                                         IAlphaAPIInterface api, Map<String, List<Stock>> library);
 
 
-
-  public String performanceOverTime(String startDate, String endDate,
-                                    IAlphaAPIInterface api, Map<String, List<Stock>> library);
+  public Map<String, Double> getDistributionOfValue(String date, IAlphaAPIInterface api, Map<String, List<Stock>> library);
 
 
   public void rebalancePortfolio(String date, IAlphaAPIInterface api, Map<String,
-          List<Stock>> library, Map<String,Double> weights) throws IOException;
+          List<Stock>> library, Map<String, Double> weights) throws IOException;
 
   /**
    * Gets the name of the portfolio.
@@ -54,7 +52,9 @@ public interface IPortfolio {
    *
    * @return a map where the keys are stock symbols and the values are quantities
    */
-  Map<String, Integer> getStocks();
-
+  Map<String, List<Stock>> getStocks();
 
 }
+
+
+

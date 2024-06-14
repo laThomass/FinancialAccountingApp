@@ -166,7 +166,7 @@ public class StockController implements Controller {
                   .append(System.lineSeparator());
           String answer = scanner.next().toLowerCase();
           if (answer.equals("yes")) {
-            Map<String, Integer> stocks = new HashMap<>();
+            Map<String, List<Stock>> stocks = new HashMap<>();
             boolean done = false;
             while (!done) {
               out.append("Please enter your desired stock in ticker form. "
@@ -178,7 +178,9 @@ public class StockController implements Controller {
                 out.append("Please enter your desired quantity.")
                         .append(System.lineSeparator());
                 quantity = scanner.nextInt();
-                stocks.put(stockChoice, quantity);
+                String date = promptForValidDate("Date?", scanner);
+                Stock stock = new Stock(date, 0, 0, 0, 0, quantity);
+                stocks.computeIfAbsent(stockChoice.toUpperCase(), k -> new ArrayList<>()).add(stock);
               }
             }
             for (String symbol : stocks.keySet()) {
@@ -253,7 +255,7 @@ public class StockController implements Controller {
           for (Portfolio portfolio : loPortfolio) {
             if (portfolio.getName().equals(portfolioChoice)) {
               finished = true;
-              File file = new File(portfolio.getName());
+              File file = new File(portfolio.getName() + ".txt");
               Portfolio.savePortfolio(portfolio, file);
             }
           }
@@ -268,27 +270,100 @@ public class StockController implements Controller {
           out.append("Which portfolio would you like to load?")
                   .append(System.lineSeparator()).append(System.lineSeparator());
           portfolioChoice = scanner.next();
-          finished = true;
-              try {
-                File file = new File(portfolioChoice);
-                Portfolio.loadPortfolio(file);
-              } catch (Exception e) {
-                finished = false;
-              }
-          if (!finished) {
-            out.append("We could not find a portfolio with that name.")
-                    .append(System.lineSeparator());
-          } else {
-            out.append("Loaded ").append(portfolioChoice).append(System.lineSeparator());
+          try {
+            File file = new File(portfolioChoice + ".txt");
+            Portfolio loadedPortfolio = Portfolio.loadPortfolio(file);
+            if (!portfolioExists(portfolioChoice)) {
+              loPortfolio.add(loadedPortfolio);
+              out.append("Loaded ").append(portfolioChoice).append(System.lineSeparator());
+            } else {
+              out.append("Portfolio with that name already exists.").append(System.lineSeparator());
+            }
+          } catch (Exception e) {
+            out.append("We could not load the portfolio: ").append(e.getMessage()).append(System.lineSeparator());
           }
           break;
         case 9:
+          out.append("Which portfolio would you like to sell from?")
+                  .append(System.lineSeparator());
+          portfolioChoice = scanner.next();
+          boolean over = false;
+          for (Portfolio portfolio : loPortfolio) {
+            if (portfolio.getName().equals(portfolioChoice)) {
+              over = true;
+              out.append("Please enter your stock and then the amount")
+                      .append(System.lineSeparator());
+              String symbol = scanner.next();
+              quantity = scanner.nextInt();
+              String time = promptForValidDate("Date?", scanner);
+              portfolio.removeStock(symbol, quantity, time);
+            }
+          }
+          if (!over) {
+            out.append("We could not find a portfolio with that name.")
+                    .append(System.lineSeparator());
+          } else {
+            out.append("The stocks were sold successfully.").append(System.lineSeparator());
+          }
+          break;
+        case 10:
+          out.append("Which portfolio's composition would you like to view?")
+                  .append(System.lineSeparator());
+          portfolioChoice = scanner.next();
+          date = promptForValidDate("Date?", scanner);
+          finished = false;
+          for (Portfolio portfolio : loPortfolio) {
+            if (portfolio.getName().equals(portfolioChoice)) {
+              finished = true;
+              Map<String, Integer> composition = portfolio.getComposition(date);
+              out.append("Composition on " + date + ":").append(System.lineSeparator());
+              for (Map.Entry<String, Integer> entry : composition.entrySet()) {
+                out.append(entry.getKey() + ": " + entry.getValue()).append(System.lineSeparator());
+              }
+            }
+          }
+          if (!finished) {
+            out.append("We could not find a portfolio with that name.")
+                    .append(System.lineSeparator());
+          }
+          break;
+        case 11:
+          out.append("Which portfolio's value distribution would you like to view?")
+                  .append(System.lineSeparator());
+          portfolioChoice = scanner.next();
+          date = promptForValidDate("Date?", scanner);
+          finished = false;
+          for (Portfolio portfolio : loPortfolio) {
+            if (portfolio.getName().equals(portfolioChoice)) {
+              finished = true;
+              Map<String, Double> distribution = portfolio.getDistributionOfValue(date, api, library);
+              out.append("Value distribution on " + date + ":").append(System.lineSeparator());
+              for (Map.Entry<String, Double> entry : distribution.entrySet()) {
+                out.append(entry.getKey() + ": " + entry.getValue()).append(System.lineSeparator());
+              }
+            }
+          }
+          if (!finished) {
+            out.append("We could not find a portfolio with that name.")
+                    .append(System.lineSeparator());
+          }
+          break;
+        case 12:
           quit = true;
           break;
         default:
           out.append("Invalid choice").append(System.lineSeparator());
       }
     }
+  }
+
+  private boolean portfolioExists(String portfolioName) {
+    for (Portfolio portfolio : loPortfolio) {
+      if (portfolio.getName().equals(portfolioName)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private String promptForValidDate(String prompt, Scanner scanner) throws IOException {
@@ -348,8 +423,8 @@ public class StockController implements Controller {
 
     // Define multiple date formats
     SimpleDateFormat[] possibleFormats = new SimpleDateFormat[]{
-        new SimpleDateFormat("M/d/yyyy"),
-        new SimpleDateFormat("yyyy-MM-dd")
+            new SimpleDateFormat("M/d/yyyy"),
+            new SimpleDateFormat("yyyy-MM-dd")
     };
     SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
 
