@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,7 +92,7 @@ public class Portfolio implements IPortfolio {
         String[] parts = line.split("=");
         String[] stockInfo = parts[1].split(",");
         String symbol = parts[0];
-        int quantity = Integer.parseInt(stockInfo[0]);
+        double quantity = Double.parseDouble(stockInfo[0]);
         String date = stockInfo[1];
         Stock stock = new Stock(date, 0, 0, 0, 0, quantity);
         stocks.computeIfAbsent(symbol, k -> new ArrayList<>()).add(stock);
@@ -111,7 +112,7 @@ public class Portfolio implements IPortfolio {
    * @param date        Date of the transaction.
    */
   @Override
-  public void addStock(String stockSymbol, int quantity, String date) throws IllegalArgumentException, ParseException {
+  public void addStock(String stockSymbol, double quantity, String date) throws IllegalArgumentException, ParseException {
     if (quantity <= 0) {
       throw new IllegalArgumentException("Negative or 0 quantity not allowed");
     }
@@ -128,7 +129,7 @@ public class Portfolio implements IPortfolio {
    * @param quantity    Quantity of shares.
    * @param date        Date of the transaction.
    */
-  public void removeStock(String stockSymbol, int quantity, String date) throws IllegalArgumentException, ParseException {
+  public void removeStock(String stockSymbol, double quantity, String date) throws IllegalArgumentException, ParseException {
     if (quantity <= 0) {
       throw new IllegalArgumentException("Negative or 0 quantity not allowed");
     }
@@ -138,7 +139,7 @@ public class Portfolio implements IPortfolio {
       throw new IllegalArgumentException("Stock not found in portfolio");
     }
 
-    int remainingQuantity = quantity;
+    double remainingQuantity = quantity;
     for (int i = 0; i < stockList.size(); i++) {
       Stock stock = stockList.get(i);
       if (stock.getDate().compareTo(date) <= 0) {
@@ -176,7 +177,7 @@ public class Portfolio implements IPortfolio {
       for (Map.Entry<String, List<Stock>> entry : stocks.entrySet()) {
         String symbol = entry.getKey();
         List<Stock> stockList = entry.getValue();
-        int totalQuantity = 0;
+        double totalQuantity = 0;
 
         for (Stock stock : stockList) {
           if (stock.getDate().compareTo(date) <= 0) {
@@ -217,12 +218,12 @@ public class Portfolio implements IPortfolio {
    * @param date Date to determine the composition.
    * @return Map of stock symbols and their quantities.
    */
-  public Map<String, Integer> getComposition(String date) {
-    Map<String, Integer> composition = new HashMap<>();
+  public Map<String, Double> getComposition(String date) {
+    Map<String, Double> composition = new HashMap<>();
     for (Map.Entry<String, List<Stock>> entry : stocks.entrySet()) {
       String symbol = entry.getKey();
       List<Stock> stockList = entry.getValue();
-      int totalQuantity = 0;
+      double totalQuantity = 0;
 
       for (Stock stock : stockList) {
         if (stock.getDate().compareTo(date) <= 0) {
@@ -252,7 +253,7 @@ public class Portfolio implements IPortfolio {
     for (Map.Entry<String, List<Stock>> entry : stocks.entrySet()) {
       String symbol = entry.getKey();
       List<Stock> stockList = entry.getValue();
-      int totalQuantity = 0;
+      double totalQuantity = 0;
 
       for (Stock stock : stockList) {
         if (stock.getDate().compareTo(date) <= 0) {
@@ -284,9 +285,51 @@ public class Portfolio implements IPortfolio {
     return distribution;
   }
 
-  @Override
   public void rebalancePortfolio(String date, IAlphaAPIInterface api, Map<String, List<Stock>> library, Map<String, Double> weights) throws IOException {
+    double totalValue = calculatePortfolioValue(date, api, library);
 
+    Map<String, List<Stock>> newStocks = new HashMap<>();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    Date rebalanceDate;
+
+    try {
+      rebalanceDate = sdf.parse(date);
+    } catch (ParseException e) {
+      throw new RuntimeException("Invalid date format: " + date);
+    }
+
+    for (String symbol : stocks.keySet()) {
+      List<Stock> stockData = library.get(symbol);
+      if (stockData == null) {
+        throw new RuntimeException("No data available for the symbol: " + symbol);
+      }
+
+      double closingPrice = 0.0;
+      for (Stock stock : stockData) {
+        if (stock.getDate().equals(date)) {
+          closingPrice = stock.getClosingPrice();
+          break;
+        }
+      }
+
+      if (closingPrice == 0.0) {
+        throw new RuntimeException("No data available for the symbol: " + symbol + " on date: " + date);
+      }
+
+      double intendedValue = totalValue * weights.get(symbol);
+      double newQuantity = intendedValue / closingPrice;
+
+      if (newQuantity < 0) {
+        throw new RuntimeException("Rebalancing would result in a negative quantity for symbol: " + symbol);
+      }
+
+      // Update the newStocks map with the new quantity
+      List<Stock> stockList = new ArrayList<>();
+      stockList.add(new Stock(date, 0, 0, 0, closingPrice, newQuantity));
+      newStocks.put(symbol, stockList);
+    }
+
+    this.stocks = newStocks;
   }
 
   /**

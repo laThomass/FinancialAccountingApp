@@ -307,48 +307,81 @@ public class StockController implements Controller {
           }
           break;
         case 10:
-          out.append("Which portfolio's composition would you like to view?")
+          out.append("Which portfolio would you like to view the composition of?")
                   .append(System.lineSeparator());
           portfolioChoice = scanner.next();
           date = promptForValidDate("Date?", scanner);
-          finished = false;
+          boolean exists = false;
           for (Portfolio portfolio : loPortfolio) {
             if (portfolio.getName().equals(portfolioChoice)) {
-              finished = true;
-              Map<String, Integer> composition = portfolio.getComposition(date);
-              out.append("Composition on " + date + ":").append(System.lineSeparator());
-              for (Map.Entry<String, Integer> entry : composition.entrySet()) {
-                out.append(entry.getKey() + ": " + entry.getValue()).append(System.lineSeparator());
+              exists = true;
+              Map<String, Double> composition = portfolio.getComposition(date);
+              out.append("Composition on " + date + ": ").append(System.lineSeparator());
+              for (Map.Entry<String, Double> entry : composition.entrySet()) {
+                out.append(entry.getKey() + ": " + entry.getValue() + " shares").append(System.lineSeparator());
               }
             }
           }
-          if (!finished) {
-            out.append("We could not find a portfolio with that name.")
-                    .append(System.lineSeparator());
+          if (!exists) {
+            out.append("We could not find a portfolio with that name.").append(System.lineSeparator());
           }
           break;
         case 11:
-          out.append("Which portfolio's value distribution would you like to view?")
+          out.append("Which portfolio would you like to view the distribution of value of?")
                   .append(System.lineSeparator());
           portfolioChoice = scanner.next();
           date = promptForValidDate("Date?", scanner);
-          finished = false;
+          boolean present = false;
           for (Portfolio portfolio : loPortfolio) {
             if (portfolio.getName().equals(portfolioChoice)) {
-              finished = true;
+              present = true;
               Map<String, Double> distribution = portfolio.getDistributionOfValue(date, api, library);
-              out.append("Value distribution on " + date + ":").append(System.lineSeparator());
+              out.append("Distribution of value on " + date + ": ").append(System.lineSeparator());
               for (Map.Entry<String, Double> entry : distribution.entrySet()) {
-                out.append(entry.getKey() + ": " + entry.getValue()).append(System.lineSeparator());
+                out.append(entry.getKey() + ": $" + entry.getValue()).append(System.lineSeparator());
               }
             }
           }
-          if (!finished) {
-            out.append("We could not find a portfolio with that name.")
-                    .append(System.lineSeparator());
+          if (!present) {
+            out.append("We could not find a portfolio with that name.").append(System.lineSeparator());
           }
           break;
         case 12:
+          out.append("Which portfolio would you like to rebalance?")
+                  .append(System.lineSeparator());
+          portfolioChoice = scanner.next();
+          boolean portfolioFound = false;
+          for (Portfolio portfolio : loPortfolio) {
+            if (portfolio.getName().equals(portfolioChoice)) {
+              portfolioFound = true;
+              date = promptForValidDate("Date?", scanner);
+              Map<String, Double> weights = new HashMap<>();
+              boolean weightDone = false;
+              while (!weightDone) {
+                out.append("Please enter stock symbol and its weight (e.g., AAPL 0.25). Enter 'stop' to finish.")
+                        .append(System.lineSeparator());
+                String input = scanner.next();
+                if (input.equalsIgnoreCase("stop")) {
+                  weightDone = true;
+                } else {
+                  String symbol = input.toUpperCase();
+                  double weight = scanner.nextDouble();
+                  weights.put(symbol, weight);
+                }
+              }
+              try {
+                portfolio.rebalancePortfolio(date, api, library, weights);
+                out.append("Portfolio rebalanced successfully.").append(System.lineSeparator());
+              } catch (Exception e) {
+                out.append("Error during rebalancing: ").append(e.getMessage()).append(System.lineSeparator());
+              }
+            }
+          }
+          if (!portfolioFound) {
+            out.append("We could not find a portfolio with that name.").append(System.lineSeparator());
+          }
+          break;
+        case 13:
           quit = true;
           break;
         default:
@@ -356,6 +389,7 @@ public class StockController implements Controller {
       }
     }
   }
+
 
   private boolean portfolioExists(String portfolioName) {
     for (Portfolio portfolio : loPortfolio) {

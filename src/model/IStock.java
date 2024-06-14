@@ -51,7 +51,7 @@ public interface IStock {
    *
    * @return the volume of the stock
    */
-  int getVolume();
+  double getVolume();
 
   /**
    * Calculates the gain or loss percentage of a stock over a specified period.

@@ -22,7 +22,7 @@ public class Stock implements IStock {
   private final double closingPrice;
   private final double highPrice;
   private final double lowPrice;
-  private final int volume;
+  private final double volume;
 
   /**
    * Constructor for stock.
@@ -37,7 +37,7 @@ public class Stock implements IStock {
 
   public Stock(String date, double openingPrice,
                double highPrice, double lowPrice,
-               double closingPrice, int volume) {
+               double closingPrice, double volume) {
     this.date = date;
     this.openingPrice = openingPrice;
     this.closingPrice = closingPrice;
@@ -101,7 +101,7 @@ public class Stock implements IStock {
    *
    * @return int volume
    */
-  public int getVolume() {
+  public double getVolume() {
     return volume;
   }
 

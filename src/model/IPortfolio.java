@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Map;
 import java.util.List;
-import java.io.Serializable;
 
 /**
  * Interface representing a Portfolio model.
@@ -20,7 +19,7 @@ public interface IPortfolio {
    * @param quantity    the quantity of the stock to be added
    */
 //  public void addStock(String stockSymbol, int quantity,) throws IOException;
-  public void addStock(String stockSymbol, int quantity, String date) throws IOException, ParseException;
+  public void addStock(String stockSymbol, double quantity, String date) throws IllegalArgumentException, ParseException;
 
   /**
    * Calculates the total value of the portfolio on a given date.
@@ -52,7 +51,7 @@ public interface IPortfolio {
    *
    * @return a map where the keys are stock symbols and the values are quantities
    */
-  Map<String, List<Stock>> getStocks();
+  public Map<String, List<Stock>> getStocks();
 
 }
 
