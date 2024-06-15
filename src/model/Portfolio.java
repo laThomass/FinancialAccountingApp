@@ -32,7 +32,7 @@ public class Portfolio implements IPortfolio {
     return new Portfolio(name, stocks);
   }
 
-  public static void savePortfolio(Portfolio p, File file) throws IOException {
+  public static void savePortfolio(IPortfolio p, File file) throws IOException {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
       writer.write(p.getName());
       writer.write("\n");
@@ -77,7 +77,13 @@ public class Portfolio implements IPortfolio {
     if (quantity <= 0) {
       throw new IllegalArgumentException("Negative or 0 quantity not allowed");
     }
+
     stockSymbol = stockSymbol.toUpperCase();
+
+    if (!isValidTicker(stockSymbol)) {
+      throw new IllegalArgumentException("Invalid stock ticker. Please enter a valid ticker.");
+    }
+
     Stock stock = new Stock(date, 0, 0, 0, 0, quantity);
     stocks.computeIfAbsent(stockSymbol, k -> new ArrayList<>()).add(stock);
     this.dateList.addPortfolio(this, new SimpleDateFormat("yyyy-MM-dd").parse(date));
@@ -350,34 +356,20 @@ public class Portfolio implements IPortfolio {
     System.out.println("\nScale: * = $" + scale);
   }
 
-
-  private double getInterpolatedPrice(String date, List<Stock> data) {
-    LocalDate targetDate = LocalDate.parse(date);
-    Stock previous = null, next = null;
-
-    for (Stock stock : data) {
-      LocalDate stockDate = LocalDate.parse(stock.getDate());
-      if (!stockDate.isAfter(targetDate)) {
-        previous = stock;
-      }
-      if (stockDate.isAfter(targetDate)) {
-        next = stock;
-        break;
+  private boolean isValidTicker(String ticker) {
+    if (ticker == null || ticker.isEmpty()) {
+      return false;
+    }
+    int length = ticker.length();
+    if ((length < 1 || length > 4) && !ticker.matches("^[A-Z]{4,5}$")) {
+      return false;
+    }
+    for (char c : ticker.toCharArray()) {
+      if (!Character.isLetter(c) && c != '.' && c != '-') {
+        return false;
       }
     }
-
-    if (previous != null && next != null && !previous.getDate().equals(next.getDate())) {
-      LocalDate prevDate = LocalDate.parse(previous.getDate());
-      LocalDate nextDate = LocalDate.parse(next.getDate());
-      double prevPrice = previous.getClosingPrice();
-      double nextPrice = next.getClosingPrice();
-
-      double interpolatedPrice = prevPrice + (nextPrice - prevPrice) * (double) ChronoUnit.DAYS.between(prevDate, targetDate) / ChronoUnit.DAYS.between(prevDate, nextDate);
-      return interpolatedPrice;
-    } else if (previous != null) {
-      return previous.getClosingPrice();
-    } else {
-      return 0.0;
-    }
+    return true;
   }
+
 }

@@ -161,14 +161,16 @@ public class ControllerTest {
     List<String> actualOutputLines = Arrays.asList(actualOutput.split("\\r?\\n"));
 
     List<String> expectedOutput = Arrays.asList(
-            "Please enter your choice as the associated number: Please enter the name of your new portfolio.",
+            "Please enter your choice as the associated number: Please enter the name of your" +
+                    " new portfolio.",
             "Would you like to add stocks to your portfolio immediately?",
             "Please enter your desired stock in ticker form. To abort at any time, enter 'stop'.",
             "Please enter your desired quantity.",
             "Date?",
             "Please enter your desired stock in ticker form. To abort at any time, enter 'stop'.",
             "Portfolio created with name NewP and 1 stocks.",
-            "Please enter your choice as the associated number: Which portfolio would you like to sell from?",
+            "Please enter your choice as the associated number: Which portfolio would you like" +
+                    " to sell from?",
             "Please enter your desired stock in ticker form.",
             "Please enter your desired quantity.",
             "Date?",
@@ -314,8 +316,8 @@ public class ControllerTest {
 
   @Test
   public void testRebalancePortfolio() throws Exception {
-    String simulatedUserInput = "4\nNewP\nYes\nGOOG\n20\n2020-10-20\nstop\n5\nNewP" +
-            "\nNVDA\n10\n2022-10-30\n12\nNewP\n2020-11-21\nGOOG 0.30\nNVDA 0.70\nstop\n14\n";
+    String simulatedUserInput = "4\nNewP\nYes\nGOOG\n20\n2022-10-20\nstop\n5\nNewP" +
+            "\nNVDA\n10\n2022-10-30\n12\nNewP\n2023-11-21\nGOOG 0.30\nNVDA 0.70\nstop\n14\n";
     ByteArrayInputStream inputStream = new ByteArrayInputStream(simulatedUserInput.getBytes());
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     PrintStream printStream = new PrintStream(outputStream);

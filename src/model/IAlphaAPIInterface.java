@@ -18,4 +18,7 @@ public interface IAlphaAPIInterface {
    * @throws IOException if there is an issue fetching data
    */
   public List<Stock> fetchData(String symbol, Map<String, List<Stock>> library) throws IOException;
+
+  boolean isValidStock(String ticker) throws IOException;
+
 }

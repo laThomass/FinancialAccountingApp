@@ -6,10 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="dfc67e2f-4c5e-4173-afdf-97bc99cb714d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/New9.txt" beforeDir="false" afterPath="$PROJECT_DIR$/New9.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/StockController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/AlphaAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/AlphaAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/IAlphaAPIInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/IAlphaAPIInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/IPortfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/IPortfolio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/IPortfolioDateList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/IPortfolioDateList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/Portfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Portfolio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/PortfolioDateList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/PortfolioDateList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/controller/ControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/controller/ControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/model/MockAlphaAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/model/MockAlphaAPI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/model/PortfolioTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/model/PortfolioTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,53 +43,55 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.AlphaVantageDemo.executor": "Run",
-    "Application.HelloSerializationFile.executor": "Run",
-    "Application.Main.executor": "Run",
-    "Downloaded.Files.Path.Enabled": "false",
-    "JUnit.ControllerTest.executor": "Run",
-    "JUnit.ControllerTest.testAddPortfolio.executor": "Run",
-    "JUnit.ControllerTest.testAddStockToPortfolio.executor": "Run",
-    "JUnit.ControllerTest.testCalculatePortfolio.executor": "Run",
-    "JUnit.ControllerTest.testControllerViewGainAverage.executor": "Run",
-    "JUnit.ControllerTest.testLoadPortfolio.executor": "Run",
-    "JUnit.ControllerTest.testRebalancePortfolio.executor": "Run",
-    "JUnit.ControllerTest.testSellStockFromPortfolio.executor": "Run",
-    "JUnit.ControllerTest.testViewCompostion.executor": "Run",
-    "JUnit.ControllerTest.testViewDistribution.executor": "Run",
-    "JUnit.ControllerTest.testViewMovingAverage.executor": "Run",
-    "JUnit.ControllerTest.testViewPerformace.executor": "Run",
-    "JUnit.ControllerTest.testViewPerformance.executor": "Run",
-    "JUnit.PortfolioTest.executor": "Run",
-    "JUnit.PortfolioTest.testCalculatePortfolioValueMultipleStocks.executor": "Run",
-    "JUnit.PortfolioTest.testCalculatePortfolioValueOnNonTradingDay.executor": "Run",
-    "JUnit.PortfolioTest.testPrintPortfolioPerformanceChart.executor": "Run",
-    "JUnit.PortfolioTest.testRebalancePortfolio.executor": "Run",
-    "JUnit.PortfolioTest.testRebalancePortfolioInvalidWeights.executor": "Run",
-    "JUnit.PortfolioTest.testRemoveStock.executor": "Run",
-    "JUnit.PortfolioTest.testRemoveStockEdgeCases.executor": "Run",
-    "JUnit.PortfolioTest.testRemoveStockZeroQuantity.executor": "Run",
-    "JUnit.StockTest.executor": "Run",
-    "JUnit.StockViewTest.executor": "Run",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "new-branch-assignment5",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/CS3500/Assignment5Stocks/src",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/CS3500/Assignment5Stocks/src/Main.java",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.AlphaVantageDemo.executor&quot;: &quot;Run&quot;,
+    &quot;Application.HelloSerializationFile.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;JUnit.ControllerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ControllerTest.testAddPortfolio.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ControllerTest.testAddStockToPortfolio.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ControllerTest.testCalculatePortfolio.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ControllerTest.testControllerViewGainAverage.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ControllerTest.testLoadPortfolio.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ControllerTest.testRebalancePortfolio.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ControllerTest.testSellStockFromPortfolio.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ControllerTest.testViewCompostion.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ControllerTest.testViewDistribution.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ControllerTest.testViewMovingAverage.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ControllerTest.testViewPerformace.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ControllerTest.testViewPerformance.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PortfolioTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PortfolioTest.testAddInvalidStock.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PortfolioTest.testCalculatePortfolioValueMultipleStocks.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PortfolioTest.testCalculatePortfolioValueOnNonTradingDay.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PortfolioTest.testCreatePortfolio.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PortfolioTest.testPrintPortfolioPerformanceChart.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PortfolioTest.testRebalancePortfolio.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PortfolioTest.testRebalancePortfolioInvalidWeights.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PortfolioTest.testRemoveStock.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PortfolioTest.testRemoveStockEdgeCases.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PortfolioTest.testRemoveStockZeroQuantity.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StockTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StockViewTest.executor&quot;: &quot;Run&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;new-branch-assignment5&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/CS3500/Assignment5Stocks/src&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/CS3500/Assignment5Stocks/src/Main.java&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\CS3500\Assignment5Stocks\src" />
@@ -118,7 +126,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ControllerTest.testViewCompostion" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ControllerTest.testControllerViewGainAverage" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Assignment5Stocks" />
       <extension name="coverage">
         <pattern>
@@ -128,7 +136,23 @@
       </extension>
       <option name="PACKAGE_NAME" value="controller" />
       <option name="MAIN_CLASS_NAME" value="controller.ControllerTest" />
-      <option name="METHOD_NAME" value="testViewCompostion" />
+      <option name="METHOD_NAME" value="testControllerViewGainAverage" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ControllerTest.testRebalancePortfolio" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Assignment5Stocks" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="controller" />
+      <option name="MAIN_CLASS_NAME" value="controller.ControllerTest" />
+      <option name="METHOD_NAME" value="testRebalancePortfolio" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -149,42 +173,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PortfolioTest.testPrintPortfolioPerformanceChart" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Assignment5Stocks" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="model.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="model" />
-      <option name="MAIN_CLASS_NAME" value="model.PortfolioTest" />
-      <option name="METHOD_NAME" value="testPrintPortfolioPerformanceChart" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="Assignment5Stocks" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="Assignment5Stocks" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.AlphaVantageDemo" />
-        <item itemvalue="JUnit.PortfolioTest" />
-        <item itemvalue="JUnit.PortfolioTest.testPrintPortfolioPerformanceChart" />
-        <item itemvalue="JUnit.ControllerTest.testViewCompostion" />
         <item itemvalue="JUnit.ControllerTest" />
+        <item itemvalue="JUnit.PortfolioTest" />
+        <item itemvalue="JUnit.ControllerTest.testControllerViewGainAverage" />
+        <item itemvalue="JUnit.ControllerTest.testRebalancePortfolio" />
       </list>
     </recent_temporary>
   </component>
@@ -316,15 +311,29 @@
           </properties>
           <option name="timeStamp" value="27" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/tests/controller/ControllerTest.java</url>
+          <line>317</line>
+          <properties class="controller.ControllerTest" method="testRebalancePortfolio">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/tests/controller/ControllerTest.java</url>
-          <line>316</line>
+          <line>318</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/tests/controller/ControllerTest.java</url>
-          <line>362</line>
+          <line>364</line>
           <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/tests/model/PortfolioTest.java</url>
+          <line>22</line>
+          <option name="timeStamp" value="38" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

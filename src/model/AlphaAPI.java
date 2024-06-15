@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -85,6 +86,16 @@ public class AlphaAPI implements IAlphaAPIInterface {
       }
 
       return stocks;
+    }
+  }
+
+  @Override
+  public boolean isValidStock(String ticker) throws IOException {
+    try {
+      fetchData(ticker, new HashMap<>());
+      return true;
+    } catch (IOException e) {
+      return false;
     }
   }
 }

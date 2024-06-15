@@ -174,24 +174,36 @@ public class PortfolioTest {
   public void testRebalancePortfolio() throws Exception {
     // Set up initial stock data
     Map<String, List<Stock>> library = new HashMap<>();
-    library.put("NFLX", List.of(new Stock("2022-01-01", 0, 0, 0, 10, 0)));
-    library.put("GOOG", List.of(new Stock("2022-01-01", 0, 0, 0, 25, 0)));
-    library.put("MSFT", List.of(new Stock("2022-01-01", 0, 0, 0, 10, 0)));
-    library.put("AAPL", List.of(new Stock("2022-01-01", 0, 0, 0, 50, 0)));
+    library.put("NFLX", List.of(new Stock("2022-01-01", 0, 0,
+            0, 10, 0)));
+    library.put("GOOG", List.of(new Stock("2022-01-01", 0, 0,
+            0, 25, 0)));
+    library.put("MSFT", List.of(new Stock("2022-01-01", 0, 0,
+            0, 10, 0)));
+    library.put("AAPL", List.of(new Stock("2022-01-01", 0, 0,
+            0, 50, 0)));
 
     Map<String, List<Stock>> stocks = new HashMap<>();
-    stocks.put("NFLX", List.of(new Stock("2022-01-01", 0, 0, 0, 10, 25)));
-    stocks.put("GOOG", List.of(new Stock("2022-01-01", 0, 0, 0, 25, 10)));
-    stocks.put("MSFT", List.of(new Stock("2022-01-01", 0, 0, 0, 10, 25)));
-    stocks.put("AAPL", List.of(new Stock("2022-01-01", 0, 0, 0, 50, 5)));
+    stocks.put("NFLX", List.of(new Stock("2022-01-01", 0, 0,
+            0, 10, 25)));
+    stocks.put("GOOG", List.of(new Stock("2022-01-01", 0, 0,
+            0, 25, 10)));
+    stocks.put("MSFT", List.of(new Stock("2022-01-01", 0, 0,
+            0, 10, 25)));
+    stocks.put("AAPL", List.of(new Stock("2022-01-01", 0, 0,
+            0, 50, 5)));
 
     Portfolio portfolio = Portfolio.createPortfolio("TestPortfolio", stocks);
 
     // Change stock prices
-    library.put("NFLX", List.of(new Stock("2022-02-01", 0, 0, 0, 15, 0)));
-    library.put("GOOG", List.of(new Stock("2022-02-01", 0, 0, 0, 30, 0)));
-    library.put("MSFT", List.of(new Stock("2022-02-01", 0, 0, 0, 10, 0)));
-    library.put("AAPL", List.of(new Stock("2022-02-01", 0, 0, 0, 30, 0)));
+    library.put("NFLX", List.of(new Stock("2022-02-01", 0, 0,
+            0, 15, 0)));
+    library.put("GOOG", List.of(new Stock("2022-02-01", 0, 0,
+            0, 30, 0)));
+    library.put("MSFT", List.of(new Stock("2022-02-01", 0, 0,
+            0, 10, 0)));
+    library.put("AAPL", List.of(new Stock("2022-02-01", 0, 0,
+            0, 30, 0)));
 
     // Rebalance portfolio
     Map<String, Double> weights = new HashMap<>();
@@ -471,7 +483,6 @@ public class PortfolioTest {
   }
 
 
-
   @Test
   public void testCalculatePortfolioValueEdgeCases() {
     try {
@@ -483,12 +494,14 @@ public class PortfolioTest {
       mockAPI.fetchData("AAPL", library);
 
       // Edge case: Calculate value on a date with no stock data
-      double value = portfolio.calculatePortfolioValue("2019-01-01", mockAPI, library);
+      double value = portfolio.calculatePortfolioValue("2019-01-01",
+              mockAPI, library);
       assertEquals(0.0, value, 0.001);
 
       // Edge case: Calculate value with no stocks in portfolio
       Portfolio emptyPortfolio = Portfolio.createPortfolio("EmptyPortfolio");
-      double emptyValue = emptyPortfolio.calculatePortfolioValue("2020-01-01", mockAPI, library);
+      double emptyValue = emptyPortfolio.calculatePortfolioValue("2020-01-01",
+              mockAPI, library);
       assertEquals(0.0, emptyValue, 0.001);
     } catch (Exception e) {
       fail("Test failed: " + e.getMessage());
@@ -507,7 +520,8 @@ public class PortfolioTest {
 
       // Edge case: Get composition with no stocks in portfolio
       Portfolio emptyPortfolio = Portfolio.createPortfolio("EmptyPortfolio");
-      Map<String, Double> emptyPortfolioComposition = emptyPortfolio.getComposition("2020-01-01");
+      Map<String, Double> emptyPortfolioComposition = emptyPortfolio
+              .getComposition("2020-01-01");
       assertTrue(emptyPortfolioComposition.isEmpty());
     } catch (Exception e) {
       fail("Test failed: " + e.getMessage());
@@ -525,12 +539,14 @@ public class PortfolioTest {
       mockAPI.fetchData("AAPL", library);
 
       // Edge case: Get distribution of value on a date with no stock data
-      Map<String, Double> emptyDistribution = portfolio.getDistributionOfValue("2019-01-01", mockAPI, library);
+      Map<String, Double> emptyDistribution = portfolio
+              .getDistributionOfValue("2019-01-01", mockAPI, library);
       assertTrue(emptyDistribution.isEmpty());
 
       // Edge case: Get distribution of value with no stocks in portfolio
       Portfolio emptyPortfolio = Portfolio.createPortfolio("EmptyPortfolio");
-      Map<String, Double> emptyPortfolioDistribution = emptyPortfolio.getDistributionOfValue("2020-01-01", mockAPI, library);
+      Map<String, Double> emptyPortfolioDistribution = emptyPortfolio
+              .getDistributionOfValue("2020-01-01", mockAPI, library);
       assertTrue(emptyPortfolioDistribution.isEmpty());
     } catch (Exception e) {
       fail("Test failed: " + e.getMessage());
@@ -548,12 +564,14 @@ public class PortfolioTest {
       mockAPI.fetchData("AAPL", library);
 
       // Edge case: Get values over time for a date range with no stock data
-      Map<String, Double> emptyValuesOverTime = portfolio.getPortfolioValuesOverTime("2019-01-01", "2019-03-01", mockAPI, library);
+      Map<String, Double> emptyValuesOverTime = portfolio
+              .getPortfolioValuesOverTime("2019-01-01", "2019-03-01", mockAPI, library);
       assertTrue(emptyValuesOverTime.isEmpty());
 
       // Edge case: Get values over time with no stocks in portfolio
       Portfolio emptyPortfolio = Portfolio.createPortfolio("EmptyPortfolio");
-      Map<String, Double> emptyPortfolioValuesOverTime = emptyPortfolio.getPortfolioValuesOverTime("2020-01-01", "2020-03-01", mockAPI, library);
+      Map<String, Double> emptyPortfolioValuesOverTime = emptyPortfolio
+              .getPortfolioValuesOverTime("2020-01-01", "2020-03-01", mockAPI, library);
       assertTrue(emptyPortfolioValuesOverTime.isEmpty());
     } catch (Exception e) {
       fail("Test failed: " + e.getMessage());
@@ -571,23 +589,32 @@ public class PortfolioTest {
 
     // Add stocks to the library
     List<Stock> googData = Arrays.asList(
-            new Stock("2020-01-01", 1400, 1500, 1300, 1450, 1000),
-            new Stock("2021-01-01", 1500, 1600, 1400, 1550, 2000),
-            new Stock("2022-01-01", 1600, 1700, 1500, 1650, 3000)
+            new Stock("2020-01-01", 1400, 1500, 1300,
+                    1450, 1000),
+            new Stock("2021-01-01", 1500, 1600, 1400,
+                    1550, 2000),
+            new Stock("2022-01-01", 1600, 1700, 1500,
+                    1650, 3000)
     );
     library.put("GOOG", googData);
 
     List<Stock> aaplData = Arrays.asList(
-            new Stock("2020-01-01", 300, 320, 290, 310, 1000),
-            new Stock("2021-01-01", 320, 340, 300, 330, 2000),
-            new Stock("2022-01-01", 340, 360, 320, 350, 3000)
+            new Stock("2020-01-01", 300, 320, 290,
+                    310, 1000),
+            new Stock("2021-01-01", 320, 340, 300,
+                    330, 2000),
+            new Stock("2022-01-01", 340, 360, 320,
+                    350, 3000)
     );
     library.put("AAPL", aaplData);
 
     List<Stock> nvdaData = Arrays.asList(
-            new Stock("2020-01-01", 200, 220, 190, 210, 1000),
-            new Stock("2021-01-01", 220, 240, 200, 230, 2000),
-            new Stock("2022-01-01", 240, 260, 220, 250, 3000)
+            new Stock("2020-01-01", 200, 220, 190,
+                    210, 1000),
+            new Stock("2021-01-01", 220, 240, 200,
+                    230, 2000),
+            new Stock("2022-01-01", 240, 260, 220,
+                    250, 3000)
     );
     library.put("NVDA", nvdaData);
 
@@ -605,6 +632,23 @@ public class PortfolioTest {
     assertEquals(10 * 1650 + 20 * 350 + 30 * 250, valueOn2022, 0.01);
     assertEquals(10 * 1550 + 20 * 330 + 30 * 230, valueOn2021, 0.01);
     assertEquals(10 * 1450 + 20 * 310 + 30 * 210, valueOn2020, 0.01);
+  }
+
+  @Test
+  public void testAddInvalidStock() {
+    Portfolio portfolio = Portfolio.createPortfolio("TestPortfolio");
+
+    try {
+      portfolio.addStock("IMASTOCKKKKKK", 10, "2020-01-01");
+      fail("Expected IllegalArgumentException for invalid stock ticker");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Invalid stock ticker. Please enter a valid ticker.", e.getMessage());
+    } catch (ParseException e) {
+      fail("Test setup failed: " + e.getMessage());
+    }
+
+    // Ensure no stocks were added to the portfolio
+    assertTrue(portfolio.getStocks().isEmpty());
   }
 
 }

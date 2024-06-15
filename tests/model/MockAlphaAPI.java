@@ -72,4 +72,9 @@ public class MockAlphaAPI implements IAlphaAPIInterface {
       throw new IOException("Mock data not available for symbol: " + symbol);
     }
   }
+
+  @Override
+  public boolean isValidStock(String ticker) throws IOException {
+    return false;
+  }
 }

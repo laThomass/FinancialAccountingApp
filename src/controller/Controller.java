@@ -23,5 +23,5 @@ public interface Controller {
    * @param name the name of the stock data file
    * @throws IOException if an I/O error occurs while reading the stock data
    */
-  void addOriginalStocksToLibrary(String name) throws IOException;
+  public void addOriginalStocksToLibrary(String name) throws IOException;
 }
