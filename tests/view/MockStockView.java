@@ -19,4 +19,9 @@ public class MockStockView implements IView {
     output.add("Displaying menu");
   }
 
+  @Override
+  public void displayMessage(String message) {
+
+  }
+
 }

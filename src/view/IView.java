@@ -4,7 +4,7 @@ package view;
  * Interface representing the view component of the Stock application.
  * It defines methods for displaying menus and messages to the user.
  */
-public interface IView {
+public interface IView  {
   /**
    * Displays the main menu.
    */
@@ -18,4 +18,6 @@ public interface IView {
   public static void display(String message) {
     System.out.println(message);
   }
+
+  public void displayMessage(String message);
 }

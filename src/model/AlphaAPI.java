@@ -19,7 +19,7 @@ public class AlphaAPI implements IAlphaAPIInterface {
   /**
    * The API key for accessing the Alpha Vantage API.
    */
-  public static final String API_KEY = "W0M1JOKC82EZEQA8";
+  public static final String API_KEY = "SRXSQHKELCOB88HS";
 
   /**
    * The base URL for the Alpha Vantage API.

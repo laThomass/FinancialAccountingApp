@@ -49,4 +49,8 @@ public class StockView implements IView {
   public static void display(String s) {
     System.out.println(s);
   }
+
+  public void displayMessage(String message){
+    System.out.println(message);
+  }
 }

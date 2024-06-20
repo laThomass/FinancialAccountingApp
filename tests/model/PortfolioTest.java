@@ -138,7 +138,8 @@ public class PortfolioTest {
       Map<String, List<Stock>> library = new HashMap<>();
       mockAPI.fetchData("AAPL", library);
 
-      Map<String, Double> distribution = portfolio.getDistributionOfValue("2020-01-01", mockAPI, library);
+      Map<String, Double> distribution = portfolio.getDistributionOfValue(
+              "2020-01-01", mockAPI, library);
       assertEquals(1, distribution.size());
       assertTrue(distribution.containsKey("AAPL"));
       assertEquals(1050.0, distribution.get("AAPL"), 0.001);
@@ -157,7 +158,8 @@ public class PortfolioTest {
       Map<String, List<Stock>> library = new HashMap<>();
       mockAPI.fetchData("AAPL", library);
 
-      Map<String, Double> valuesOverTime = portfolio.getPortfolioValuesOverTime("2020-01-01", "2020-03-01", mockAPI, library);
+      Map<String, Double> valuesOverTime = portfolio.getPortfolioValuesOverTime(
+              "2020-01-01", "2020-03-01", mockAPI, library);
       assertEquals(3, valuesOverTime.size());
       assertTrue(valuesOverTime.containsKey("2020-01-01"));
       assertTrue(valuesOverTime.containsKey("2020-02-01"));
@@ -172,7 +174,6 @@ public class PortfolioTest {
 
   @Test
   public void testRebalancePortfolio() throws Exception {
-    // Set up initial stock data
     Map<String, List<Stock>> library = new HashMap<>();
     library.put("NFLX", List.of(new Stock("2022-01-01", 0, 0,
             0, 10, 0)));
@@ -195,7 +196,6 @@ public class PortfolioTest {
 
     Portfolio portfolio = Portfolio.createPortfolio("TestPortfolio", stocks);
 
-    // Change stock prices
     library.put("NFLX", List.of(new Stock("2022-02-01", 0, 0,
             0, 15, 0)));
     library.put("GOOG", List.of(new Stock("2022-02-01", 0, 0,
@@ -205,7 +205,6 @@ public class PortfolioTest {
     library.put("AAPL", List.of(new Stock("2022-02-01", 0, 0,
             0, 30, 0)));
 
-    // Rebalance portfolio
     Map<String, Double> weights = new HashMap<>();
     weights.put("NFLX", 0.25);
     weights.put("GOOG", 0.25);
@@ -214,48 +213,57 @@ public class PortfolioTest {
 
     portfolio.rebalancePortfolio("2022-02-01", new AlphaAPI(), library, weights);
 
-    // Verify new stock quantities
     Map<String, List<Stock>> rebalancedStocks = portfolio.getStocks();
-    double delta = 0.0001; // Acceptable delta for floating-point comparisons
+    double delta = 0.0001;
 
-    assertEquals(17.916666666666668, rebalancedStocks.get("NFLX").get(0).getVolume(), delta);
-    assertEquals(8.958333333333334, rebalancedStocks.get("GOOG").get(0).getVolume(), delta);
+    assertEquals(17.916666666666668, rebalancedStocks.get("NFLX").get(0).getVolume(),
+            delta);
+    assertEquals(8.958333333333334, rebalancedStocks.get("GOOG").get(0).getVolume(),
+            delta);
     assertEquals(26.875, rebalancedStocks.get("MSFT").get(0).getVolume(), delta);
-    assertEquals(8.958333333333334, rebalancedStocks.get("AAPL").get(0).getVolume(), delta);
+    assertEquals(8.958333333333334, rebalancedStocks.get("AAPL").get(0).getVolume(),
+            delta);
   }
 
   @Test
   public void testRebalancePortfolioInvalidWeights() throws Exception {
-    // Set up initial stock data
     Map<String, List<Stock>> library = new HashMap<>();
-    library.put("NFLX", List.of(new Stock("2022-01-01", 0, 0, 0, 10, 0)));
-    library.put("GOOG", List.of(new Stock("2022-01-01", 0, 0, 0, 25, 0)));
-    library.put("MSFT", List.of(new Stock("2022-01-01", 0, 0, 0, 10, 0)));
-    library.put("AAPL", List.of(new Stock("2022-01-01", 0, 0, 0, 50, 0)));
+    library.put("NFLX", List.of(new Stock("2022-01-01", 0,
+            0, 0, 10, 0)));
+    library.put("GOOG", List.of(new Stock("2022-01-01", 0,
+            0, 0, 25, 0)));
+    library.put("MSFT", List.of(new Stock("2022-01-01", 0,
+            0, 0, 10, 0)));
+    library.put("AAPL", List.of(new Stock("2022-01-01", 0,
+            0, 0, 50, 0)));
 
-    // Create and add stocks to the portfolio
     Map<String, List<Stock>> stocks = new HashMap<>();
-    stocks.put("NFLX", List.of(new Stock("2022-01-01", 0, 0, 0, 10, 25))); // 25 shares at $10
-    stocks.put("GOOG", List.of(new Stock("2022-01-01", 0, 0, 0, 25, 10))); // 10 shares at $25
-    stocks.put("MSFT", List.of(new Stock("2022-01-01", 0, 0, 0, 10, 25))); // 25 shares at $10
-    stocks.put("AAPL", List.of(new Stock("2022-01-01", 0, 0, 0, 50, 5)));  // 5 shares at $50
+    stocks.put("NFLX", List.of(new Stock("2022-01-01", 0, 0,
+            0, 10, 25))); // 25 shares at $10
+    stocks.put("GOOG", List.of(new Stock("2022-01-01", 0, 0,
+            0, 25, 10))); // 10 shares at $25
+    stocks.put("MSFT", List.of(new Stock("2022-01-01", 0, 0,
+            0, 10, 25))); // 25 shares at $10
+    stocks.put("AAPL", List.of(new Stock("2022-01-01", 0, 0,
+            0, 50, 5)));  // 5 shares at $50
 
     Portfolio portfolio = Portfolio.createPortfolio("TestPortfolio", stocks);
 
-    // Change stock prices for the rebalance date
-    library.put("NFLX", List.of(new Stock("2022-02-01", 0, 0, 0, 15, 0))); // New price $15
-    library.put("GOOG", List.of(new Stock("2022-02-01", 0, 0, 0, 30, 0))); // New price $30
-    library.put("MSFT", List.of(new Stock("2022-02-01", 0, 0, 0, 10, 0))); // New price $10
-    library.put("AAPL", List.of(new Stock("2022-02-01", 0, 0, 0, 30, 0))); // New price $30
+    library.put("NFLX", List.of(new Stock("2022-02-01", 0, 0,
+            0, 15, 0))); // New price $15
+    library.put("GOOG", List.of(new Stock("2022-02-01", 0, 0,
+            0, 30, 0))); // New price $30
+    library.put("MSFT", List.of(new Stock("2022-02-01", 0, 0,
+            0, 10, 0))); // New price $10
+    library.put("AAPL", List.of(new Stock("2022-02-01", 0, 0,
+            0, 30, 0))); // New price $30
 
-    // Specify weights for rebalancing (weights do not add up to 100%)
     Map<String, Double> invalidWeights = new HashMap<>();
     invalidWeights.put("NFLX", 0.30);
     invalidWeights.put("GOOG", 0.30);
     invalidWeights.put("MSFT", 0.20);
     invalidWeights.put("AAPL", 0.10);
 
-    // Expect an exception to be thrown
     try {
       portfolio.rebalancePortfolio("2022-02-01", new AlphaAPI(), library, invalidWeights);
       fail("Expected IllegalArgumentException due to invalid weights");
@@ -266,7 +274,6 @@ public class PortfolioTest {
 
   @Test
   public void testPrintPortfolioPerformanceChart() {
-    // Create a portfolio and add stocks
     Portfolio portfolio = Portfolio.createPortfolio("TestPortfolio");
     try {
       portfolio.addStock("AAPL", 10, "2020-01-01");
@@ -276,7 +283,6 @@ public class PortfolioTest {
       fail("Setup failed: " + e.getMessage());
     }
 
-    // Create a mock API and preload the library with mock data
     IAlphaAPIInterface mockAPI = new AlphaAPI();
     Map<String, List<Stock>> library = new HashMap<>();
     try {
@@ -285,20 +291,16 @@ public class PortfolioTest {
       fail("Failed to fetch mock data: " + e.getMessage());
     }
 
-    // Redirect the console output to capture the chart
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     System.setOut(new PrintStream(outputStream));
 
-    // Call the method to print the performance chart
     portfolio.printPortfolioPerformanceChart("2020-01-01", "2020-07-01", mockAPI,
             library);
 
-    // Reset the standard output
     System.setOut(System.out);
 
-    // Verify the output
-    String expectedOutput = "Performance of portfolio TestPortfolio from 2020-01-01 to 2020-07-01\n" +
-            "\n" +
+    String expectedOutput = "Performance of portfolio TestPortfolio from 2020-01-01 to 2020-07-01\n"
+            + "\n" +
             "2020-01-01: ***********\n" +
             "2020-01-08: ***********\n" +
             "2020-01-15: ***********\n" +
@@ -329,17 +331,17 @@ public class PortfolioTest {
             "\n" +
             "Scale: * = $69.858\n";
 
+
     assertEquals(expectedOutput, outputStream.toString());
+
   }
 
   @Test
   public void testCreatePortfolioEdgeCases() {
-    // Edge case: Create portfolio with an empty name
     Portfolio portfolio = Portfolio.createPortfolio("");
     assertEquals("", portfolio.getName());
     assertTrue(portfolio.getStocks().isEmpty());
 
-    // Edge case: Create portfolio with a very long name
     String longName = "TestPortfolio".repeat(1000);
     Portfolio longNamePortfolio = Portfolio.createPortfolio(longName);
     assertEquals(longName, longNamePortfolio.getName());
@@ -349,7 +351,6 @@ public class PortfolioTest {
   @Test
   public void testSaveAndLoadPortfolioEdgeCases() {
     try {
-      // Edge case: Save and load a portfolio with no stocks
       Portfolio emptyPortfolio = Portfolio.createPortfolio("EmptyPortfolio");
       File emptyFile = File.createTempFile("emptyPortfolio", ".txt");
       Portfolio.savePortfolio(emptyPortfolio, emptyFile);
@@ -358,7 +359,6 @@ public class PortfolioTest {
       assertEquals(emptyPortfolio.getStocks(), loadedEmptyPortfolio.getStocks());
       assertTrue(emptyFile.delete());
 
-      // Edge case: Save and load a portfolio with multiple stocks
       Portfolio portfolio = Portfolio.createPortfolio("MultiStockPortfolio");
       portfolio.addStock("AAPL", 10, "2020-01-01");
       portfolio.addStock("GOOG", 20, "2020-01-01");
@@ -378,7 +378,6 @@ public class PortfolioTest {
     try {
       Portfolio portfolio = Portfolio.createPortfolio("TestPortfolio");
 
-      // Edge case: Add stock with zero quantity
       try {
         portfolio.addStock("AAPL", 0, "2020-01-01");
         fail("Expected IllegalArgumentException for zero quantity");
@@ -386,7 +385,6 @@ public class PortfolioTest {
         assertEquals("Negative or 0 quantity not allowed", e.getMessage());
       }
 
-      // Edge case: Add stock with negative quantity
       try {
         portfolio.addStock("AAPL", -5, "2020-01-01");
         fail("Expected IllegalArgumentException for negative quantity");
@@ -394,7 +392,6 @@ public class PortfolioTest {
         assertEquals("Negative or 0 quantity not allowed", e.getMessage());
       }
 
-      // Edge case: Add stock with a very large quantity
       portfolio.addStock("AAPL", 1e10, "2020-01-01");
       Map<String, List<Stock>> stocks = portfolio.getStocks();
       assertEquals(1, stocks.size());
@@ -411,7 +408,6 @@ public class PortfolioTest {
     try {
       portfolio.addStock("AAPL", 10, "2020-01-01");
 
-      // Edge case: Remove stock with zero quantity
       try {
         portfolio.removeStock("AAPL", 0, "2020-01-01");
         fail("Expected IllegalArgumentException for zero quantity");
@@ -432,7 +428,6 @@ public class PortfolioTest {
     try {
       portfolio.addStock("AAPL", 10, "2020-01-01");
 
-      // Edge case: Remove stock with negative quantity
       try {
         portfolio.removeStock("AAPL", -5, "2020-01-01");
         fail("Expected IllegalArgumentException for negative quantity");
@@ -474,7 +469,6 @@ public class PortfolioTest {
     try {
       portfolio.addStock("AAPL", 10, "2020-01-01");
 
-      // Edge case: Remove stock with exact quantity
       portfolio.removeStock("AAPL", 10, "2020-01-01");
       assertTrue(portfolio.getStocks().get("AAPL").isEmpty());
     } catch (IllegalArgumentException | ParseException e) {
@@ -493,12 +487,10 @@ public class PortfolioTest {
       Map<String, List<Stock>> library = new HashMap<>();
       mockAPI.fetchData("AAPL", library);
 
-      // Edge case: Calculate value on a date with no stock data
       double value = portfolio.calculatePortfolioValue("2019-01-01",
               mockAPI, library);
       assertEquals(0.0, value, 0.001);
 
-      // Edge case: Calculate value with no stocks in portfolio
       Portfolio emptyPortfolio = Portfolio.createPortfolio("EmptyPortfolio");
       double emptyValue = emptyPortfolio.calculatePortfolioValue("2020-01-01",
               mockAPI, library);
@@ -514,11 +506,9 @@ public class PortfolioTest {
       Portfolio portfolio = Portfolio.createPortfolio("TestPortfolio");
       portfolio.addStock("AAPL", 10, "2020-01-01");
 
-      // Edge case: Get composition on a date with no stock data
       Map<String, Double> emptyComposition = portfolio.getComposition("2019-01-01");
       assertTrue(emptyComposition.isEmpty());
 
-      // Edge case: Get composition with no stocks in portfolio
       Portfolio emptyPortfolio = Portfolio.createPortfolio("EmptyPortfolio");
       Map<String, Double> emptyPortfolioComposition = emptyPortfolio
               .getComposition("2020-01-01");
@@ -538,12 +528,10 @@ public class PortfolioTest {
       Map<String, List<Stock>> library = new HashMap<>();
       mockAPI.fetchData("AAPL", library);
 
-      // Edge case: Get distribution of value on a date with no stock data
       Map<String, Double> emptyDistribution = portfolio
               .getDistributionOfValue("2019-01-01", mockAPI, library);
       assertTrue(emptyDistribution.isEmpty());
 
-      // Edge case: Get distribution of value with no stocks in portfolio
       Portfolio emptyPortfolio = Portfolio.createPortfolio("EmptyPortfolio");
       Map<String, Double> emptyPortfolioDistribution = emptyPortfolio
               .getDistributionOfValue("2020-01-01", mockAPI, library);
@@ -563,15 +551,15 @@ public class PortfolioTest {
       Map<String, List<Stock>> library = new HashMap<>();
       mockAPI.fetchData("AAPL", library);
 
-      // Edge case: Get values over time for a date range with no stock data
       Map<String, Double> emptyValuesOverTime = portfolio
-              .getPortfolioValuesOverTime("2019-01-01", "2019-03-01", mockAPI, library);
+              .getPortfolioValuesOverTime("2019-01-01", "2019-03-01",
+                      mockAPI, library);
       assertTrue(emptyValuesOverTime.isEmpty());
 
-      // Edge case: Get values over time with no stocks in portfolio
       Portfolio emptyPortfolio = Portfolio.createPortfolio("EmptyPortfolio");
       Map<String, Double> emptyPortfolioValuesOverTime = emptyPortfolio
-              .getPortfolioValuesOverTime("2020-01-01", "2020-03-01", mockAPI, library);
+              .getPortfolioValuesOverTime("2020-01-01", "2020-03-01",
+                      mockAPI, library);
       assertTrue(emptyPortfolioValuesOverTime.isEmpty());
     } catch (Exception e) {
       fail("Test failed: " + e.getMessage());
@@ -580,14 +568,11 @@ public class PortfolioTest {
 
   @Test
   public void testCalculatePortfolioValueMultipleStocks() throws ParseException {
-    // Create a portfolio
     Portfolio portfolio = new Portfolio("TestPortfolio");
 
-    // Initialize the API and library
     IAlphaAPIInterface api = new AlphaAPI();
     Map<String, List<Stock>> library = new HashMap<>();
 
-    // Add stocks to the library
     List<Stock> googData = Arrays.asList(
             new Stock("2020-01-01", 1400, 1500, 1300,
                     1450, 1000),
@@ -618,17 +603,14 @@ public class PortfolioTest {
     );
     library.put("NVDA", nvdaData);
 
-    // Add stocks to the portfolio
     portfolio.addStock("GOOG", 10, "2020-01-01");
     portfolio.addStock("AAPL", 20, "2020-01-01");
     portfolio.addStock("NVDA", 30, "2020-01-01");
 
-    // Calculate the portfolio value for a specific date
     double valueOn2022 = portfolio.calculatePortfolioValue("2022-01-01", api, library);
     double valueOn2021 = portfolio.calculatePortfolioValue("2021-01-01", api, library);
     double valueOn2020 = portfolio.calculatePortfolioValue("2020-01-01", api, library);
 
-    // Assert the calculated values
     assertEquals(10 * 1650 + 20 * 350 + 30 * 250, valueOn2022, 0.01);
     assertEquals(10 * 1550 + 20 * 330 + 30 * 230, valueOn2021, 0.01);
     assertEquals(10 * 1450 + 20 * 310 + 30 * 210, valueOn2020, 0.01);
@@ -647,7 +629,6 @@ public class PortfolioTest {
       fail("Test setup failed: " + e.getMessage());
     }
 
-    // Ensure no stocks were added to the portfolio
     assertTrue(portfolio.getStocks().isEmpty());
   }
 

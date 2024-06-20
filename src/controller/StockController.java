@@ -36,6 +36,14 @@ public class StockController implements Controller {
 
   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+  /**
+   * Constructs a StockController with the given view, input, output, and API interface.
+   *
+   * @param stockView the view to display information to the user.
+   * @param in        the input source.
+   * @param out       the output destination.
+   * @param api       the API interface to fetch stock data.
+   */
   public StockController(IView stockView, Readable in, Appendable out, IAlphaAPIInterface api) {
     this.stockView = stockView;
     this.api = api;
@@ -45,6 +53,11 @@ public class StockController implements Controller {
     this.out = out;
   }
 
+  /**
+   * Starts the controller, displaying the menu and handling user inputs.
+   *
+   * @throws Exception if an error occurs during input or output operations
+   */
   public void start() throws Exception {
     Scanner scanner = new Scanner(in);
     boolean quit = false;
@@ -112,6 +125,121 @@ public class StockController implements Controller {
     return scanner.nextInt();
   }
 
+  // GUI methods
+  public void handleCreatePortfolioGUI(String portfolioName, boolean addStocksImmediately) throws IOException, ParseException {
+    if (portfolioExists(portfolioName)) {
+      stockView.displayMessage("A portfolio with this name already exists.");
+      return;
+    }
+    if (addStocksImmediately) {
+      Map<String, List<Stock>> stocks = new HashMap<>();
+      loPortfolio.add(Portfolio.createPortfolio(portfolioName, stocks));
+      stockView.displayMessage(String.format("Portfolio created with name %s and %d stocks.", portfolioName, stocks.size()));
+    } else {
+      loPortfolio.add(Portfolio.createPortfolio(portfolioName));
+      stockView.displayMessage("Portfolio created with name " + portfolioName);
+    }
+  }
+
+
+  public void handleAddStockToPortfolioGUI(String portfolioName, String stockSymbol, int quantity, String date) {
+    IPortfolio portfolio = getPortfolioByName(portfolioName);
+    if (portfolio != null) {
+      try {
+        portfolio.addStock(stockSymbol, quantity, date);
+        stockView.displayMessage("The stocks were added successfully.");
+      } catch (Exception e) {
+        stockView.displayMessage("Error: " + e.getMessage());
+      }
+    } else {
+      stockView.displayMessage("We could not find a portfolio with that name.");
+    }
+  }
+
+  public void handleViewPortfolioValueGUI(String portfolioName, String date) {
+    IPortfolio portfolio = getPortfolioByName(portfolioName);
+    if (portfolio != null) {
+      try {
+        double result = portfolio.calculatePortfolioValue(date, api, library);
+        stockView.displayMessage(String.format("Your portfolio's value on date %s is $%.2f.", date, result));
+      } catch (Exception e) {
+        stockView.displayMessage("Error: " + e.getMessage());
+      }
+    } else {
+      stockView.displayMessage("We could not find a portfolio with that name.");
+    }
+  }
+
+  public void handleSavePortfolioGUI(String portfolioName) throws IOException {
+    IPortfolio portfolio = getPortfolioByName(portfolioName);
+    if (portfolio == null) {
+      stockView.displayMessage("We could not find a portfolio with that name.");
+      return;
+    }
+    try {
+      File file = new File(portfolio.getName() + ".txt");
+      Portfolio.savePortfolio(portfolio, file);
+      stockView.displayMessage("Saved " + portfolioName);
+    } catch (Exception e) {
+      stockView.displayMessage("Error saving portfolio: " + e.getMessage());
+    }
+  }
+
+
+  public void handleLoadPortfolioGUI(String portfolioName) throws IOException {
+    File file = new File(portfolioName + ".txt");
+    if (!file.exists()) {
+      stockView.displayMessage("No portfolio with this name found.");
+      return;
+    }
+    try {
+      IPortfolio loadedPortfolio = Portfolio.loadPortfolio(file);
+      if (!portfolioExists(portfolioName)) {
+        loPortfolio.add(loadedPortfolio);
+        stockView.displayMessage("Loaded " + portfolioName);
+      } else {
+        stockView.displayMessage("Portfolio with that name already exists.");
+      }
+    } catch (Exception e) {
+      stockView.displayMessage("We could not load the portfolio: " + e.getMessage());
+    }
+  }
+
+
+  public void handleSellStockGUI(String portfolioName, String stockSymbol, int quantity, String date) {
+    IPortfolio portfolio = getPortfolioByName(portfolioName);
+    if (portfolio != null) {
+      try {
+        portfolio.removeStock(stockSymbol, quantity, date);
+        stockView.displayMessage("The stocks were sold successfully.");
+      } catch (IllegalArgumentException | ParseException e) {
+        stockView.displayMessage("Error: " + e.getMessage());
+      }
+    } else {
+      stockView.displayMessage("We could not find a portfolio with that name.");
+    }
+  }
+
+  public void handleViewCompositionGUI(String portfolioName, String date) {
+    IPortfolio portfolio = getPortfolioByName(portfolioName);
+    if (portfolio != null) {
+      try {
+        Map<String, Double> composition = portfolio.getComposition(date);
+        StringBuilder compositionMessage = new StringBuilder("Composition on " + date + ": \n");
+        for (Map.Entry<String, Double> entry : composition.entrySet()) {
+          compositionMessage.append(String.format("%s: %.2f shares\n", entry.getKey(), entry.getValue()));
+        }
+        stockView.displayMessage(compositionMessage.toString());
+      } catch (Exception e) {
+        stockView.displayMessage("Error: " + e.getMessage());
+      }
+    } else {
+      stockView.displayMessage("We could not find a portfolio with that name.");
+    }
+  }
+
+
+  // Original methods for text-based interface
   private void handleViewGainLoss(Scanner scanner) throws IOException {
     String stockChoice = getValidStockTicker(scanner);
     String startDate = promptForValidDate("Start date? (yyyy-mm-dd)", scanner);
@@ -119,7 +247,8 @@ public class StockController implements Controller {
 
     try {
       double gainLoss = Stock.viewGainLoss(stockChoice, startDate, endDate, api, library);
-      out.append(String.format("Gain/Loss for %s from %s to %s: $%.2f", stockChoice, startDate, endDate, gainLoss))
+      out.append(String.format("Gain/Loss for %s from %s to %s: $%.2f",
+                      stockChoice, startDate, endDate, gainLoss))
               .append(System.lineSeparator());
     } catch (RuntimeException e) {
       out.append("Error: " + e.getMessage()).append(System.lineSeparator());
@@ -133,7 +262,8 @@ public class StockController implements Controller {
 
     try {
       double average = Stock.viewXDayMovingAverage(stockChoice, startDate, days, api, library);
-      out.append(String.format("The %d-day moving average for %s starting from %s is $%.2f", days, stockChoice, startDate, average))
+      out.append(String.format("The %d-day moving average for %s starting from %s is $%.2f",
+                      days, stockChoice, startDate, average))
               .append(System.lineSeparator());
     } catch (RuntimeException e) {
       out.append("Error: " + e.getMessage()).append(System.lineSeparator());
@@ -146,8 +276,10 @@ public class StockController implements Controller {
     int days = promptForValidDays("How many days?", scanner);
 
     try {
-      List<String> crossovers = Stock.viewXDayCrossOver(stockChoice, startDate, days, api, library);
-      out.append(String.format("The %d-day crossovers for %s starting from %s are:", days, stockChoice, startDate))
+      List<String> crossovers = Stock.viewXDayCrossOver(stockChoice, startDate, days,
+              api, library);
+      out.append(String.format("The %d-day crossovers for %s starting from %s are:",
+                      days, stockChoice, startDate))
               .append(System.lineSeparator());
       for (String date : crossovers) {
         out.append(date).append(System.lineSeparator());
@@ -157,19 +289,22 @@ public class StockController implements Controller {
     }
   }
 
-  private void handleCreatePortfolio(Scanner scanner) throws IOException, ParseException {
+  public void handleCreatePortfolio(Scanner scanner) throws IOException, ParseException {
     out.append("Please enter the name of your new portfolio.").append(System.lineSeparator());
     String portfolioName = scanner.next();
-    out.append("Would you like to add stocks to your portfolio immediately? (yes/no)").append(System.lineSeparator());
+    out.append("Would you like to add stocks to your portfolio immediately? (yes/no)")
+            .append(System.lineSeparator());
     String answer = scanner.next().toLowerCase();
 
     if (answer.equals("yes")) {
       Map<String, List<Stock>> stocks = getStocksFromUser(scanner);
       loPortfolio.add(Portfolio.createPortfolio(portfolioName, stocks));
-      out.append(String.format("Portfolio created with name %s and %d stocks.", portfolioName, stocks.size())).append(System.lineSeparator());
+      out.append(String.format("Portfolio created with name %s and %d stocks.",
+              portfolioName, stocks.size())).append(System.lineSeparator());
     } else {
       loPortfolio.add(Portfolio.createPortfolio(portfolioName));
-      out.append("Portfolio created with name ").append(portfolioName).append(System.lineSeparator());
+      out.append("Portfolio created with name ").append(portfolioName)
+              .append(System.lineSeparator());
     }
   }
 
@@ -190,14 +325,16 @@ public class StockController implements Controller {
   }
 
   private void handleViewPortfolioValue(Scanner scanner) throws IOException {
-    out.append("Which portfolio would you like to check the value of?").append(System.lineSeparator());
+    out.append("Which portfolio would you like to check the value of?")
+            .append(System.lineSeparator());
     String portfolioChoice = scanner.next();
     String date = promptForValidDate("Date? (yyyy-mm-dd)", scanner);
     IPortfolio portfolio = getPortfolioByName(portfolioChoice);
 
     if (portfolio != null) {
       double result = portfolio.calculatePortfolioValue(date, api, library);
-      out.append(String.format("Your portfolio's value on date %s is $%.2f.", date, result)).append(System.lineSeparator());
+      out.append(String.format("Your portfolio's value on date %s is $%.2f.", date, result))
+              .append(System.lineSeparator());
     } else {
       out.append("We could not find a portfolio with that name.").append(System.lineSeparator());
     }
@@ -231,7 +368,8 @@ public class StockController implements Controller {
         out.append("Portfolio with that name already exists.").append(System.lineSeparator());
       }
     } catch (Exception e) {
-      out.append("We could not load the portfolio: ").append(e.getMessage()).append(System.lineSeparator());
+      out.append("We could not load the portfolio: ").append(e.getMessage())
+              .append(System.lineSeparator());
     }
   }
 
@@ -242,9 +380,11 @@ public class StockController implements Controller {
 
     if (portfolio != null) {
       try {
-        out.append("Please enter your desired stock in ticker form.").append(System.lineSeparator());
+        out.append("Please enter your desired stock in ticker form.")
+                .append(System.lineSeparator());
         String symbol = getValidStockTicker(scanner);
-        int quantity = promptForValidQuantity("Please enter your desired quantity.", scanner);
+        int quantity =
+                promptForValidQuantity("Please enter your desired quantity.", scanner);
         String date = promptForValidDate("Date? (yyyy-mm-dd)", scanner);
 
         portfolio.removeStock(symbol, quantity, date);
@@ -260,7 +400,8 @@ public class StockController implements Controller {
   }
 
   private void handleViewComposition(Scanner scanner) throws IOException {
-    out.append("Which portfolio would you like to view the composition of?").append(System.lineSeparator());
+    out.append("Which portfolio would you like to view the composition of?")
+            .append(System.lineSeparator());
     String portfolioChoice = scanner.next();
     String date = promptForValidDate("Date? (yyyy-mm-dd)", scanner);
     IPortfolio portfolio = getPortfolioByName(portfolioChoice);
@@ -277,7 +418,8 @@ public class StockController implements Controller {
   }
 
   private void handleViewDistribution(Scanner scanner) throws IOException {
-    out.append("Which portfolio would you like to view the distribution of value of?").append(System.lineSeparator());
+    out.append("Which portfolio would you like to view the distribution of value of?")
+            .append(System.lineSeparator());
     String portfolioChoice = scanner.next();
     String date = promptForValidDate("Date? (yyyy-mm-dd)", scanner);
     IPortfolio portfolio = getPortfolioByName(portfolioChoice);
@@ -338,8 +480,7 @@ public class StockController implements Controller {
       try {
         portfolio.printPortfolioPerformanceChart(startDate, endDate, api, library);
       } catch (Exception e) {
-        out.append("Error during performance view: ").append(e.getMessage())
-                .append(System.lineSeparator());
+        out.append("Error during performance view: ").append(e.getMessage()).append(System.lineSeparator());
       }
     } else {
       out.append("We could not find a portfolio with that name.").append(System.lineSeparator());
@@ -366,8 +507,7 @@ public class StockController implements Controller {
         sdf.parse(dateStr);
         break;
       } catch (ParseException e) {
-        out.append("Invalid date format. Please enter the date in yyyy-MM-dd format.")
-                .append(System.lineSeparator());
+        out.append("Invalid date format. Please enter the date in yyyy-MM-dd format.").append(System.lineSeparator());
       }
     }
     return dateStr;
@@ -463,7 +603,9 @@ public class StockController implements Controller {
     Map<String, Double> weights = new HashMap<>();
     boolean done = false;
     while (!done) {
-      out.append("Please enter stock symbol and its weight (e.g., AAPL 0.25). Enter 'stop' to finish. Must add up to 1.").append(System.lineSeparator());
+      out.append("Please enter stock symbol and its weight "
+                      + "(e.g., AAPL 0.25). Enter 'stop' to finish. Must add up to 1.")
+              .append(System.lineSeparator());
       String input = scanner.next();
       if (input.equalsIgnoreCase("stop")) {
         done = true;
@@ -473,7 +615,9 @@ public class StockController implements Controller {
           double weight = scanner.nextDouble();
           weights.put(symbol, weight);
         } else {
-          out.append("Stock ").append(symbol).append(" is not in the portfolio. Please enter a valid stock.").append(System.lineSeparator());
+          out.append("Stock ").append(symbol).append(" is not in the portfolio."
+                          + " Please enter a valid stock.")
+                  .append(System.lineSeparator());
         }
       }
     }
@@ -484,7 +628,9 @@ public class StockController implements Controller {
     Map<String, List<Stock>> stocks = new HashMap<>();
     boolean done = false;
     while (!done) {
-      out.append("Please enter your desired stock in ticker form. To abort at any time, enter 'stop'.").append(System.lineSeparator());
+      out.append("Please enter your desired stock in ticker form."
+                      + " To abort at any time, enter 'stop'.")
+              .append(System.lineSeparator());
       String stockChoice = getValidStockTicker(scanner); // Use the updated method here
       if (stockChoice.equalsIgnoreCase("stop")) {
         done = true;
@@ -498,6 +644,11 @@ public class StockController implements Controller {
     return stocks;
   }
 
+  /**
+   * Adds the stock data from the given file to the library.
+   * @param name the name of the stock data file
+   * @throws IOException if the file is not found or cannot be read.
+   */
   public void addOriginalStocksToLibrary(String name) throws IOException {
     List<Stock> stocks = new ArrayList<>();
     Set<String> uniqueDates = new HashSet<>();
@@ -543,6 +694,3 @@ public class StockController implements Controller {
     library.put(name, stocks);
   }
 }
-
-
-

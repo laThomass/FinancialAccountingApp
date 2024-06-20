@@ -4,19 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dfc67e2f-4c5e-4173-afdf-97bc99cb714d" name="Changes" comment="">
+    <list default="true" id="dfc67e2f-4c5e-4173-afdf-97bc99cb714d" name="Changes" comment="Added addStock, removeStock, rebalancePortfolio, viewComposition and viewPerformance (all incomplete) || savePortfolio, LoadPortfolio,  and added PortfolioDateList Class and updated StockController to support savePortfolio">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Assignment5Stocks_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assignment5Stocks.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment5Stocks.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/New5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/New5.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/Class DIagram .png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/DESIGN-README.txt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/DESIGN-README.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/README (1).txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/SETUP-README.txt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/SETUP-README.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/StockManagementSystem.jar" beforeDir="false" afterPath="$PROJECT_DIR$/resources/StockManagementSystem.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/StockController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/AlphaVantageDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/AlphaVantageDemo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/AlphaAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/AlphaAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/IAlphaAPIInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/IAlphaAPIInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/IPortfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/IPortfolio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/IPortfolioDateList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/IPortfolioDateList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/Portfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Portfolio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/PortfolioDateList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/PortfolioDateList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Stock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Stock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/IView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/IView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/StockView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/StockView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/controller/ControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/controller/ControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/model/MockAlphaAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/model/MockAlphaAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/model/MockPortfolio.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/model/PortfolioTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/model/PortfolioTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/view/MockStockView.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/view/MockStockView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/view/StockViewTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/view/StockViewTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,9 +86,11 @@
     &quot;JUnit.PortfolioTest.testRemoveStockZeroQuantity.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.StockTest.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.StockViewTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StockViewTest.testDisplayMenu.executor&quot;: &quot;Run&quot;,
     &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
     &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
     &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;new-branch-assignment5&quot;,
@@ -89,6 +102,9 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;onboarding.tips.debug.path&quot;: &quot;C:/CS3500/Assignment5Stocks/src/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -142,22 +158,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ControllerTest.testRebalancePortfolio" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Assignment5Stocks" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="controller.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="controller" />
-      <option name="MAIN_CLASS_NAME" value="controller.ControllerTest" />
-      <option name="METHOD_NAME" value="testRebalancePortfolio" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="PortfolioTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Assignment5Stocks" />
       <extension name="coverage">
@@ -173,21 +173,36 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="PortfolioTest.testPrintPortfolioPerformanceChart" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Assignment5Stocks" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="model" />
+      <option name="MAIN_CLASS_NAME" value="model.PortfolioTest" />
+      <option name="METHOD_NAME" value="testPrintPortfolioPerformanceChart" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.AlphaVantageDemo" />
-        <item itemvalue="JUnit.ControllerTest" />
         <item itemvalue="JUnit.PortfolioTest" />
         <item itemvalue="JUnit.ControllerTest.testControllerViewGainAverage" />
-        <item itemvalue="JUnit.ControllerTest.testRebalancePortfolio" />
+        <item itemvalue="JUnit.ControllerTest" />
+        <item itemvalue="JUnit.PortfolioTest.testPrintPortfolioPerformanceChart" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
-        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+        <option value="jdk-11.0.22-corretto-11.0.22-f644763e9732-6ddbcd97" />
       </set>
     </attachedChunks>
   </component>
@@ -206,6 +221,9 @@
       <workItem from="1718309583247" duration="213000" />
       <workItem from="1718309809849" duration="663000" />
       <workItem from="1718310512588" duration="14110000" />
+      <workItem from="1718409785310" duration="1684000" />
+      <workItem from="1718411637468" duration="3950000" />
+      <workItem from="1718871682577" duration="5452000" />
     </task>
     <task id="LOCAL-00001" summary="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance, and added PortfolioDateList Class">
       <option name="closed" value="true" />
@@ -294,15 +312,6 @@
           <option name="timeStamp" value="1" />
         </breakpoint>
         <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/tests/model/PortfolioTest.java</url>
-          <line>28</line>
-          <properties class="model.PortfolioTest" method="testCreatePortfolio">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/tests/controller/ControllerTest.java</url>
           <line>84</line>
           <properties class="controller.ControllerTest" method="testAddPortfolio">
@@ -313,7 +322,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/tests/controller/ControllerTest.java</url>
-          <line>317</line>
+          <line>327</line>
           <properties class="controller.ControllerTest" method="testRebalancePortfolio">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -322,18 +331,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/tests/controller/ControllerTest.java</url>
-          <line>318</line>
+          <line>328</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/tests/controller/ControllerTest.java</url>
-          <line>364</line>
+          <line>383</line>
           <option name="timeStamp" value="33" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/tests/model/PortfolioTest.java</url>
-          <line>22</line>
-          <option name="timeStamp" value="38" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -14,3 +14,13 @@ Non-Required Features working mostly as intended:
     3. Has a library system that stores data requested from the api.
        -Has data for 3 stocks preinstalled in the library.
     4. Exit the program.
+
+
+NEW FEATURES FOR ASSIGNMENT 5:
+    1. Add or remove stocks to a portfolio at specific date.
+    2. Rebalance a portfolio.
+    3. Calculate the composition and value of a portfolio on a specified date.
+    4. Save a portfolio onto a text file and load a portfolio from a text file.
+    5. Plot the performance of a portfolio over time as a histogram.
+    6. Calculate the distribution of value of a portfolio on a specified date.
+        - The value of each stock in the portfolio.
