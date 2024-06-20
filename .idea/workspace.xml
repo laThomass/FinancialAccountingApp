@@ -5,29 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dfc67e2f-4c5e-4173-afdf-97bc99cb714d" name="Changes" comment="Added addStock, removeStock, rebalancePortfolio, viewComposition and viewPerformance (all incomplete) || savePortfolio, LoadPortfolio,  and added PortfolioDateList Class and updated StockController to support savePortfolio">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Assignment5Stocks_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assignment5Stocks.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment5Stocks.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/New5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/New5.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Class DIagram .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/DESIGN-README.txt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/DESIGN-README.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/README (1).txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/SETUP-README.txt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/SETUP-README.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/StockManagementSystem.jar" beforeDir="false" afterPath="$PROJECT_DIR$/resources/StockManagementSystem.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/StockController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/AlphaVantageDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/AlphaVantageDemo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/AlphaAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/AlphaAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/IPortfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/IPortfolio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Portfolio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Portfolio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Stock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Stock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/IView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/IView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/StockView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/StockView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/controller/ControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/controller/ControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/model/MockPortfolio.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/model/PortfolioTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/model/PortfolioTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/view/MockStockView.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/view/MockStockView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/view/StockViewTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/view/StockViewTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,60 +33,60 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.AlphaVantageDemo.executor&quot;: &quot;Run&quot;,
-    &quot;Application.HelloSerializationFile.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;JUnit.ControllerTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ControllerTest.testAddPortfolio.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ControllerTest.testAddStockToPortfolio.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ControllerTest.testCalculatePortfolio.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ControllerTest.testControllerViewGainAverage.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ControllerTest.testLoadPortfolio.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ControllerTest.testRebalancePortfolio.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ControllerTest.testSellStockFromPortfolio.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ControllerTest.testViewCompostion.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ControllerTest.testViewDistribution.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ControllerTest.testViewMovingAverage.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ControllerTest.testViewPerformace.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ControllerTest.testViewPerformance.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PortfolioTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PortfolioTest.testAddInvalidStock.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PortfolioTest.testCalculatePortfolioValueMultipleStocks.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PortfolioTest.testCalculatePortfolioValueOnNonTradingDay.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PortfolioTest.testCreatePortfolio.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PortfolioTest.testPrintPortfolioPerformanceChart.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PortfolioTest.testRebalancePortfolio.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PortfolioTest.testRebalancePortfolioInvalidWeights.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PortfolioTest.testRemoveStock.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PortfolioTest.testRemoveStockEdgeCases.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PortfolioTest.testRemoveStockZeroQuantity.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StockTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StockViewTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StockViewTest.testDisplayMenu.executor&quot;: &quot;Run&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;new-branch-assignment5&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/CS3500/Assignment5Stocks/src&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;C:/CS3500/Assignment5Stocks/src/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.AlphaVantageDemo.executor": "Run",
+    "Application.HelloSerializationFile.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Downloaded.Files.Path.Enabled": "false",
+    "JUnit.ControllerTest.executor": "Run",
+    "JUnit.ControllerTest.testAddPortfolio.executor": "Run",
+    "JUnit.ControllerTest.testAddStockToPortfolio.executor": "Run",
+    "JUnit.ControllerTest.testCalculatePortfolio.executor": "Run",
+    "JUnit.ControllerTest.testControllerViewGainAverage.executor": "Run",
+    "JUnit.ControllerTest.testLoadPortfolio.executor": "Run",
+    "JUnit.ControllerTest.testRebalancePortfolio.executor": "Run",
+    "JUnit.ControllerTest.testSellStockFromPortfolio.executor": "Run",
+    "JUnit.ControllerTest.testViewCompostion.executor": "Run",
+    "JUnit.ControllerTest.testViewDistribution.executor": "Run",
+    "JUnit.ControllerTest.testViewMovingAverage.executor": "Run",
+    "JUnit.ControllerTest.testViewPerformace.executor": "Run",
+    "JUnit.ControllerTest.testViewPerformance.executor": "Run",
+    "JUnit.PortfolioTest.executor": "Run",
+    "JUnit.PortfolioTest.testAddInvalidStock.executor": "Run",
+    "JUnit.PortfolioTest.testCalculatePortfolioValueMultipleStocks.executor": "Run",
+    "JUnit.PortfolioTest.testCalculatePortfolioValueOnNonTradingDay.executor": "Run",
+    "JUnit.PortfolioTest.testCreatePortfolio.executor": "Run",
+    "JUnit.PortfolioTest.testPrintPortfolioPerformanceChart.executor": "Run",
+    "JUnit.PortfolioTest.testRebalancePortfolio.executor": "Run",
+    "JUnit.PortfolioTest.testRebalancePortfolioInvalidWeights.executor": "Run",
+    "JUnit.PortfolioTest.testRemoveStock.executor": "Run",
+    "JUnit.PortfolioTest.testRemoveStockEdgeCases.executor": "Run",
+    "JUnit.PortfolioTest.testRemoveStockZeroQuantity.executor": "Run",
+    "JUnit.StockTest.executor": "Run",
+    "JUnit.StockViewTest.executor": "Run",
+    "JUnit.StockViewTest.testDisplayMenu.executor": "Run",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "new-branch-assignment5",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/CS3500/Assignment5Stocks/src",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/CS3500/Assignment5Stocks/src/Main.java",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\CS3500\Assignment5Stocks\src" />
@@ -223,7 +202,7 @@
       <workItem from="1718310512588" duration="14110000" />
       <workItem from="1718409785310" duration="1684000" />
       <workItem from="1718411637468" duration="3950000" />
-      <workItem from="1718871682577" duration="5452000" />
+      <workItem from="1718871682577" duration="9357000" />
     </task>
     <task id="LOCAL-00001" summary="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance, and added PortfolioDateList Class">
       <option name="closed" value="true" />
