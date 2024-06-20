@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="dfc67e2f-4c5e-4173-afdf-97bc99cb714d" name="Changes" comment="Added addStock, removeStock, rebalancePortfolio, viewComposition and viewPerformance (all incomplete) || savePortfolio, LoadPortfolio,  and added PortfolioDateList Class and updated StockController to support savePortfolio">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/AlphaVantageDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/AlphaVantageDemo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/StockController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/StockViewGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/StockViewGUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,10 +93,11 @@
       <recent name="C:\CS3500\Assignment5Stocks\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.AlphaVantageDemo">
+  <component name="RunManager" selected="JUnit.PortfolioTest">
     <configuration name="AlphaVantageDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="main.AlphaVantageDemo" />
       <module name="Assignment5Stocks" />
+      <option name="PROGRAM_PARAMETERS" value="-text" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="main.*" />
@@ -168,10 +170,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.AlphaVantageDemo" />
+      <item itemvalue="JUnit.ControllerTest" />
+      <item itemvalue="JUnit.ControllerTest.testControllerViewGainAverage" />
+      <item itemvalue="JUnit.PortfolioTest" />
+      <item itemvalue="JUnit.PortfolioTest.testPrintPortfolioPerformanceChart" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.AlphaVantageDemo" />
         <item itemvalue="JUnit.PortfolioTest" />
+        <item itemvalue="Application.AlphaVantageDemo" />
         <item itemvalue="JUnit.ControllerTest.testControllerViewGainAverage" />
         <item itemvalue="JUnit.ControllerTest" />
         <item itemvalue="JUnit.PortfolioTest.testPrintPortfolioPerformanceChart" />
@@ -202,7 +211,7 @@
       <workItem from="1718310512588" duration="14110000" />
       <workItem from="1718409785310" duration="1684000" />
       <workItem from="1718411637468" duration="3950000" />
-      <workItem from="1718871682577" duration="9357000" />
+      <workItem from="1718871682577" duration="12483000" />
     </task>
     <task id="LOCAL-00001" summary="Added addStock, removeStock, rebalancePortfolio, incomplete viewComposition and viewPerformance, and added PortfolioDateList Class">
       <option name="closed" value="true" />
@@ -320,5 +329,10 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/StockManagementSystem$AlphaVantageDemo.ic" NAME="AlphaVantageDemo Coverage Results" MODIFIED="1718915743022" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>main.*</FILTER>
+    </SUITE>
   </component>
 </project>

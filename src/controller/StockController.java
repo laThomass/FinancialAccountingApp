@@ -1,9 +1,11 @@
+// Updated StockController.java methods for GUI logic
 package controller;
 
 import model.IAlphaAPIInterface;
 import model.IPortfolio;
 import model.Portfolio;
 import model.Stock;
+import view.IGUIView;
 import view.IView;
 
 import java.io.BufferedReader;
@@ -14,14 +16,7 @@ import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Represents the controller that runs the program and takes in information.
@@ -126,101 +121,94 @@ public class StockController implements Controller {
   }
 
   // GUI methods
-  public void handleCreatePortfolioGUI(String portfolioName, boolean addStocksImmediately) throws IOException, ParseException {
+  public void createPortfolio(String portfolioName, boolean addStocksImmediately) {
     if (portfolioExists(portfolioName)) {
-      stockView.displayMessage("A portfolio with this name already exists.");
+      ((IGUIView) stockView).displayMessage("A portfolio with this name already exists.");
       return;
     }
     if (addStocksImmediately) {
       Map<String, List<Stock>> stocks = new HashMap<>();
       loPortfolio.add(Portfolio.createPortfolio(portfolioName, stocks));
-      stockView.displayMessage(String.format("Portfolio created with name %s and %d stocks.", portfolioName, stocks.size()));
+      ((IGUIView) stockView).displayMessage(String.format("Portfolio created with name %s and %d stocks.", portfolioName, stocks.size()));
     } else {
       loPortfolio.add(Portfolio.createPortfolio(portfolioName));
-      stockView.displayMessage("Portfolio created with name " + portfolioName);
+      ((IGUIView) stockView).displayMessage("Portfolio created with name " + portfolioName);
     }
   }
 
+  public void buyStock(String portfolioName, String stockSymbol, String quantityStr, String date) {
+    if (!isValidDate(date)) {
+      ((IGUIView) stockView).displayMessage("Invalid date format. Please enter a date in yyyy-MM-dd format.");
+      return;
+    }
 
-  public void handleAddStockToPortfolioGUI(String portfolioName, String stockSymbol, int quantity, String date) {
+    if (!isPositiveInteger(quantityStr)) {
+      ((IGUIView) stockView).displayMessage("Quantity must be a positive integer.");
+      return;
+    }
+
+    int quantity = Integer.parseInt(quantityStr);
     IPortfolio portfolio = getPortfolioByName(portfolioName);
+
     if (portfolio != null) {
       try {
+        // Check if the stock has a value on the specified date
+        List<Stock> stockData = library.get(stockSymbol.toUpperCase());
+        if (stockData == null || stockData.stream().noneMatch(stock -> stock.getDate().equals(date) && stock.getClosingPrice() > 0)) {
+          ((IGUIView) stockView).displayMessage("No value for that stock on the specified date. Please choose another date.");
+          return;
+        }
         portfolio.addStock(stockSymbol, quantity, date);
-        stockView.displayMessage("The stocks were added successfully.");
+        ((IGUIView) stockView).displayMessage("The stocks were added successfully.");
       } catch (Exception e) {
-        stockView.displayMessage("Error: " + e.getMessage());
+        ((IGUIView) stockView).displayMessage("Error: " + e.getMessage());
       }
     } else {
-      stockView.displayMessage("We could not find a portfolio with that name.");
+      ((IGUIView) stockView).displayMessage("We could not find a portfolio with that name.");
     }
   }
 
-  public void handleViewPortfolioValueGUI(String portfolioName, String date) {
+  public void sellStock(String portfolioName, String stockSymbol, String quantityStr, String date) {
+    if (!isValidDate(date)) {
+      ((IGUIView) stockView).displayMessage("Invalid date format. Please enter a date in yyyy-MM-dd format.");
+      return;
+    }
+
+    if (!isPositiveInteger(quantityStr)) {
+      ((IGUIView) stockView).displayMessage("Quantity must be a positive integer.");
+      return;
+    }
+
+    int quantity = Integer.parseInt(quantityStr);
+    IPortfolio portfolio = getPortfolioByName(portfolioName);
+
+    if (portfolio != null) {
+      try {
+        portfolio.removeStock(stockSymbol, quantity, date);
+        ((IGUIView) stockView).displayMessage("The stocks were sold successfully.");
+      } catch (IllegalArgumentException | ParseException e) {
+        ((IGUIView) stockView).displayMessage("Error: " + e.getMessage());
+      }
+    } else {
+      ((IGUIView) stockView).displayMessage("We could not find a portfolio with that name.");
+    }
+  }
+
+  public void queryPortfolioValue(String portfolioName, String date) {
     IPortfolio portfolio = getPortfolioByName(portfolioName);
     if (portfolio != null) {
       try {
         double result = portfolio.calculatePortfolioValue(date, api, library);
-        stockView.displayMessage(String.format("Your portfolio's value on date %s is $%.2f.", date, result));
+        ((IGUIView) stockView).displayMessage(String.format("Your portfolio's value on date %s is $%.2f.", date, result));
       } catch (Exception e) {
-        stockView.displayMessage("Error: " + e.getMessage());
+        ((IGUIView) stockView).displayMessage("Error: " + e.getMessage());
       }
     } else {
-      stockView.displayMessage("We could not find a portfolio with that name.");
+      ((IGUIView) stockView).displayMessage("We could not find a portfolio with that name.");
     }
   }
 
-  public void handleSavePortfolioGUI(String portfolioName) throws IOException {
-    IPortfolio portfolio = getPortfolioByName(portfolioName);
-    if (portfolio == null) {
-      stockView.displayMessage("We could not find a portfolio with that name.");
-      return;
-    }
-    try {
-      File file = new File(portfolio.getName() + ".txt");
-      Portfolio.savePortfolio(portfolio, file);
-      stockView.displayMessage("Saved " + portfolioName);
-    } catch (Exception e) {
-      stockView.displayMessage("Error saving portfolio: " + e.getMessage());
-    }
-  }
-
-
-  public void handleLoadPortfolioGUI(String portfolioName) throws IOException {
-    File file = new File(portfolioName + ".txt");
-    if (!file.exists()) {
-      stockView.displayMessage("No portfolio with this name found.");
-      return;
-    }
-    try {
-      IPortfolio loadedPortfolio = Portfolio.loadPortfolio(file);
-      if (!portfolioExists(portfolioName)) {
-        loPortfolio.add(loadedPortfolio);
-        stockView.displayMessage("Loaded " + portfolioName);
-      } else {
-        stockView.displayMessage("Portfolio with that name already exists.");
-      }
-    } catch (Exception e) {
-      stockView.displayMessage("We could not load the portfolio: " + e.getMessage());
-    }
-  }
-
-
-  public void handleSellStockGUI(String portfolioName, String stockSymbol, int quantity, String date) {
-    IPortfolio portfolio = getPortfolioByName(portfolioName);
-    if (portfolio != null) {
-      try {
-        portfolio.removeStock(stockSymbol, quantity, date);
-        stockView.displayMessage("The stocks were sold successfully.");
-      } catch (IllegalArgumentException | ParseException e) {
-        stockView.displayMessage("Error: " + e.getMessage());
-      }
-    } else {
-      stockView.displayMessage("We could not find a portfolio with that name.");
-    }
-  }
-
-  public void handleViewCompositionGUI(String portfolioName, String date) {
+  public void queryPortfolioComposition(String portfolioName, String date) {
     IPortfolio portfolio = getPortfolioByName(portfolioName);
     if (portfolio != null) {
       try {
@@ -229,15 +217,48 @@ public class StockController implements Controller {
         for (Map.Entry<String, Double> entry : composition.entrySet()) {
           compositionMessage.append(String.format("%s: %.2f shares\n", entry.getKey(), entry.getValue()));
         }
-        stockView.displayMessage(compositionMessage.toString());
+        ((IGUIView) stockView).displayMessage(compositionMessage.toString());
       } catch (Exception e) {
-        stockView.displayMessage("Error: " + e.getMessage());
+        ((IGUIView) stockView).displayMessage("Error: " + e.getMessage());
       }
     } else {
-      stockView.displayMessage("We could not find a portfolio with that name.");
+      ((IGUIView) stockView).displayMessage("We could not find a portfolio with that name.");
     }
   }
 
+  public void savePortfolio(String portfolioName) {
+    IPortfolio portfolio = getPortfolioByName(portfolioName);
+    if (portfolio == null) {
+      ((IGUIView) stockView).displayMessage("We could not find a portfolio with that name.");
+      return;
+    }
+    try {
+      File file = new File(portfolio.getName() + ".txt");
+      Portfolio.savePortfolio(portfolio, file);
+      ((IGUIView) stockView).displayMessage("Saved " + portfolioName);
+    } catch (Exception e) {
+      ((IGUIView) stockView).displayMessage("Error saving portfolio: " + e.getMessage());
+    }
+  }
+
+  public void loadPortfolio(String portfolioName) {
+    File file = new File(portfolioName + ".txt");
+    if (!file.exists()) {
+      ((IGUIView) stockView).displayMessage("No portfolio with this name found.");
+      return;
+    }
+    try {
+      IPortfolio loadedPortfolio = Portfolio.loadPortfolio(file);
+      if (!portfolioExists(portfolioName)) {
+        loPortfolio.add(loadedPortfolio);
+        ((IGUIView) stockView).displayMessage("Loaded " + portfolioName);
+      } else {
+        ((IGUIView) stockView).displayMessage("Portfolio with that name already exists.");
+      }
+    } catch (Exception e) {
+      ((IGUIView) stockView).displayMessage("We could not load the portfolio: " + e.getMessage());
+    }
+  }
 
   // Original methods for text-based interface
   private void handleViewGainLoss(Scanner scanner) throws IOException {
@@ -317,6 +338,14 @@ public class StockController implements Controller {
       String stockChoice = getValidStockTicker(scanner);
       int quantity = promptForValidQuantity("Please enter your desired quantity.", scanner);
       String date = promptForValidDate("Date? (yyyy-mm-dd)", scanner);
+
+      // Check if the stock has a value on the specified date
+      List<Stock> stockData = library.get(stockChoice.toUpperCase());
+      if (stockData == null || stockData.stream().noneMatch(stock -> stock.getDate().equals(date) && stock.getClosingPrice() > 0)) {
+        out.append("No value for that stock on the specified date. Please choose another date.").append(System.lineSeparator());
+        return;
+      }
+
       portfolio.addStock(stockChoice, quantity, date);
       out.append("The stocks were added successfully.").append(System.lineSeparator());
     } else {
@@ -692,5 +721,25 @@ public class StockController implements Controller {
     }
     reader.close();
     library.put(name, stocks);
+  }
+
+  private boolean isValidDate(String date) {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    sdf.setLenient(false);
+    try {
+      sdf.parse(date);
+      return true;
+    } catch (ParseException e) {
+      return false;
+    }
+  }
+
+  private boolean isPositiveInteger(String number) {
+    try {
+      int value = Integer.parseInt(number);
+      return value > 0;
+    } catch (NumberFormatException e) {
+      return false;
+    }
   }
 }

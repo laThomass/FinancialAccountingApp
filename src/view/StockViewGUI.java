@@ -6,11 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The StockViewGUI class represents the graphical user interface (GUI) for the stock application.
@@ -100,16 +95,7 @@ public class StockViewGUI extends JFrame implements IGUIView {
 
     createButton.addActionListener(e -> {
       String portfolioName = nameField.getText();
-      if (portfolioName != null && !portfolioName.trim().isEmpty()) {
-        try {
-          controller.handleCreatePortfolioGUI(portfolioName, false);
-          displayMessage("Portfolio created successfully.");
-        } catch (IOException | ParseException ex) {
-          displayMessage("Error creating portfolio: " + ex.getMessage());
-        }
-      } else {
-        displayMessage("Please enter a valid portfolio name.");
-      }
+      controller.createPortfolio(portfolioName, false);
     });
 
     backButton.addActionListener(e -> cardLayout.show(mainPanel, "MainMenu"));
@@ -147,31 +133,7 @@ public class StockViewGUI extends JFrame implements IGUIView {
       String quantityStr = quantityField.getText();
       String date = dateField.getText();
 
-      if (portfolioName == null || portfolioName.trim().isEmpty() ||
-              stockSymbol == null || stockSymbol.trim().isEmpty() ||
-              quantityStr == null || quantityStr.trim().isEmpty() ||
-              date == null || date.trim().isEmpty()) {
-        displayMessage("All fields must be filled.");
-        return;
-      }
-
-      if (!isValidDate(date)) {
-        displayMessage("Invalid date format. Please enter a date in yyyy-MM-dd format.");
-        return;
-      }
-
-      if (!isPositiveInteger(quantityStr)) {
-        displayMessage("Quantity must be a positive integer.");
-        return;
-      }
-
-      int quantity = Integer.parseInt(quantityStr);
-
-      try {
-        controller.handleAddStockToPortfolioGUI(portfolioName, stockSymbol, quantity, date);
-      } catch (Exception ex) {
-        displayMessage("Error buying stock: " + ex.getMessage());
-      }
+      controller.buyStock(portfolioName, stockSymbol, quantityStr, date);
     });
 
     sellButton.addActionListener(e -> {
@@ -180,31 +142,7 @@ public class StockViewGUI extends JFrame implements IGUIView {
       String quantityStr = quantityField.getText();
       String date = dateField.getText();
 
-      if (portfolioName == null || portfolioName.trim().isEmpty() ||
-              stockSymbol == null || stockSymbol.trim().isEmpty() ||
-              quantityStr == null || quantityStr.trim().isEmpty() ||
-              date == null || date.trim().isEmpty()) {
-        displayMessage("All fields must be filled.");
-        return;
-      }
-
-      if (!isValidDate(date)) {
-        displayMessage("Invalid date format. Please enter a date in yyyy-MM-dd format.");
-        return;
-      }
-
-      if (!isPositiveInteger(quantityStr)) {
-        displayMessage("Quantity must be a positive integer.");
-        return;
-      }
-
-      int quantity = Integer.parseInt(quantityStr);
-
-      try {
-        controller.handleSellStockGUI(portfolioName, stockSymbol, quantity, date);
-      } catch (Exception ex) {
-        displayMessage("Error selling stock: " + ex.getMessage());
-      }
+      controller.sellStock(portfolioName, stockSymbol, quantityStr, date);
     });
 
     backButton.addActionListener(e -> cardLayout.show(mainPanel, "MainMenu"));
@@ -241,13 +179,13 @@ public class StockViewGUI extends JFrame implements IGUIView {
     valueButton.addActionListener(e -> {
       String portfolioName = portfolioField.getText();
       String date = dateField.getText();
-      controller.handleViewPortfolioValueGUI(portfolioName, date);
+      controller.queryPortfolioValue(portfolioName, date);
     });
 
     compositionButton.addActionListener(e -> {
       String portfolioName = portfolioField.getText();
       String date = dateField.getText();
-      controller.handleViewCompositionGUI(portfolioName, date);
+      controller.queryPortfolioComposition(portfolioName, date);
     });
 
     backButton.addActionListener(e -> cardLayout.show(mainPanel, "MainMenu"));
@@ -277,20 +215,12 @@ public class StockViewGUI extends JFrame implements IGUIView {
 
     saveButton.addActionListener(e -> {
       String portfolioName = portfolioField.getText();
-      try {
-        controller.handleSavePortfolioGUI(portfolioName);
-      } catch (IOException ex) {
-        displayMessage("Error saving portfolio: " + ex.getMessage());
-      }
+      controller.savePortfolio(portfolioName);
     });
 
     loadButton.addActionListener(e -> {
       String portfolioName = portfolioField.getText();
-      try {
-        controller.handleLoadPortfolioGUI(portfolioName);
-      } catch (IOException ex) {
-        displayMessage("Error loading portfolio: " + ex.getMessage());
-      }
+      controller.loadPortfolio(portfolioName);
     });
 
     backButton.addActionListener(e -> cardLayout.show(mainPanel, "MainMenu"));
@@ -328,25 +258,5 @@ public class StockViewGUI extends JFrame implements IGUIView {
 
   public JPanel getMainPanel() {
     return mainPanel;
-  }
-
-  private boolean isValidDate(String date) {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    sdf.setLenient(false);
-    try {
-      sdf.parse(date);
-      return true;
-    } catch (ParseException e) {
-      return false;
-    }
-  }
-
-  private boolean isPositiveInteger(String number) {
-    try {
-      int value = Integer.parseInt(number);
-      return value > 0;
-    } catch (NumberFormatException e) {
-      return false;
-    }
   }
 }
